@@ -13281,3 +13281,30 @@ function showVeteranBanner(color){
   }
 }
 </style>
+
+<style id="aj-mobile-menu-panel-10-percent-final">
+/* Ajetrez — menú principal móvil: reducir 10% respecto al tamaño móvil actual.
+   El escritorio no se modifica. Se conserva la posición superior existente. */
+@media (max-width:900px), (pointer:coarse){
+  #megaPanel{
+    width:86.4vw !important;       /* 96vw × 0.90 */
+    max-width:86.4vw !important;
+    height:79.2vh !important;      /* 88vh × 0.90 */
+    min-height:0 !important;
+    left:50% !important;
+    top:2vh !important;
+    transform:translateX(-50%) !important;
+    transform-origin:top center !important;
+    box-sizing:border-box !important;
+  }
+}
+@media (max-width:480px){
+  #megaPanel{
+    width:86.4vw !important;
+    max-width:86.4vw !important;
+    height:79.2vh !important;
+    min-height:0 !important;
+    top:1vh !important;
+  }
+}
+</style>
