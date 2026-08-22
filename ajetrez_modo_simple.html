@@ -12220,14 +12220,14 @@ function showVeteranBanner(color){
 })();
 </script>
 
-<style id="aj-zones-panel-exact-8x6-final">
-/* Tamaño definitivo del panel de Brillo y Opacidad: 8 casilleros de ancho x 6 de alto.
-   Se usa --square para que escritorio y móvil mantengan exactamente la misma proporción. */
+<style id="aj-zones-panel-exact-10x6-final">
+/* Tamaño definitivo del panel de Brillo y Opacidad: 10 casilleros de ancho x 6 de alto.
+   Usa --square para mantener la misma proporción visual en escritorio y móvil. */
 #zonesFloat.zf-top{
   position: fixed !important;
   left: 50% !important;
   top: 50% !important;
-  width: calc(var(--square) * 8) !important;
+  width: calc(var(--square) * 10) !important;
   height: calc(var(--square) * 6) !important;
   max-width: calc(100vw - 24px) !important;
   max-height: calc(100dvh - 24px) !important;
@@ -12237,6 +12237,10 @@ function showVeteranBanner(color){
   transform: translate(-50%, -50%) !important;
   transform-origin: center center !important;
   overflow: auto !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0,0,0,.18) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 18px 60px rgba(0,0,0,.45) !important;
 }
 </style>
 </body>
