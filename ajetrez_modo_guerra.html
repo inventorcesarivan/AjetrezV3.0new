@@ -2037,13 +2037,6 @@ body[data-theme="noche"] .regv2-btn{
   .legend-chip{ display:inline-flex; gap:6px; align-items:center; padding:4px 8px; border-radius:999px; background:#f6f6f6; border:1px solid #eee; }
   .legend-swatch{ width:14px; height:14px; border-radius:3px; outline:1px solid #ccc; }
 </style>
-<style id="aj-zones-float-css-2025-09-13-override-half">
-  /* Reducir altura total del panel flotante a la mitad del alto de pantalla */
-  #zonesFloat.zf-top{
-    height: calc((100vh - 6mm)/2) !important;
-    max-height: calc((100vh - 6mm)/2) !important;
-  }
-</style>
 <style id="aj-zones-float-css-2025-09-13-override-layout">
   /* Botonera del header: Reset a la izquierda de la cruz */
   #zonesFloat .zf-right{ display:flex; align-items:center; gap:8px; }
@@ -2056,20 +2049,6 @@ body[data-theme="noche"] .regv2-btn{
   }
   #zonesContent #fg-zonas-appearance > *{ min-width:0; }
   #zonesContent #fg-zonas-appearance input[type="range"]{ width:100%; }
-</style>
-<style id="aj-zones-float-css-2025-09-13-override-quarter-wide">
-  /* Panel: 1/4 del alto de pantalla y un poco más ancho */
-  #zonesFloat.zf-top{
-    height: calc((100vh - 6mm)/4) !important;
-    max-height: calc((100vh - 6mm)/4) !important;
-    width: min(960px, 98vw) !important;
-  }
-</style>
-<style id="aj-zones-float-css-2025-09-13-override-quarter-wide-plus20">
-  /* ~20% más ancho respecto al tope anterior (960px -> 1152px) y casi todo el viewport */
-  #zonesFloat.zf-top{
-    width: min(1152px, 99vw) !important;
-  }
 </style>
 <style id="aj-zones-float-css-2025-09-13-center-and-reset-dark">
   /* Centrar el panel verticalmente */
@@ -2094,34 +2073,6 @@ body[data-theme="noche"] .regv2-btn{
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;
-  }
-</style>
-<style id="aj-zones-float-css-2025-09-13-revert-bg-and-shrink15">
-  /* Revertir transparencia y achicar ~15% manteniendo centrado y layout interno */
-  #zonesFloat.zf-top{
-    background: #fff !important;
-    box-shadow: 0 18px 60px rgba(0,0,0,.45) !important;
-    border-radius: 14px !important;
-    /* Tamaño 15% menor */
-    width: min(980px, 90vw) !important; /* 1152px -> ~980px */
-    height: calc(((100vh - 6mm)/4) * 0.85) !important;
-    max-height: calc(((100vh - 6mm)/4) * 0.85) !important;
-  }
-</style>
-<style id="aj-zones-float-css-2025-09-13-inner-scale-85">
-  /* Reducir 15% ancho de cada campo y tipografía solo dentro del contenido del panel */
-  #zonesContent #fg-zonas-appearance .zf-field{
-    width: 85% !important;
-    justify-self: center !important;
-  }
-  #zonesContent #fg-zonas-appearance input[type="range"]{
-    width: 100% !important; /* 100% de su .zf-field (que ahora es 85% del grid cell) */
-  }
-  #zonesContent{
-    font-size: 0.85em !important; /* texto 15% más chico, no afecta el header */
-  }
-  #zonesContent label, #zonesContent .hint-sm, #zonesContent p, #zonesContent .help, #zonesContent .desc{
-    font-size: 0.95em; /* suavizar para que no quede demasiado pequeño en ayudas */
   }
 </style>
 <style id="aj-zones-float-css-2025-09-13-tight-spacings">
@@ -2164,12 +2115,6 @@ body[data-theme="noche"] .regv2-btn{
   #zonesContent #fg-zonas-appearance .note,
   #zonesContent #fg-zonas-appearance .muted {
     display: none !important;
-  }
-</style>
-<style id="aj-zones-float-css-2025-09-13-width-minus10">
-  /* Ancho total del panel -10% */
-  #zonesFloat.zf-top{
-    width: min(882px, 81vw) !important; /* 980px->882px, 90vw->81vw */
   }
 </style>
 <style id="aj-zones-float-css-2025-09-13-fs-support">
@@ -2804,76 +2749,6 @@ body[data-theme="noche"] .regv2-btn{
 }
 </style>
 
-<style id="aj-zones-panel-match-main-menu-final">
-/* Panel de Personalización: igualar dimensiones al panel principal.
-   Se elimina la antigua limitación a 1/4 de pantalla y la reducción horizontal. */
-#zonesFloat.zf-top{
-  width: min(92vw, 980px) !important;
-  height: min(calc(var(--square) * 8), 96vh) !important;
-  max-height: min(calc(var(--square) * 8), 96vh) !important;
-  transform: translate(-50%, -50%) !important;
-  transform-origin: center center !important;
-  box-sizing: border-box !important;
-}
-@media (max-width: 900px), (pointer: coarse){
-  #zonesFloat.zf-top{
-    width: min(96vw, 980px) !important;
-    max-width: 96vw !important;
-    height: min(88vh, 720px) !important;
-    max-height: min(88vh, 720px) !important;
-    min-height: 320px !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    transform-origin: center center !important;
-  }
-}
-@media (max-width: 480px){
-  #zonesFloat.zf-top{
-    width: 96vw !important;
-    max-width: 96vw !important;
-    height: 88vh !important;
-    max-height: 88vh !important;
-    min-height: 300px !important;
-  }
-}
-</style>
-
-<style id="aj-zones-panel-shrink15-final">
-/* Panel de brillo/opacidad: 15% más pequeño que la versión anterior, manteniendo el centrado. */
-#zonesFloat.zf-top{
-  width: min(78.2vw, 833px) !important;
-  max-width: min(78.2vw, 833px) !important;
-  height: min(calc(var(--square) * 8 * 0.85), 81.6vh) !important;
-  max-height: min(calc(var(--square) * 8 * 0.85), 81.6vh) !important;
-  left: 50% !important;
-  top: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  transform-origin: center center !important;
-  box-sizing: border-box !important;
-}
-@media (max-width: 900px), (pointer: coarse){
-  #zonesFloat.zf-top{
-    width: 81.6vw !important;
-    max-width: 81.6vw !important;
-    height: min(74.8vh, 612px) !important;
-    max-height: min(74.8vh, 612px) !important;
-    min-height: 272px !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-  }
-}
-@media (max-width: 480px){
-  #zonesFloat.zf-top{
-    width: 81.6vw !important;
-    max-width: 81.6vw !important;
-    height: 74.8vh !important;
-    max-height: 74.8vh !important;
-    min-height: 255px !important;
-  }
-}
-</style>
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div class="mode-group" id="modeGroup"><button aria-expanded="false" aria-haspopup="true" class="btn" id="btnMode" type="button">Modo de juego</button><span aria-live="polite" class="mode-indicator" id="modeIndicator">Player vs player (local)</span></div><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div><div aria-label="Elegir modo de juego" class="dropdown" id="modeDropdown" role="menu"><button class="btn dd-item" data-label="Versus Bot" data-mode="bot" style="position:static;" type="button">Player Vs Bot</button><button class="btn dd-item" data-label="Player vs player (local)" data-mode="pvp-local" style="position:static;" type="button">Player vs player (local)</button><button class="btn dd-item" data-label="Bot versus bot (demo)" data-mode="bot-vs-bot" style="position:static;" type="button">Bot versus bot (demo)</button><button class="btn dd-item" data-label="Modo Online" data-mode="online" style="position:static;" type="button">Modo Online</button></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
@@ -12640,57 +12515,26 @@ function showVeteranBanner(color){
 })();
 </script>
 
-<style id="aj-zones-panel-final-size-adjust">
-/* Ajuste final: 10% menos de altura y 15% menos de ancho respecto del tamaño actual.
-   Centrado real, sin anclajes laterales. */
+</style>
+
+<style id="aj-zones-panel-exact-8x6-final">
+/* Tamaño definitivo del panel de Brillo y Opacidad: 8 casilleros de ancho x 6 de alto.
+   Se usa --square para que escritorio y móvil mantengan exactamente la misma proporción. */
 #zonesFloat.zf-top{
-  width: min(78.2vw, 833px) !important;
-  max-width: min(78.2vw, 833px) !important;
-  height: calc((100vh - 6mm) * 0.29835) !important;
-  max-height: calc((100vh - 6mm) * 0.29835) !important;
+  position: fixed !important;
   left: 50% !important;
   top: 50% !important;
-  transform: translate(-50%, -50%) scaleX(0.68) !important;
-  transform-origin: center center !important;
+  width: calc(var(--square) * 8) !important;
+  height: calc(var(--square) * 6) !important;
+  max-width: calc(100vw - 24px) !important;
+  max-height: calc(100dvh - 24px) !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
   box-sizing: border-box !important;
+  transform: translate(-50%, -50%) !important;
+  transform-origin: center center !important;
+  overflow: auto !important;
 }
-@media (max-width: 900px), (pointer: coarse){
-  #zonesFloat.zf-top{
-    width: 81.6vw !important;
-    max-width: 81.6vw !important;
-    height: 29.835vh !important;
-    max-height: 29.835vh !important;
-    min-height: 0 !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) scaleX(0.68) !important;
-    transform-origin: center center !important;
-  }
-}
-@media (max-width: 480px){
-  #zonesFloat.zf-top{
-    width: 96vw !important;
-    max-width: 96vw !important;
-    height: 29.835vh !important;
-    max-height: 29.835vh !important;
-    min-height: 0 !important;
-  }
-}
-<style id="aj-zones-mobile-plus-two-squares">
-/* En móvil: aumentar la altura del panel de Personalización en el equivalente a 2 casilleros. */
-@media (max-width: 900px), (pointer: coarse){
-  #zonesFloat.zf-top{
-    height: calc(29.835vh + (var(--square) * 2)) !important;
-    max-height: calc(29.835vh + (var(--square) * 2)) !important;
-  }
-}
-@media (max-width: 480px){
-  #zonesFloat.zf-top{
-    height: calc(29.835vh + (var(--square) * 2)) !important;
-    max-height: calc(29.835vh + (var(--square) * 2)) !important;
-  }
-}
-</style>
 </style>
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
