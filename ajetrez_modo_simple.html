@@ -12381,6 +12381,21 @@ function showVeteranBanner(color){
     min-height: 0 !important;
   }
 }
+<style id="aj-zones-mobile-plus-two-squares">
+/* En móvil: aumentar la altura del panel de Personalización en el equivalente a 2 casilleros. */
+@media (max-width: 900px), (pointer: coarse){
+  #zonesFloat.zf-top{
+    height: calc(29.835vh + (var(--square) * 2)) !important;
+    max-height: calc(29.835vh + (var(--square) * 2)) !important;
+  }
+}
+@media (max-width: 480px){
+  #zonesFloat.zf-top{
+    height: calc(29.835vh + (var(--square) * 2)) !important;
+    max-height: calc(29.835vh + (var(--square) * 2)) !important;
+  }
+}
+</style>
 </style>
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
