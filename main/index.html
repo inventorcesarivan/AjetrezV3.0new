@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ajetrez">
+  <link rel="manifest" href="manifest.json">
+  <title>Ajetrez 3.0 — Inicio</title>
+  <style>
+    :root { --bg:#0e0e0f; --fg:#f3f3f3; --mut:#b8b8b8; --ac:#4ade80; --btn:#1f1f23; --btnb:#2a2a30; }
+    html, body { height:100%; margin:0; padding:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif; }
+    .app { position:fixed; inset:0; display:flex; flex-direction:column; }
+    header { padding:12px 14px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #222; background:linear-gradient(180deg, #141416, #0f0f11); }
+    header h1 { font-size:16px; margin:0; font-weight:600; letter-spacing:.3px; }
+    .pill { font-size:12px; color:#fff; background:#2f2f36; border:1px solid #444; padding:4px 8px; border-radius:999px; }
+    .nav { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-left:auto; }
+    .nav button, .nav a { appearance:none; border:1px solid var(--btnb); background:var(--btn); color:#fff; border-radius:10px; padding:8px 10px; font-size:13px; cursor:pointer; }
+    .nav button:hover, .nav a:hover { filter:brightness(1.1); }
+    .group { display:flex; gap:6px; align-items:center; }
+    .group .label { font-size:12px; color:var(--mut); margin-right:2px; }
+    iframe#game { border:0; width:100vw; height:100dvh; flex:1; }
+    .overlay { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.86); color:#fff; z-index:50; text-align:center; padding:2rem; }
+    .panel { max-width:min(92vw, 620px); background:#151516; border:1px solid #26262b; border-radius:16px; padding:20px; }
+    .panel h2 { margin:0 0 8px 0; font-size:20px; }
+    .panel p { opacity:.9; line-height:1.35; margin:8px 0 14px; }
+    .actions { display:flex; gap:10px; justify-content:center; }
+    .btn { border:1px solid var(--btnb); background:var(--btn); color:#fff; padding:10px 12px; border-radius:10px; cursor:pointer; }
+    .hint { font-size:12px; color:#c9c9c9; margin-top:10px; }
+    .footer { position:fixed; bottom:8px; right:10px; font-size:12px; color:#9aa; opacity:.8; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Ajetrez 3.0</h1>
+      <span class="pill">Inicio</span>
+      <div class="nav">
+        <div class="group">
+          <span class="label">Clásico:</span>
+          <button data-src="ajetrez_modo_simple.html">Simple</button>
+          <button data-src="ajetrez_modo_amenaza.html">Amenaza</button>
+          <button data-src="ajetrez_modo_guerra.html">Guerra</button>
+        </div>
+        <div class="group">
+          <span class="label">Online:</span>
+          <button data-src="ajetrez_modo_simple_online_INLINE.html">Simple</button>
+          <button data-src="ajetrez_modo_amenaza_online_INLINE.html">Amenaza</button>
+          <button data-src="ajetrez_modo_guerra_online_INLINE.html">Guerra</button>
+        </div>
+        <a href="diagnostico_stockfish.html">Diagnóstico</a>
+        <a href="test_oraculo.html">Test Oráculo</a>
+      </div>
+    </header>
+
+    <iframe id="game" src="ajetrez_modo_simple.html" allow="fullscreen; gamepad; accelerometer; gyroscope; ambient-light-sensor; magnetometer; screen-wake-lock; xr-spatial-tracking" allowfullscreen></iframe>
+
+    <div class="overlay" id="overlay">
+      <div class="panel">
+        <h2>Modo horizontal</h2>
+        <p>Para la mejor experiencia en móviles, abrí en pantalla completa. Intentaremos bloquear la orientación en horizontal.</p>
+        <div class="actions">
+          <button class="btn" id="btnGo">Abrir en horizontal (pantalla completa)</button>
+          <button class="btn" id="btnInstall" style="display:none">Instalar como App</button>
+        </div>
+        <div class="hint">Consejo: instalá la App para abrir siempre a pantalla completa.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">build: index_rebuilt_inline</div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    }
+    const game = document.getElementById('game');
+    document.querySelectorAll('header .nav [data-src]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const url = btn.getAttribute('data-src');
+        game.src = url;
+        document.getElementById('overlay').style.display = 'none';
+      });
+    });
+    function isStandalone() {
+      return window.matchMedia('(display-mode: fullscreen)').matches ||
+             window.matchMedia('(display-mode: standalone)').matches ||
+             window.navigator.standalone === true;
+    }
+    const overlay = document.getElementById('overlay');
+    const btnGo = document.getElementById('btnGo');
+    const btnInstall = document.getElementById('btnInstall');
+    if (isStandalone()) { overlay.style.display = 'none'; }
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault(); deferredPrompt = e; btnInstall.style.display = 'inline-block';
+    });
+    btnInstall.addEventListener('click', async () => {
+      if (!deferredPrompt) return; deferredPrompt.prompt();
+      try { await deferredPrompt.userChoice; } catch(e) {} deferredPrompt = null;
+    });
+    async function enterFS(target) {
+      const el = target || document.documentElement;
+      let p; try { p = el.requestFullscreen?.(); } catch(e){};
+      if (!p) try { p = el.webkitRequestFullscreen?.(); } catch(e){};
+      if (!p) try { p = el.mozRequestFullScreen?.(); } catch(e){};
+      if (p?.catch) p.catch(()=>{});
+      try { await screen.orientation.lock('landscape'); } catch(e){};
+    }
+    if (!isStandalone()) { setTimeout(()=> enterFS(document.documentElement), 0); overlay.style.display = 'flex'; }
+    btnGo.addEventListener('click', async () => { await enterFS(document.documentElement); overlay.style.display = 'none'; });
+  </script>
+</body>
+</html>

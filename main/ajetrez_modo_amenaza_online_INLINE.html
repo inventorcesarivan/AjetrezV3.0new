@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Ajetrez Online — amenaza</title>
+<style>body{font-family:system-ui;background:#101114;color:#fff;margin:16px} .pill{display:inline-block;margin-left:10px;padding:4px 10px;border-radius:12px;background:rgba(0,0,0,.7);color:#fff;border:1px solid #ffcc00;font-size:13px;line-height:1.1;max-width:70vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style>
+</head><body>
+<h1>Online — amenaza <button id="btn">Conectar</button><span id="status" class="pill"></span></h1>
+
+<!-- Inlined Ajetrez Online client (v2) -->
+<script type="module">
+async function initOnline (opts) {
+  const { supabaseUrl, supabaseAnonKey, variant='simple', getLocalState=()=>({}), applyRemoteEvent=()=>{}, onStatus=()=>{} } = opts;
+  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  async function ensureAuth(){ const { data:s } = await supabase.auth.getSession(); if (s?.session?.user) return s.session.user; const { data, error } = await supabase.auth.signInAnonymously(); if (error) throw error; return data.user; }
+  const user = await ensureAuth(); onStatus({ type:'auth', userId: user.id });
+  function randomCode(n=6){ const abc='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; return Array.from({length:n},()=>abc[Math.floor(Math.random()*abc.length)]).join('') }
+  let channel=null, currentGame=null;
+  async function createGame(){ const code=randomCode(); const state=getLocalState(); const { data, error } = await supabase.from('games').insert({ code, variant, status:'waiting', white_id:user.id, turn:'w', state_json:state }).select().single(); if (error) throw error; currentGame=data; onStatus({ type:'game_created', game:data }); return data; }
+  async function quickMatch(){ const { data:candidates, error:e0 } = await supabase.from('games').select('*').eq('variant',variant).eq('status','waiting').is('black_id',null).neq('white_id',user.id).limit(1); if (e0) throw e0; if (candidates?.length){ const g=candidates[0]; try{ const { data:upd, error:e2 }=await supabase.from('games').update({ black_id:user.id, status:'active' }).eq('id',g.id).select().single(); if(e2) throw e2; currentGame=upd; onStatus({ type:'matched_as_black', game:upd }); return upd; }catch(e){} } return await createGame(); }
+  async function subscribeToGame(gameId){ if (channel){ await supabase.removeChannel(channel); channel=null; } const { data:g, error } = await supabase.from('games').select('*').eq('id',gameId).single(); if (error) throw error; currentGame=g; onStatus({ type:'subscribed', game:g }); const gameFilter=`id=eq.${gameId}`, movesFilter=`game_id=eq.${gameId}`; channel=supabase.channel(`realtime:game:${gameId}`)
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'games',filter:gameFilter},(p)=>{ currentGame=p.new; onStatus({ type:'game_update', game:currentGame }) })
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'moves',filter:movesFilter},(payload)=>{ const ev=payload.new; onStatus({ type:'move_received', ev }); if (ev.created_by===user.id) return; try{ applyRemoteEvent({ kind:ev.kind, payload:ev.payload, ply:ev.ply, created_by:ev.created_by, created_at:ev.created_at }) }catch{} })
+    .subscribe((status)=>onStatus({ type:'channel', status })); return g; }
+  async function send(event){ if(!currentGame) throw new Error('No game selected'); const { kind, payload } = event; const { data:mv, error } = await supabase.from('moves').insert({ game_id:currentGame.id, created_by:user.id, kind, payload }).select().single(); if(error) throw error; const nextState=getLocalState(); const { data:g2, error:e2 } = await supabase.from('games').update({ state_json: nextState }).eq('id', currentGame.id).select().single(); if(e2) throw e2; currentGame=g2; onStatus({ type:'move_sent', mv, game:g2 }); return mv; }
+  async function resign(){ if(!currentGame) return; await supabase.from('moves').insert({ game_id:currentGame.id, created_by:user.id, kind:'resign', payload:{} }); await supabase.from('games').update({ status:'finished' }).eq('id', currentGame.id); }
+  return { supabase, user, createGame, quickMatch, subscribeToGame, send, resign };
+}
+</script>
+
+<script type="module">
+  const setStatus = (t)=>{ const s=document.getElementById('status'); s.textContent=t; s.title=t; };
+  const btn = document.getElementById('btn');
+  let online=null;
+  btn.addEventListener('click', async ()=>{
+    try{
+      setStatus('⏳ Preparando cliente embebido…');
+      online = await initOnline({
+        supabaseUrl: 'https://unyomyoojfjatxrcknqu.supabase.co',
+        supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVueW9teW9vamZqYXR4cmNrbnF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgzNjQyNTgsImV4cCI6MjA3Mzk0MDI1OH0.ob5n4Ae7UecIQ7K4IlYMkxOgoDgZxg2VcgTFwKHOgsA',
+        variant: 'amenaza',
+        getLocalState: ()=>window.Ajetrez?.exportState?.() ?? {}, 
+        applyRemoteEvent: (ev)=>{ try{ window.Ajetrez?.applyEvent?.(ev) }catch(e){ console.error(e) } },
+        onStatus: (s)=>setStatus(s.type)
+      });
+      setStatus('✅ Conectado (auth ok).');
+      const g = await online.quickMatch();
+      await online.subscribeToGame(g.id);
+      setStatus(`🎮 Partida ${g.code} — ${g.status}`);
+    }catch(e){ setStatus('❌ Error conectando'); console.error(e); }
+  });
+  // Hooks que tu motor debe llamar
+  window.onLocalMove = (move)=> online?.send({ kind:'move', payload: move });
+  window.onSectionShift = (shift)=> online?.send({ kind:'shift', payload: shift });
+  window.onPromote = (prom)=> online?.send({ kind:'promote', payload: prom });
+</script>
+</body></html>

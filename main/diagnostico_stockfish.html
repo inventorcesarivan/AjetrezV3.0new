@@ -1,0 +1,62 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Diagnóstico Stockfish</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    .ok { color: green; font-weight: 700; }
+    .bad { color: #b00020; font-weight: 700; }
+    code { background: #f4f4f4; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Diagnóstico Stockfish (WASM)</h1>
+  <p>1) Este archivo debe estar <b>junto a tus HTML</b> (misma carpeta). 2) La carpeta <code>engine/</code> debe existir al lado de este archivo. 3) Si tu archivo del motor tiene otro nombre o ruta, indícalo abajo.</p>
+  <label>Ruta del Worker: </label>
+  <input id="url" size="60" value="engine/stockfish.js">
+  <button id="test">Probar</button>
+  <pre id="log"></pre>
+
+  <script>
+  const logEl = document.getElementById('log');
+  function log(...a){ logEl.textContent += a.join(' ') + "\n"; }
+
+  document.getElementById('test').onclick = async () => {
+    const url = document.getElementById('url').value.trim();
+    logEl.textContent = '';
+    log('Creando Worker con:', url);
+    let w;
+    try{
+      w = new Worker(url);
+      log('✓ Worker creado');
+    }catch(e){
+      log('✗ No se pudo crear Worker (ruta incorrecta o bloqueo de navegador)');
+      log(String(e));
+      return;
+    }
+    let ready = false;
+    w.onmessage = (e) => {
+      const s = String(e.data||'');
+      log('SF>', s);
+      if (s==='readyok') { ready = true; log('✓ Recibido readyok (Stockfish cargado)'); }
+    };
+    try{
+      w.postMessage('uci');
+      w.postMessage('isready');
+    }catch(e){ log('✗ Error enviando mensajes UCI:', String(e)); return; }
+
+    const t0 = Date.now();
+    while(!ready && Date.now() - t0 < 3000) { await new Promise(r=>setTimeout(r,50)); }
+    if(!ready){
+      log('✗ No llegó readyok. Si ves errores de WASM en la consola, revisa la ubicación del archivo .wasm o usa un servidor (http://localhost:8000) en vez de file://');
+    } else {
+      log('✓ Todo bien. Puedes usar el botón SF · Oráculo en tus páginas.');
+    }
+    try{ w.terminate(); }catch(_){}
+  };
+  </script>
+</body>
+</html>

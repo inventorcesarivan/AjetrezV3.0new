@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><title>Ajetrez Online — guerra</title>
+<h1>Ajetrez Online — guerra</h1>
+<button id="btn">Online</button>
+<span id="status" style="display:inline-block;margin-left:10px;padding:4px 10px;border-radius:12px;background:#111;color:#fff;border:1px solid #ffcc00"></span>
+<script type="module">
+const setStatus=(t)=>{ const s=document.getElementById('status'); s.textContent=t; s.title=t; console.log('[guerra]', t); };
+document.getElementById('btn').addEventListener('click', async () => {
+  try {
+    setStatus('⏳ Cargando (repo-prefijo) /AjetrezFinal3.0-main/web/online.js…');
+    const mod = await import('/AjetrezFinal3.0-main/web/online.js');
+    setStatus('✅ Cliente cargado. Conectando…');
+    const online = await mod.initOnline({
+      supabaseUrl: 'https://unyomyoojfjatxrcknqu.supabase.co', supabaseAnonKey:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVueW9teW9vamZqYXR4cmNrbnF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgzNjQyNTgsImV4cCI6MjA3Mzk0MDI1OH0.ob5n4Ae7UecIQ7K4IlYMkxOgoDgZxg2VcgTFwKHOgsA', variant:'guerra',
+      getLocalState: ()=>window.Ajetrez?.exportState?.() ?? {},
+      applyRemoteEvent: (ev)=>{ try{ window.Ajetrez?.applyEvent?.(ev) }catch(e){ console.error(e) } },
+      onStatus: (s)=>setStatus(s.type)
+    });
+    const g = await online.quickMatch();
+    await online.subscribeToGame(g.id);
+    setStatus(`🎮 Partida ${g.code} — ${g.status}`);
+  } catch(e) { setStatus('❌ '+(e?.message||e)); console.error(e); }
+});
+window.onLocalMove = (move) => window._online?.send?.({ kind:'move', payload: move });
+</script>

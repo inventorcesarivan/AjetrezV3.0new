@@ -1,0 +1,20 @@
+Ajetrez - Servidor local
+=========================
+
+Opción A (Windows .BAT):
+------------------------
+1) Guarda este archivo junto a tus HTML: start_servidor_local.bat
+2) Doble clic en start_servidor_local.bat
+3) Se abrirá: http://localhost:8000/diagnostico_stockfish.html
+4) Luego navega a ajetrez_modo_simple.html y prueba el botón "SF · Oráculo".
+
+Opción B (PowerShell .PS1):
+---------------------------
+1) Guarda este archivo junto a tus HTML: start_servidor_local.ps1
+2) Click derecho > Ejecutar con PowerShell (puede requerir permitir scripts)
+3) Se abrirá: http://localhost:8000/diagnostico_stockfish.html
+
+Notas:
+- Requiere Python instalado (https://www.python.org/downloads/).
+- Mantén abierta la ventana del servidor mientras pruebas.
+- Si usas VS Code, puedes usar la extensión "Live Server" como alternativa.
