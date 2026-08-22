@@ -1,0 +1,38 @@
+Modo simple — Reglas básicas del juego
+En este modo, sólo el recuadro central del tablero es jugable. Las partes sobrantes (aunque contengan piezas) no participan hasta que sean ingresadas mediante el desplazamiento de secciones.
+
+Distribución de las piezas
+Por color, el tablero contiene:
+
+2 reyes
+2 reinas
+4 alfiles, 4 caballos, 4 torres
+16 peones
+Las piezas son distribuidas en el recuadro central de la misma manera que en el ajedrez clásico.
+
+En los laterales, las piezas se colocan desplazadas: 2 secciones hacia abajo en negras y 2 hacia arriba en blancas.
+
+Ajetrez respeta todas las reglas del ajedrez clásico (incluye enroque y captura al paso).
+
+Además, añade nuevas reglas que dependen del modo de juego.
+
+Regla especial del Modo simple
+Luego de capturar, se puede elegir entre:
+
+Mantener la sección
+Desplazar la sección donde quedó la pieza capturadora
+Si se decide desplazar, la sección se mueve una sola vez hacia el lado opuesto al que se encuentra.
+
+Luego de la elección, el turno pasa automáticamente al oponente.
+
+Función del desplazamiento de secciones
+Escapar de una captura
+Alterar estrategias del oponente
+Sacar piezas rivales del área jugable
+Ingresar piezas propias al área jugable
+Ingresar piezas del oponente para intentar capturarlas
+Importante: Si una pieza sale del recuadro central, no queda fuera de juego definitivamente; puede reingresar mediante nuevos desplazamientos.
+
+?? Imposibilidad de desplazamiento
+En jaque o jaque mate no se pueden desplazar secciones, incluso si hubo captura en la sección del rey.
+No se pueden desplazar secciones si el recuadro central quedara sin piezas de alguno de los jugadores.

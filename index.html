@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ajetrez">
+  <link rel="manifest" href="manifest.json">
+  <title>Ajetrez — Móvil Fullscreen</title>
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; background: #111; }
+    body { display: grid; place-items: center; }
+    .app { position: fixed; inset: 0; display: flex; }
+    iframe#game { border: 0; width: 100vw; height: 100dvh; flex: 1; }
+    .overlay {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.85); color: #fff; z-index: 10; text-align: center;
+      padding: 2rem;
+    }
+    .panel {
+      max-width: min(90vw, 580px);
+      border-radius: 16px; padding: 20px 18px; background: #1d1d1d; box-shadow: 0 10px 30px rgba(0,0,0,.5);
+    }
+    .panel h1 { margin: 0 0 .5rem 0; font-size: 1.6rem; }
+    .panel p { opacity: .9; line-height: 1.35; margin: .5rem 0 1rem; }
+    .btn {
+      width: 100%; font-size: 1.2rem; font-weight: 800;
+      border: 0; border-radius: 14px; padding: 14px 16px;
+      background: #fff; color: #111;
+    }
+    .actions { display: grid; gap: 10px; margin-top: .75rem; }
+    .hint { font-size: .9rem; opacity: .7; margin-top: .5rem; }
+    @media (min-width: 981px) {
+      .overlay { display: none; } /* Solo móvil */
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Carga directa del modo simple -->
+    <iframe id="game" src="ajetrez_modo_simple.html" allow="fullscreen *; gamepad *; screen-wake-lock; xr-spatial-tracking" allowfullscreen></iframe>
+    <div class="overlay" id="overlay">
+      <div class="panel">
+        <h1>Modo horizontal</h1>
+        <p>En móviles, hace falta un toque para activar pantalla completa. Se intentará bloquear la orientación en horizontal.</p>
+        <div class="actions">
+          <button class="btn" id="btnGo">Abrir en horizontal (pantalla completa)</button>
+          <button class="btn" id="btnInstall" style="display:none">Instalar como App (recomendado)</button>
+        </div>
+        <div class="hint">Sugerido: instalá la App para abrir siempre a pantalla completa.</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // PWA: registrar service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    }
+
+    // Detectar si ya corre como app instalada
+    function isStandalone() {
+      return window.matchMedia('(display-mode: fullscreen)').matches ||
+             window.matchMedia('(display-mode: standalone)').matches ||
+             window.navigator.standalone === true;
+    }
+
+    const overlay = document.getElementById('overlay');
+    const btnGo = document.getElementById('btnGo');
+    const btnInstall = document.getElementById('btnInstall');
+    const game = document.getElementById('game');
+
+    // Si ya está en modo app, ocultar overlay
+    if (isStandalone()) {
+      overlay.style.display = 'none';
+    }
+
+    // Soporte de instalación (Android/Chrome)
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      btnInstall.style.display = 'block';
+    });
+    btnInstall.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice.catch(()=>{});
+      deferredPrompt = null;
+    });
+
+    async function enterFS(target) {
+      const el = target || document.documentElement;
+      let p;
+      try { p = el.requestFullscreen?.(); } catch(e){}
+      if (!p) try { p = el.webkitRequestFullscreen?.(); } catch(e){}
+      if (!p) try { p = el.mozRequestFullScreen?.(); } catch(e){}
+      if (p?.catch) { p.catch(()=>{}); }
+      try { await screen.orientation.lock('landscape'); } catch(e){}
+    }
+
+    // Si no es app instalada, pedir gesto para FS
+    if (!isStandalone()) {
+      // Intento inicial (algunos navegadores permiten si hubo gesto previo de navegación)
+      setTimeout(()=> enterFS(document.documentElement), 0);
+      // Mostrar overlay hasta que el usuario toque
+      overlay.style.display = 'flex';
+    }
+
+    function done() { overlay.style.display = 'none'; }
+    btnGo.addEventListener('click', async () => {
+      await enterFS(document.documentElement);
+      done();
+    });
+
+    // Toque en cualquier lado también intenta FS (una vez)
+    window.addEventListener('touchend', async () => {
+      if (overlay.style.display !== 'none') {
+        await enterFS(document.documentElement);
+        done();
+      }
+    }, { once: true, passive: true });
+
+    // Si sale de FS en navegador, volver a mostrar el overlay
+    function fsActive(){ return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement; }
+    document.addEventListener('fullscreenchange', () => {
+      if (!fsActive() && !isStandalone()) {
+        overlay.style.display = 'flex';
+      }
+    });
+  </script>
+<style id="hide-rotate-overlays">
+  /* Forzar oculto cualquier cartel de rotación/orientación, sin afectar elementos normales */
+  [id*="rotate-overlay"], [class*="rotate-overlay"],
+  [id*="rotateNotice"], [class*="rotateNotice"],
+  [id*="rotatePhone"], [class*="rotatePhone"],
+  [id*="aj-rotate"], [class*="aj-rotate"],
+  [id*="orientation-overlay"], [class*="orientation-overlay"],
+  [id*="portrait-overlay"], [class*="portrait-overlay"],
+  [id*="force-portrait"], [class*="force-portrait"],
+  [id*="forcePortrait"], [class*="forcePortrait"],
+  [id*="rotate"], [class*="rotate"],
+  [id*="portrait"], [class*="portrait"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+</style>
+  <script src="<script>window.AJ_SF_URL = '/engine/stockfish.js';</script>
+  engine/aj-oraculo.js"></script>
+</body>
+</html>

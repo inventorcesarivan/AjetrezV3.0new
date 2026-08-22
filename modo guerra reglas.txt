@@ -1,0 +1,32 @@
+Modo Guerra — Reglas generales
+1) Tablero y secciones
+Tablero de 8 secciones horizontales (16×8) desplazables.
+El 8×8 central es el único jugable al inicio.
+Las piezas laterales ingresan mediante desplazamiento.
+Turnos alternos con jaque y jaque mate clásicos.
+2) Disposición inicial (laterales)
+General (G) reemplaza al Rey
+Verdugo (V) reemplaza a la Dama
+Mago (M) y Maga (W) reemplazan a los Alfiles
+Bufón (J) reemplaza a los Caballos
+Arquero (A) reemplaza a las Torres
+Guerrero con espada (S) reemplaza a los peones laterales
+Los peones del 8×8 central permanecen clásicos.
+
+3) Piezas especiales
+General (G): hasta 3 casilleros, ortogonal y diagonal.
+Mago / Maga (M/W): exactamente 2 casilleros; se transforman al capturar.
+Bufón (J): mueve como caballo, no captura; inmoviliza 2 turnos.
+Arquero (A): 2 o 4 casilleros hacia adelante; puede saltar.
+Guerrero (S): se vuelve veterano al llegar al fondo rival.
+4) Piezas clásicas
+Las del 8×8 central siguen reglas de ajedrez estándar.
+
+5) Interacciones
+Congelamiento del Bufón dura 2 turnos.
+Transformaciones de M/W son permanentes.
+Desplazamientos siguen reglas de Ajetrez.
+6) Resumen rápido
+Solo el 8×8 central es jugable al inicio.
+Laterales con piezas de guerra.
+General limitado a 3 casilleros.

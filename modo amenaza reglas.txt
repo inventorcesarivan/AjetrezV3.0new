@@ -1,0 +1,17 @@
+Modo Amenaza — Príncipe & Princesa
+1) Objetivo
+Jaque mate al rey rival.
+Liberación: finalizar adyacente a tu Príncipe (I) o Princesa (S).
+2) Preparación
+I y S reemplazan rey y reina laterales y están prisioneros en el campo rival.
+
+3) Comportamiento de I / S
+No se mueven
+No son capturables
+No atacan ni dan jaque
+Bloquean el paso (excepto caballos)
+4) Liberación
+Se evalúa al final de la jugada y termina la partida inmediatamente.
+
+5) Resto
+Reglas de ajedrez estándar.

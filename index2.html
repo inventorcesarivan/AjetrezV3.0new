@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ajetrez">
+  <link rel="manifest" href="manifest.json">
+  <title>Ajetrez — Móvil Fullscreen</title>
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; background: #111; }
+    body { display: grid; place-items: center; }
+    .app { position: fixed; inset: 0; display: flex; }
+    iframe#game { border: 0; width: 100vw; height: 100dvh; flex: 1; }
+    .overlay {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.85); color: #fff; z-index: 10; text-align: center;
+      padding: 2rem;
+    }
+    .panel {
+      max-width: min(90vw, 580px);
+      border-radius: 16px; padding: 20px 18px; background: #1d1d1d; box-shadow: 0 10px 30px rgba(0,0,0,.5);
+    }
+    .panel h1 { margin: 0 0 .5rem 0; font-size: 1.6rem; }
+    .panel p { opacity: .9; line-height: 1.35; margin: .5rem 0 1rem; }
+    .btn {
+      width: 100%; font-size: 1.2rem; font-weight: 800;
+      border: 0; border-radius: 14px; padding: 14px 16px;
+      background: #fff; color: #111;
+    }
+    .actions { display: grid; gap: 10px; margin-top: .75rem; }
+    .hint { font-size: .9rem; opacity: .7; margin-top: .5rem; }
+    @media (min-width: 981px) {
+      .overlay { display: none; } /* Solo móvil */
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <iframe id="game" src="juego.html" allow="fullscreen *" allowfullscreen></iframe>
+    <div class="overlay" id="overlay">
+      <div class="panel">
+        <h1>Entrar en pantalla completa</h1>
+        <p>En móviles, los navegadores exigen un toque para activar el modo pantalla completa.</p>
+        <div class="actions">
+          <button class="btn" id="btnGo">Tocar para continuar</button>
+          <button class="btn" id="btnInstall" style="display:none">Instalar como App (recomendado)</button>
+        </div>
+        <div class="hint">Sugerido: instala como App para abrir siempre a pantalla completa.</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // PWA: registrar service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    }
+
+    // Detectar modos de app instalable
+    function isStandalone() {
+      return window.matchMedia('(display-mode: fullscreen)').matches ||
+             window.matchMedia('(display-mode: standalone)').matches ||
+             window.navigator.standalone === true;
+    }
+
+    const overlay = document.getElementById('overlay');
+    const btnGo = document.getElementById('btnGo');
+    const btnInstall = document.getElementById('btnInstall');
+    const game = document.getElementById('game');
+
+    // Intentar ocultar overlay si ya está en modo app
+    if (isStandalone()) {
+      overlay.style.display = 'none';
+    }
+
+    // beforeinstallprompt (Android/Chrome)
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      btnInstall.style.display = 'block';
+    });
+    btnInstall.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice.catch(()=>{});
+      deferredPrompt = null;
+    });
+
+    async function enterFS(target) {
+      const el = target || document.documentElement;
+      let p;
+      try { p = el.requestFullscreen?.(); } catch(e){}
+      if (!p) try { p = el.webkitRequestFullscreen?.(); } catch(e){}
+      if (!p) try { p = el.mozRequestFullScreen?.(); } catch(e){}
+      if (p?.catch) { p.catch(()=>{}); }
+      try { await screen.orientation.lock('landscape'); } catch(e){}
+    }
+
+    // Si ya está en display-mode app, no necesitamos pedir FS (ya es fullscreen)
+    if (!isStandalone()) {
+      // Primer intento sin gesto (algunos navegadores lo permiten si se abre desde un gesto previo)
+      setTimeout(()=> enterFS(document.documentElement), 0);
+      // Mostrar overlay hasta que el usuario toque
+      overlay.style.display = 'flex';
+    }
+
+    function done() { overlay.style.display = 'none'; }
+    btnGo.addEventListener('click', async () => {
+      await enterFS(document.documentElement);
+      done();
+    });
+
+    // Si el usuario toca la pantalla fuera del botón, también intentamos
+    window.addEventListener('touchend', async () => {
+      if (overlay.style.display !== 'none') {
+        await enterFS(document.documentElement);
+        done();
+      }
+    }, { once: true, passive: true });
+
+    // Mantener etiqueta de estado si cambia el fullscreen
+    function fsActive(){ return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement; }
+    document.addEventListener('fullscreenchange', () => {
+      if (!fsActive() && !isStandalone()) {
+        // Si salió del FS en navegador, volver a mostrar el overlay
+        overlay.style.display = 'flex';
+      }
+    });
+  </script>
+</body>
+</html>
