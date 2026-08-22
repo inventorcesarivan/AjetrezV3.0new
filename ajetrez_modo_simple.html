@@ -1496,18 +1496,6 @@ textarea[placeholder*="UCI"], textarea[placeholder*="uci"]{ height: 160px !impor
   }
 }
 </style>
-<style id="verDevToast-styles">
-#verDevToast .btn{ 
-  display:inline-flex; align-items:center; justify-content:center; 
-  padding:10px 14px; border-radius:12px; font-weight:800; 
-  text-decoration:none; border:2px solid #fff; background:#fff; color:#111;
-  box-shadow:0 2px 10px rgba(0,0,0,.15);
-}
-#verDevToast .btn:hover{ transform:translateY(-1px); }
-#verDevToast .btn:active{ transform:translateY(0); }
-#verDevToast .btn.mp{ border-color:#009ee3; }
-#verDevToast .btn.pp{ border-color:#253b80; }
-</style>
 <style>
 
 /* === Ajetrez: WakeLock toggle (flex item al lado de Reiniciar) === */
@@ -1639,8 +1627,7 @@ body[data-theme="noche"] #btnClosePanel,
 body[data-theme="noche"] #botChooserClose,
 body[data-theme="noche"] #rgClose,
 body[data-theme="noche"] #menu-robust-login-close-fix,
-body[data-theme="noche"] #regv2-close,
-body[data-theme="noche"] #verDevToastClose{
+body[data-theme="noche"] #regv2-close{
   color:#fff !important;
 }
 
@@ -9705,88 +9692,6 @@ catch(_){}
     window.addEventListener('resize', onResize);
     document.addEventListener('ajetrez:version-applied', groupTopRightButtons);
   });
-})();
-</script>
-<div id="verDevToast" style="position:fixed;left:50%;top:22%;transform:translateX(-50%);
-  background:rgba(0,0,0,.85);color:#fff;padding:16px 18px;border-radius:14px;
-  z-index:2147483647;box-shadow:0 10px 30px rgba(0,0,0,.28);max-width:min(92vw,780px);
-  font-weight:600;line-height:1.35;display:none;text-align:center">
-<button aria-label="Cerrar" id="verDevToastClose" style="position:absolute;top:8px;right:10px;background:transparent;border:none;
-  color:#fff;font-weight:800;font-size:18px;cursor:pointer;line-height:1">✕</button>Versión en desarrollo. Muy pronto estará disponible.<br/>Por favor apoya el proyecto, para que podamos seguir mejorando todos los aspectos del juego. Muchas gracias.<div class="toast-donate" style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:12px">
-<a class="btn mp" href="https://link.mercadopago.com.ar/ajetrez" rel="noopener" target="_blank">Mercado Pago</a>
-<a class="btn pp" href="https://www.paypal.com/ncp/payment/PTRWET3UWGEY8" rel="noopener" target="_blank">PayPal</a>
-</div>
-</div>
-<script>
-function showToast(){
-  var el = document.getElementById('verDevToast');
-  if(!el) return;
-  clearTimeout(window.__verDevToastTimer);
-  el.style.display = 'block';
-  el.style.opacity = '0';
-  el.style.transition = 'opacity .45s ease, transform .45s ease';
-  el.style.transform = 'translateX(-50%) translateY(10px)';
-  requestAnimationFrame(function(){
-    el.style.opacity = '1';
-    el.style.transform = 'translateX(-50%) translateY(0)';
-  });
-  window.__verDevToastTimer = setTimeout(function(){
-    el.style.opacity = '0';
-    setTimeout(function(){ el.style.display='none'; }, 450);
-  }, 8200);
-}
-</script>
-<script>
-(function(){
-  function hideToast(){
-    try{
-      var el = document.getElementById('verDevToast');
-      if(!el) return;
-      el.style.opacity = '0';
-      setTimeout(function(){ el.style.display='none'; }, 450);
-    }catch(_){}
-  }
-  function wireClose(){
-    var btn = document.getElementById('verDevToastClose');
-    if(btn){ btn.addEventListener('click', function(e){ e.preventDefault(); hideToast(); }); }
-    document.addEventListener('keydown', function(ev){ if(ev.key === 'Escape'){ hideToast(); } });
-  }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireClose);
-  else wireClose();
-})();
-</script>
-<script id="wire-selVersion-change">
-(function(){
-  function wire(){
-    var sel = document.getElementById('selVersion');
-    if(!sel) return;
-    if(sel.__wired) return; sel.__wired = true;
-    sel.addEventListener('change', function(){
-      var v = sel.value;
-      if(v === '3_0_amenaza' || v === '3_0_guerra'){
-        // revert and show toast
-        var prev = sel.getAttribute('data-prev') || '3_0_simple';
-        sel.value = prev;
-        if(typeof showToast === 'function') showToast();
-        return;
-      }
-      sel.setAttribute('data-prev', v);
-      // sync #verActual label if present
-      var verActual = document.getElementById('verActual');
-      if(verActual){
-        var map = {
-          '3_0_simple':'3.0 (modo simple)',
-          '3_0_amenaza':'3.0 (modo amenaza)',
-          '3_0_guerra':'3.0 (modo guerra)'
-        };
-        verActual.textContent = map[v] || v;
-      }
-    });
-    // initialize prev
-    sel.setAttribute('data-prev', sel.value || '3_0_simple');
-  }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
-  else wire();
 })();
 </script>
 <script>
