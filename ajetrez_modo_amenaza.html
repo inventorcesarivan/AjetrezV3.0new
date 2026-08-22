@@ -2758,6 +2758,50 @@ body[data-theme="noche"] .regv2-btn{
 }
 </style>
 
+
+<style id="aj-mobile-fullscreen-layout-fix">
+/* Ajetrez — fullscreen móvil: barras completas y centrado del conjunto.
+   Evita que el cálculo heredado de #bottomBar dependa de --square y termine
+   recortando los botones inferiores en pantallas pequeñas. */
+@media (max-width: 900px), (pointer: coarse){
+  #fsRoot:fullscreen{
+    width:100vw !important;
+    height:100dvh !important;
+    min-width:100vw !important;
+    min-height:100dvh !important;
+    max-width:100vw !important;
+    max-height:100dvh !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    overflow:hidden !important;
+    box-sizing:border-box !important;
+  }
+
+  #fsRoot:fullscreen .shell{
+    width:100% !important;
+    height:100% !important;
+    min-height:100% !important;
+    grid-template-rows: var(--toolbar-h) var(--toolbar-gap) auto var(--toolbar-gap) var(--toolbar-h) !important;
+    align-content:center !important;
+    justify-items:center !important;
+  }
+
+  #fsRoot:fullscreen #topBar,
+  #fsRoot:fullscreen #bottomBar{
+    height:var(--toolbar-h) !important;
+    min-height:var(--toolbar-h) !important;
+    max-height:var(--toolbar-h) !important;
+  }
+
+  #fsRoot:fullscreen #bottomBar{
+    width:calc(var(--square) * var(--board-cols)) !important;
+    position:relative !important;
+  }
+}
+</style>
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div class="mode-group" id="modeGroup"><button aria-expanded="false" aria-haspopup="true" class="btn" id="btnMode" type="button">Modo de juego</button><span aria-live="polite" class="mode-indicator" id="modeIndicator">Player vs player (local)</span></div><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div><div aria-label="Elegir modo de juego" class="dropdown" id="modeDropdown" role="menu"><button class="btn dd-item" data-label="Versus Bot" data-mode="bot" style="position:static;" type="button">Player Vs Bot</button><button class="btn dd-item" data-label="Player vs player (local)" data-mode="pvp-local" style="position:static;" type="button">Player vs player (local)</button><button class="btn dd-item" data-label="Bot versus bot (demo)" data-mode="bot-vs-bot" style="position:static;" type="button">Bot versus bot (demo)</button><button class="btn dd-item" data-label="Modo Online" data-mode="online" style="position:static;" type="button">Modo Online</button></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
