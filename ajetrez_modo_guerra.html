@@ -13265,3 +13265,64 @@ function showVeteranBanner(color){
     transform:none !important; margin-top:0 !important; margin-bottom:0 !important;
   }
 </style>
+<style id="aj-fullscreen-gray-frame-final">
+/* Ajetrez — fullscreen: el área gris del .frame es exactamente el lienzo del juego.
+   El conjunto (barra + tablero + barra) se centra dentro de ese lienzo. */
+#fsRoot:fullscreen{
+  width:100vw !important;
+  height:100dvh !important;
+  min-width:100vw !important;
+  min-height:100dvh !important;
+  max-width:100vw !important;
+  max-height:100dvh !important;
+  margin:0 !important;
+  padding:14px !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+}
+#fsRoot:fullscreen::before{
+  left:0 !important;
+  right:0 !important;
+  top:0 !important;
+  bottom:0 !important;
+  border-radius:0 !important;
+}
+#fsRoot:fullscreen .shell{
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  display:grid !important;
+  grid-template-rows:var(--toolbar-h) var(--toolbar-gap) auto var(--toolbar-gap) var(--toolbar-h) !important;
+  align-content:center !important;
+  justify-items:center !important;
+  box-sizing:border-box !important;
+}
+#fsRoot:fullscreen #topBar,
+#fsRoot:fullscreen #bottomBar,
+#fsRoot:fullscreen .board-wrap{
+  width:calc(var(--square) * var(--board-cols)) !important;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+}
+#fsRoot:fullscreen #topBar,
+#fsRoot:fullscreen #bottomBar{
+  height:var(--toolbar-h) !important;
+  min-height:var(--toolbar-h) !important;
+  max-height:var(--toolbar-h) !important;
+}
+#fsRoot:fullscreen #bottomBar{
+  position:relative !important;
+  overflow:visible !important;
+}
+@media (max-width:900px), (pointer:coarse){
+  #fsRoot:fullscreen{
+    padding:0 !important;
+  }
+  #fsRoot:fullscreen .shell{
+    grid-template-rows:var(--toolbar-h) var(--toolbar-gap) auto var(--toolbar-gap) var(--toolbar-h) !important;
+  }
+}
+</style>
