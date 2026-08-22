@@ -12639,6 +12639,44 @@ function showVeteranBanner(color){
   }
 })();
 </script>
+
+<style id="aj-zones-panel-final-size-adjust">
+/* Ajuste final: 10% menos de altura y 15% menos de ancho respecto del tamaño actual.
+   Centrado real, sin anclajes laterales. */
+#zonesFloat.zf-top{
+  width: min(78.2vw, 833px) !important;
+  max-width: min(78.2vw, 833px) !important;
+  height: calc((100vh - 6mm) * 0.29835) !important;
+  max-height: calc((100vh - 6mm) * 0.29835) !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) scaleX(0.68) !important;
+  transform-origin: center center !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 900px), (pointer: coarse){
+  #zonesFloat.zf-top{
+    width: 81.6vw !important;
+    max-width: 81.6vw !important;
+    height: 29.835vh !important;
+    max-height: 29.835vh !important;
+    min-height: 0 !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) scaleX(0.68) !important;
+    transform-origin: center center !important;
+  }
+}
+@media (max-width: 480px){
+  #zonesFloat.zf-top{
+    width: 96vw !important;
+    max-width: 96vw !important;
+    height: 29.835vh !important;
+    max-height: 29.835vh !important;
+    min-height: 0 !important;
+  }
+}
+</style>
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
