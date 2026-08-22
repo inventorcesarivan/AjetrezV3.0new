@@ -2159,9 +2159,10 @@ body[data-theme="noche"] .regv2-btn{
   /* En fullscreen: wrapper con flex arriba (no centrado vertical) */
   :fullscreen #zonesFSAnchor,
   :-webkit-full-screen #zonesFSAnchor{
-    align-items: flex-start !important;   /* al tope */
+    align-items: center !important;       /* centrado vertical real en fullscreen */
     justify-content: center !important;   /* centrado horizontal */
-    padding-top: 6mm !important;          /* respiro desde arriba */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
   }
   /* Asegurar que el panel no se re-centre por reglas previas */
   :fullscreen #zonesFSAnchor #zonesFloat.zf-top,
