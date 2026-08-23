@@ -12899,6 +12899,105 @@ function showVeteranBanner(color){
 
 <!-- AJETREZ: Reiniciar junto a Pantalla completa -->
 <!-- AJETREZ: Corrección final — Pantalla completa + Reiniciar dentro de la barra inferior -->
+
+<!-- AJETREZ: AJUSTE FINAL — TODOS LOS CONTROLES SUPERIORES 2mm MAS ABAJO -->
+<style id="aj-all-top-controls-down-2mm-final">
+  /*
+     Desplazamiento vertical común para TODOS los controles superiores.
+     Se toma como referencia el borde inferior de #topBar, por lo que
+     funciona igual en web, móvil y pantalla completa.
+  */
+  #topBar #rightControls{
+    top:calc(100% - 6px + 2mm) !important;
+    bottom:auto !important;
+    transform:translateY(-100%) !important;
+  }
+
+  #topBar #timeIndicator{
+    top:auto !important;
+    bottom:calc(6px - 2mm) !important;
+    transform:none !important;
+  }
+
+  #topBar #timeIndicator #pauseBtn{
+    position:static !important;
+    top:auto !important;
+    bottom:auto !important;
+    transform:none !important;
+  }
+
+  /* La misma referencia en móvil/táctil. */
+  @media (max-width:900px), (pointer:coarse){
+    #topBar #rightControls{
+      top:calc(100% - 6px + 2mm) !important;
+      transform:translateY(-100%) !important;
+    }
+    #topBar #timeIndicator{
+      top:auto !important;
+      bottom:calc(6px - 2mm) !important;
+      transform:none !important;
+    }
+  }
+</style>
+<script id="aj-all-top-controls-down-2mm-final-js">
+(function(){
+  if(window.__AJ_ALL_TOP_CONTROLS_DOWN_2MM_FINAL__) return;
+  window.__AJ_ALL_TOP_CONTROLS_DOWN_2MM_FINAL__=true;
+
+  function place(){
+    var top=document.getElementById('topBar');
+    var group=document.getElementById('rightControls');
+    var clock=document.getElementById('timeIndicator');
+    if(!top) return;
+
+    if(group && group.parentElement!==top) top.appendChild(group);
+    if(clock && clock.parentElement!==top) top.appendChild(clock);
+
+    if(group){
+      group.style.position='absolute';
+      group.style.left='0px';
+      group.style.right='auto';
+      group.style.top='calc(100% - 6px + 2mm)';
+      group.style.bottom='auto';
+      group.style.transform='translateY(-100%)';
+    }
+
+    if(clock){
+      clock.style.position='absolute';
+      clock.style.left='auto';
+      clock.style.right='0px';
+      clock.style.top='auto';
+      clock.style.bottom='calc(6px - 2mm)';
+      clock.style.transform='none';
+    }
+
+    var pause=document.getElementById('pauseBtn');
+    if(pause){
+      if(clock && pause.parentElement!==clock) clock.appendChild(pause);
+      pause.style.position='static';
+      pause.style.top='auto';
+      pause.style.bottom='auto';
+      pause.style.transform='none';
+    }
+  }
+
+  function start(){
+    place();
+    var n=0;
+    var t=setInterval(function(){
+      place();
+      if(++n>=30) clearInterval(t);
+    },100);
+    window.addEventListener('resize',place);
+    document.addEventListener('fullscreenchange',function(){ setTimeout(place,0); });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true});
+  else start();
+})();
+</script>
+<!-- /AJETREZ: AJUSTE FINAL — TODOS LOS CONTROLES SUPERIORES 2mm MAS ABAJO -->
+
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
@@ -14060,3 +14159,96 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
     }
   }
 </style>
+
+
+<!-- AJETREZ: SINCRONIZACION FINAL RELOJ + PAUSA CON LOS CONTROLES IZQUIERDOS -->
+<style id="aj-clock-pause-align-with-left-controls-final">
+  /*
+     Los controles izquierdos terminan 6px por encima del borde inferior de
+     #topBar (el mismo borde que queda inmediatamente sobre las secciones).
+     El reloj + Pausa deben usar EXACTAMENTE la misma referencia vertical.
+  */
+  #topBar #timeIndicator{
+    position:absolute !important;
+    right:0 !important;
+    left:auto !important;
+    top:auto !important;
+    bottom:6px !important;
+    transform:none !important;
+    margin:0 !important;
+    z-index:2147483001 !important;
+  }
+
+  #topBar #timeIndicator #pauseBtn{
+    position:static !important;
+    top:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    left:auto !important;
+    transform:none !important;
+    margin:0 !important;
+  }
+
+  /* En móvil se conserva exactamente la misma altura: no volver a usar
+     top:6px, porque eso era lo que impedía bajar el reloj junto al grupo. */
+  @media (max-width:900px), (pointer:coarse){
+    #topBar #timeIndicator{
+      top:auto !important;
+      bottom:6px !important;
+      right:0 !important;
+      transform:none !important;
+    }
+  }
+</style>
+<script id="aj-clock-pause-align-with-left-controls-final-js">
+(function(){
+  if(window.__AJ_CLOCK_PAUSE_ALIGN_LEFT_FINAL__) return;
+  window.__AJ_CLOCK_PAUSE_ALIGN_LEFT_FINAL__=true;
+
+  function place(){
+    var top=document.getElementById('topBar');
+    var clock=document.getElementById('timeIndicator');
+    var pause=document.getElementById('pauseBtn');
+    if(!top || !clock) return;
+
+    /* Mantener el reloj dentro de la barra superior. */
+    if(clock.parentElement!==top) top.appendChild(clock);
+    if(pause && pause.parentElement!==clock) clock.appendChild(pause);
+
+    /* Misma referencia vertical que Pantalla completa + Reiniciar. */
+    clock.style.position='absolute';
+    clock.style.left='auto';
+    clock.style.right='0px';
+    clock.style.top='auto';
+    clock.style.bottom='6px';
+    clock.style.transform='none';
+    clock.style.margin='0';
+
+    if(pause){
+      pause.style.position='static';
+      pause.style.left='auto';
+      pause.style.right='auto';
+      pause.style.top='auto';
+      pause.style.bottom='auto';
+      pause.style.transform='none';
+      pause.style.margin='0';
+    }
+  }
+
+  function start(){
+    place();
+    /* Refuerzo breve para vencer reglas/scripts antiguos de inicialización. */
+    var n=0;
+    var t=setInterval(function(){
+      place();
+      if(++n>=30) clearInterval(t);
+    },100);
+    window.addEventListener('resize',function(){ requestAnimationFrame(place); });
+    document.addEventListener('fullscreenchange',function(){ setTimeout(place,0); });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true});
+  else start();
+})();
+</script>
+<!-- /AJETREZ: SINCRONIZACION FINAL RELOJ + PAUSA -->
