@@ -2773,109 +2773,11 @@ body[data-theme="noche"] .regv2-btn{
 }
 </style>
 
-<style id="aj-fullscreen-mobile-bottom-controls-line-final">
-/* Fullscreen móvil: acercar la barra inferior a la línea inferior del tablero. */
-@media (max-width:900px), (pointer:coarse){
-  #fsRoot:fullscreen #bottomBar{
-    transform:translateY(-10px) !important;
-  }
-}
-</style>
-
-
-
 <!-- AJETREZ: Alineación final de controles con los límites del tablero -->
-<style id="aj-final-controls-board-alignment">
-/* Barra superior: reloj + Pausa alineados con el borde derecho real del tablero.
-   El conjunto se centra verticalmente dentro de la barra para evitar que quede
-   pegado al borde superior en diferentes tamaños de pantalla. */
-#topBar{ position:relative !important; }
-#topBar #timeIndicator{
-  position:absolute !important;
-  right:0 !important;
-  left:auto !important;
-  top:50% !important;
-  bottom:auto !important;
-  transform:translateY(-50%) !important;
-  margin:0 !important;
-}
-#topBar #timeIndicator #pauseBtn{
-  position:static !important;
-  transform:none !important;
-  margin:0 !important;
-}
-
-/* Barra inferior: Menú + Reiniciar quedan juntos en el centro y
-   Pantalla completa se alinea con el borde derecho del tablero. */
-#bottomBar{
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) auto auto minmax(0,1fr) !important;
-  align-items:center !important;
-  column-gap:8px !important;
-  position:relative !important;
-  overflow:visible !important;
-}
-#bottomBar #donateBox{
-  grid-column:1 !important;
-  justify-self:start !important;
-  align-self:center !important;
-  position:static !important;
-  transform:none !important;
-  margin:0 !important;
-}
-#bottomBar #btnMegaMenu{
-  grid-column:2 !important;
-  justify-self:end !important;
-  align-self:center !important;
-  position:static !important;
-  transform:none !important;
-  margin:0 !important;
-}
-#bottomBar #btnRestartBR{
-  grid-column:3 !important;
-  justify-self:start !important;
-  align-self:center !important;
-  position:static !important;
-  transform:none !important;
-  margin:0 !important;
-}
-#bottomBar #rightControls{
-  display:contents !important;
-}
-#bottomBar #btnFSBR{
-  grid-column:4 !important;
-  justify-self:end !important;
-  align-self:center !important;
-  position:static !important;
-  transform:none !important;
-  margin:0 !important;
-}
-
-/* En pantallas pequeñas mantenemos exactamente la misma lógica: los controles
-   siguen anclados a los límites del tablero, sin posiciones fijas de viewport. */
-@media (max-width:900px), (pointer:coarse){
-  #topBar #timeIndicator{ right:0 !important; top:50% !important; transform:translateY(-50%) !important; }
-  #bottomBar #btnFSBR{ justify-self:end !important; }
-}
-</style>
-
 <style id="aj-pause-clock-down-5mm">
   /* Ajuste final: reloj y pausa 5 mm más abajo */
   #regv2-clock-btn, #pauseBtn{
     top: calc(6px + 3mm + 5mm) !important;
-  }
-</style>
-<style id="aj-fullscreen-top-left-final">
-  /* Pantalla completa: esquina superior izquierda, alineada y separada del reloj */
-  #bottomBar #btnFSBR{
-    position: fixed !important;
-    left: 10px !important;
-    right: auto !important;
-    top: 10px !important;
-    bottom: auto !important;
-    margin: 0 !important;
-    transform: none !important;
-    z-index: 2147483647 !important;
   }
 </style>
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
@@ -12497,16 +12399,6 @@ function showVeteranBanner(color){
 }
 </style>
 
-<style id="aj-fullscreen-mobile-bottom-controls-up">
-/* Fullscreen móvil: subir apenas los controles inferiores sin mover el tablero ni la barra. */
-@media (max-width:900px), (pointer:coarse){
-  #fsRoot:fullscreen #bottomBar #donateBox,
-  #fsRoot:fullscreen #bottomBar #btnMegaMenu,
-  #fsRoot:fullscreen #bottomBar #rightControls{
-    transform:translateY(-3px) !important;
-  }
-}
-</style>
 <script id="aj-bot-engine-v2">
 /* === AJETREZ BOT ENGINE v2 — anti-loop + adaptive openings + variant-aware play === */
 (function(){
@@ -12836,87 +12728,6 @@ function showVeteranBanner(color){
 
 <!-- AJETREZ: reloj mantenido en la barra superior; no se mueve al pie. -->
 <!-- AJETREZ: Pausa permanece dentro de #timeIndicator; no se mueve al pie. -->
-<!-- AJETREZ: Menú + Reiniciar juntos en la barra inferior -->
-<style id="aj-menu-restart-adjacent-final">
-  #bottomBar{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) auto auto minmax(0,1fr) !important;
-    align-items:center !important;
-    justify-items:stretch !important;
-    column-gap:8px !important;
-  }
-  #bottomBar #donateBox{
-    grid-column:1 !important;
-    justify-self:start !important;
-  }
-  #bottomBar #btnMegaMenu{
-    grid-column:2 !important;
-    justify-self:end !important;
-    margin:0 !important;
-    position:static !important;
-    transform:none !important;
-    min-width:0 !important;
-    width:var(--aj-menu-width, auto) !important;
-    white-space:nowrap !important;
-  }
-  #bottomBar #btnRestartBR{
-    grid-column:3 !important;
-    justify-self:start !important;
-    position:static !important;
-    transform:none !important;
-    margin:0 !important;
-    width:var(--aj-restart-width, auto) !important;
-    white-space:nowrap !important;
-  }
-  #bottomBar #rightControls{
-    grid-column:4 !important;
-    justify-self:end !important;
-    margin:0 !important;
-    transform:none !important;
-    display:inline-flex !important;
-    align-items:center !important;
-    gap:calc(var(--square) * 0.4) !important;
-    min-width:0 !important;
-  }
-  #bottomBar #rightControls #pauseBtn,
-  #bottomBar #rightControls #timeIndicator,
-  #bottomBar #rightControls #btnFSBR{
-    position:static !important;
-    transform:none !important;
-  }
-</style>
-<script id="aj-menu-restart-adjacent-final-js">
-(function(){
-  if(window.__AJ_MENU_RESTART_ADJACENT_FINAL__) return;
-  window.__AJ_MENU_RESTART_ADJACENT_FINAL__=true;
-  function sync(){
-    var bar=document.getElementById('bottomBar');
-    var menu=document.getElementById('btnMegaMenu');
-    var restart=document.getElementById('btnRestartBR');
-    if(!bar || !menu || !restart) return;
-    if(restart.parentElement !== bar){
-      bar.insertBefore(restart, menu.nextSibling);
-    }
-    var w=restart.getBoundingClientRect().width;
-    if(w>0){
-      bar.style.setProperty('--aj-restart-width', w+'px');
-      bar.style.setProperty('--aj-menu-width', w+'px');
-    }
-  }
-  function ready(){
-    sync();
-    window.addEventListener('resize',sync);
-    document.addEventListener('fullscreenchange',sync);
-    try{
-      new MutationObserver(sync).observe(document.getElementById('bottomBar')||document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
-    }catch(_){}
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ready,{once:true});
-  else ready();
-})();
-</script>
-
-<!-- AJETREZ: Ajuste final barra inferior — reloj mayor y controles centrados -->
 <style id="aj-bottom-final-centered-clock">
   /* Centrar verticalmente todo el conjunto inferior y equilibrarlo horizontalmente. */
   #bottomBar{
@@ -13018,6 +12829,9 @@ function showVeteranBanner(color){
   }
 </style>
 
+
+<!-- AJETREZ: Reiniciar junto a Pantalla completa -->
+<!-- AJETREZ: Corrección final — Pantalla completa + Reiniciar dentro de la barra inferior -->
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
@@ -13251,97 +13065,6 @@ function showVeteranBanner(color){
 </script>
 
 <!-- AJETREZ: REUBICACION FINAL DE CONTROLES — SIN ANCLAJES CONFLICTIVOS -->
-<style id="aj-free-controls-final">
-  /* Barra superior como referencia única para reloj/pausa/pantalla completa */
-  #topBar{ position:relative !important; overflow:visible !important; }
-
-  /* Reloj + pausa: arriba a la derecha, independientes del layout inferior */
-  #topBar #timeIndicator{
-    position:absolute !important;
-    left:auto !important; right:10px !important;
-    top:50% !important; bottom:auto !important;
-    transform:translateY(-50%) !important;
-    margin:0 !important;
-    z-index:100 !important;
-  }
-  #topBar #timeIndicator #pauseBtn{
-    position:static !important;
-    left:auto !important; right:auto !important; top:auto !important; bottom:auto !important;
-    transform:none !important; margin:0 !important;
-  }
-
-  /* Pantalla completa: arriba a la izquierda, alineada verticalmente con el reloj. */
-  #topBar #btnFSBR{
-    position:absolute !important;
-    left:10px !important; right:auto !important;
-    top:50% !important; bottom:auto !important;
-    transform:translateY(-50%) !important;
-    margin:0 !important;
-    z-index:100 !important;
-    display:inline-flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    width:auto !important;
-    min-width:0 !important;
-    float:none !important;
-    grid-column:auto !important;
-    justify-self:auto !important;
-    align-self:auto !important;
-  }
-
-  /* El grupo inferior ya NO controla Pantalla completa. Reiniciar queda intacto. */
-  #bottomBar #rightControls #btnFSBR{
-    position:absolute !important;
-    left:10px !important; right:auto !important;
-    top:50% !important; bottom:auto !important;
-    transform:translateY(-50%) !important;
-    margin:0 !important;
-  }
-  #bottomBar #rightControls{
-    /* No forzar columnas ni desplazamientos sobre Reiniciar desde este ajuste. */
-  }
-
-  /* En fullscreen se conserva exactamente la misma referencia: topBar. */
-  #fsRoot:fullscreen #topBar #btnFSBR{
-    left:10px !important; right:auto !important; top:50% !important;
-    transform:translateY(-50%) !important;
-  }
-</style>
-<script id="aj-free-controls-final-js">
-(function(){
-  if(window.__AJ_FREE_CONTROLS_FINAL__) return;
-  window.__AJ_FREE_CONTROLS_FINAL__=true;
-  function place(){
-    var top=document.getElementById('topBar');
-    var fs=document.getElementById('btnFSBR');
-    if(!top || !fs) return false;
-    /* Solo movemos Pantalla completa. Reiniciar nunca se toca. */
-    if(fs.parentElement !== top) top.appendChild(fs);
-    fs.style.position='absolute';
-    fs.style.left='10px';
-    fs.style.right='auto';
-    fs.style.top='50%';
-    fs.style.bottom='auto';
-    fs.style.transform='translateY(-50%)';
-    fs.style.margin='0';
-    fs.style.zIndex='100';
-    return true;
-  }
-  function start(){
-    place();
-    var tries=0;
-    var t=setInterval(function(){
-      tries++;
-      if(place() || tries>=20) clearInterval(t);
-    },250);
-    window.addEventListener('resize',place);
-    document.addEventListener('fullscreenchange',place);
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true});
-  else start();
-})();
-</script>
-
 </html><!-- Session guard and HUD cancel on mode/restart --><script>
 (function(){
   window.__GAME_SESSION__ = window.__GAME_SESSION__ || 0;
@@ -14103,3 +13826,129 @@ console.log('[AJ] IA especial Modo Amenaza activa: prioridad a Liberación + des
     }
   }
 </style>
+
+<!-- AJETREZ: CONTROLES DEFINITIVOS — esquina superior izquierda del tablero -->
+<style id="aj-controls-top-left-authoritative">
+  /*
+     ÚNICA referencia final para Pantalla completa + Reiniciar:
+     #topBar coincide con el ancho del tablero. Los dos botones viven
+     en su esquina superior izquierda y quedan a la misma altura que
+     el reloj + pausa de la esquina superior derecha.
+  */
+  #topBar{
+    position:relative !important;
+    overflow:visible !important;
+  }
+
+  #topBar #rightControls{
+    position:absolute !important;
+    left:0 !important;
+    right:auto !important;
+    top:50% !important;
+    bottom:auto !important;
+    transform:translateY(-50%) !important;
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:8px !important;
+    width:auto !important;
+    min-width:0 !important;
+    max-width:calc(100% - 12px) !important;
+    margin:0 !important;
+    padding:0 !important;
+    z-index:2147483000 !important;
+    box-sizing:border-box !important;
+  }
+
+  #topBar #rightControls #btnFSBR,
+  #topBar #rightControls #btnRestartBR{
+    position:static !important;
+    inset:auto !important;
+    left:auto !important;
+    right:auto !important;
+    top:auto !important;
+    bottom:auto !important;
+    transform:none !important;
+    margin:0 !important;
+    float:none !important;
+    flex:0 0 auto !important;
+    grid-column:auto !important;
+    grid-row:auto !important;
+    justify-self:auto !important;
+    align-self:center !important;
+    white-space:nowrap !important;
+  }
+
+  #topBar #rightControls #btnFSBR{ order:1 !important; }
+  #topBar #rightControls #btnRestartBR{ order:2 !important; }
+
+  /* El reloj + Pausa se mantiene en la derecha, a la misma altura. */
+  #topBar #timeIndicator{
+    position:absolute !important;
+    right:0 !important;
+    left:auto !important;
+    top:50% !important;
+    bottom:auto !important;
+    transform:translateY(-50%) !important;
+    margin:0 !important;
+    z-index:2147483001 !important;
+  }
+
+  @media (max-width:900px), (pointer:coarse){
+    #topBar #rightControls{
+      left:5px !important;
+      gap:6px !important;
+      max-width:calc(100% - 10px) !important;
+    }
+  }
+</style>
+<script id="aj-controls-top-left-authoritative-js">
+(function(){
+  if(window.__AJ_CONTROLS_TOP_LEFT_AUTHORITATIVE__) return;
+  window.__AJ_CONTROLS_TOP_LEFT_AUTHORITATIVE__=true;
+
+  function place(){
+    var top=document.getElementById('topBar');
+    var group=document.getElementById('rightControls');
+    var fs=document.getElementById('btnFSBR');
+    var restart=document.getElementById('btnRestartBR');
+    if(!top || !group || !fs || !restart) return false;
+
+    /* El grupo debe pertenecer a la barra superior, no a la inferior. */
+    if(group.parentElement!==top) top.appendChild(group);
+    if(fs.parentElement!==group) group.appendChild(fs);
+    if(restart.parentElement!==group) group.appendChild(restart);
+
+    /* Eliminar coordenadas inline heredadas de versiones anteriores. */
+    [group,fs,restart].forEach(function(el){
+      el.style.left='';
+      el.style.right='';
+      el.style.top='';
+      el.style.bottom='';
+      el.style.transform='';
+    });
+
+    /* Orden definitivo. */
+    group.appendChild(fs);
+    group.appendChild(restart);
+    return true;
+  }
+
+  function start(){
+    place();
+    var tries=0;
+    var timer=setInterval(function(){
+      tries++;
+      place();
+      if(tries>=30) clearInterval(timer);
+    },100);
+    window.addEventListener('resize',place);
+    document.addEventListener('fullscreenchange',function(){ setTimeout(place,0); });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true});
+  else start();
+})();
+</script>
+<!-- /AJETREZ: CONTROLES DEFINITIVOS -->
