@@ -2846,7 +2846,32 @@ body[data-theme="noche"] .regv2-btn{
 .aj-contact-card p{margin:8px 0;}
 .aj-contact-email a{font-size:18px;font-weight:800;color:#C8102E;text-decoration:none;}
 .aj-contact-email a:hover{text-decoration:underline;}
-</style></head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
+</style>
+<style id="aj-mobile-login-scroll-fix">
+/* Ajuste móvil: hacer accesible el botón Entrar en pantallas bajas/estrechas */
+@media (max-width: 900px), (pointer: coarse) {
+  #megaPanel {
+    max-height: 96vh !important;
+  }
+  #loginView {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    justify-content: flex-start !important;
+    padding: 14px 14px 18px !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+  }
+  #loginView .brand { margin-bottom: 2px !important; }
+  #loginView h2 { margin: 0 0 2px !important; }
+  #loginView .field { margin-bottom: 6px !important; gap: 3px !important; width: min(100%, 360px); }
+  #loginView .field input { box-sizing: border-box; width: 100%; }
+  #loginView .hint-sm { margin-top: 0 !important; }
+}
+</style>
+</head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
 <button class="btn small" id="rpFabBtn">▶ Reproducir en tablero</button>
