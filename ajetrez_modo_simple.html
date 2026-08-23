@@ -2780,6 +2780,102 @@ body[data-theme="noche"] .regv2-btn{
     top: calc(6px + 3mm + 5mm) !important;
   }
 </style>
+
+<!-- AJETREZ: FIX FINAL — Pantalla completa estable en móvil + donaciones -15% -->
+<style id="aj-mobile-fullscreen-stable-and-donate-scale-final">
+@media (max-width:900px), (pointer:coarse){
+  /* Pantalla completa conserva exactamente la misma caja aunque el texto pase a "salir". */
+  #bottomBar #rightControls{
+    display:contents !important;
+  }
+  #bottomBar #btnFSBR{
+    position:static !important;
+    inset:auto !important;
+    top:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    left:auto !important;
+    transform:none !important;
+    margin:0 !important;
+    align-self:center !important;
+    justify-self:end !important;
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    box-sizing:border-box !important;
+    height:32px !important;
+    min-height:32px !important;
+    width:124px !important;
+    min-width:124px !important;
+    max-width:124px !important;
+    line-height:1 !important;
+    white-space:nowrap !important;
+    vertical-align:middle !important;
+  }
+
+  /* Mercado Pago y PayPal: reducción visual exacta del 15%. */
+  #bottomBar #donateBox .imgbtn{
+    transform:scale(.85) !important;
+    transform-origin:center center !important;
+  }
+}
+</style>
+<script id="aj-mobile-fullscreen-structure-final">
+(function(){
+  if(window.__AJ_MOBILE_FULLSCREEN_STRUCTURE_FINAL__) return;
+  window.__AJ_MOBILE_FULLSCREEN_STRUCTURE_FINAL__=true;
+
+  function place(){
+    var bottom=document.getElementById('bottomBar');
+    var menu=document.getElementById('btnMegaMenu');
+    var group=document.getElementById('rightControls');
+    var restart=document.getElementById('btnRestartBR');
+    var fs=document.getElementById('btnFSBR');
+    if(!bottom || !menu || !group || !restart || !fs) return false;
+
+    /* Estructura única: Menú -> Reiniciar -> Pantalla completa. */
+    if(menu.parentElement!==bottom) bottom.appendChild(menu);
+    if(restart.parentElement!==bottom || restart.previousElementSibling!==menu){
+      menu.insertAdjacentElement('afterend', restart);
+    }
+    if(group.parentElement!==bottom) bottom.appendChild(group);
+    if(fs.parentElement!==group) group.appendChild(fs);
+
+    /* El grupo queda como contenedor lógico del botón FS, sin aportar una celda propia. */
+    group.style.position='static';
+    group.style.left='auto'; group.style.right='auto';
+    group.style.top='auto'; group.style.bottom='auto';
+    group.style.transform='none'; group.style.margin='0';
+    group.style.float='none';
+    group.style.display='contents';
+
+    [restart,fs].forEach(function(el){
+      el.style.position='static';
+      el.style.left='auto'; el.style.right='auto';
+      el.style.top='auto'; el.style.bottom='auto';
+      el.style.transform='none'; el.style.margin='0';
+      el.style.float='none';
+      el.style.alignSelf='center';
+    });
+    return true;
+  }
+
+  function start(){
+    place();
+    var tries=0;
+    var timer=setInterval(function(){
+      tries++; place();
+      if(tries>=40) clearInterval(timer);
+    },100);
+    window.addEventListener('resize',function(){ requestAnimationFrame(place); });
+    document.addEventListener('fullscreenchange',function(){ setTimeout(place,0); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true});
+  else start();
+})();
+</script>
+<!-- /AJETREZ: FIX FINAL — Pantalla completa estable en móvil + donaciones -15% -->
+
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
