@@ -6,7 +6,7 @@
   /* Desplazar los botones de pago 1 casillero a la derecha */
   #btnMercadoPago{ margin-left: calc(var(--casillero, 64px) * 0.5); }
 
-</style><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>Ajetrez — Panel con Login, Pestañas + Info Partidas (v3-fix2)</title><style>
+</style><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>Ajetrez — Modo Guerra — Reglas restauradas desde versión estable</title><style>
   :root{
     --square: 56px;
     --border: 2px;
@@ -2514,15 +2514,6 @@ body[data-theme="noche"] .regv2-btn{
   #zonesOpenCard .zones-legend{ pointer-events: none; }
   #zonesOpenCard .zones-legend .legend-chip{ pointer-events: auto; }
 </style>
-<style>
-#promoOverlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:2147483647;padding:16px 18px;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.5);border:1px solid #333;color:#eee;min-width:280px}
-#promoCard h3{margin:0 0 10px;font:700 18px/1.2 system-ui,Segoe UI,Roboto,Arial}
-#promoChoices{display:flex;gap:10px;justify-content:center}
-#promoChoices button{background:#222;border:2px solid #666;border-radius:12px;padding:8px;cursor:pointer}
-#promoChoices button:hover{transform:translateY(-1px);border-color:#fff}
-#promoChoices img{width:56px;height:56px;display:block}
-#promoClose{margin-top:10px;text-align:center;opacity:.7;font-size:12px}
-</style>
 <style id="aj-megaPanel-canonical-2025-09-12">
 /* Canonical size/position for main menu panel (mobile-safe) */
 #megaPanel {
@@ -2773,7 +2764,6 @@ body[data-theme="noche"] .regv2-btn{
 }
 </style>
 
-<!-- AJETREZ: Alineación final de controles con los límites del tablero -->
 <style id="aj-pause-clock-down-5mm">
   /* Ajuste final: reloj y pausa 5 mm más abajo */
   #regv2-clock-btn, #pauseBtn{
@@ -3112,62 +3102,60 @@ const SPRITE_PROBE = 'assets/piezas_aa/w_P.png';
 
 const EMPTY = null;
 const PIECE_SPRITES = {
-  w: {P:'assets/piezas_aa/w_P.png', R:'assets/piezas_aa/w_R.png', N:'assets/piezas_aa/w_N.png', B:'assets/piezas_aa/w_B.png', Q:'assets/piezas_aa/w_Q.png', K:'assets/piezas_aa/w_K.png',  G:'assets/piezas_aa/white_Príncipe_sword.svg', V:'assets/piezas_aa/white_Princesa_axe.svg', T:'assets/piezas_aa/white_Guerrero.png' },
-  b: {P:'assets/piezas_aa/b_P.png', R:'assets/piezas_aa/b_R.png', N:'assets/piezas_aa/b_N.png', B:'assets/piezas_aa/b_B.png', Q:'assets/piezas_aa/b_Q.png', K:'assets/piezas_aa/b_K.png',  G:'assets/piezas_aa/black_Príncipe_sword.svg', V:'assets/piezas_aa/black_Princesa_axe.svg', T:'assets/piezas_aa/black_Guerrero.png' }
+  w: {P:'assets/piezas_aa/w_P.png', R:'assets/piezas_aa/w_R.png', N:'assets/piezas_aa/w_N.png', B:'assets/piezas_aa/w_B.png', Q:'assets/piezas_aa/w_Q.png', K:'assets/piezas_aa/w_K.png',  G:'assets/piezas_aa/white_General.png', V:'assets/piezas_aa/white_Verdugo.png' ,M:'assets/piezas_aa/white_Mago.png',W:'assets/piezas_aa/white_Maga.png',J:'assets/piezas_aa/white_Bufon.png', A:'assets/piezas_aa/white_Arquero.png', S:'assets/piezas_aa/white_Guerrero.png'},
+  b: {P:'assets/piezas_aa/b_P.png', R:'assets/piezas_aa/b_R.png', N:'assets/piezas_aa/b_N.png', B:'assets/piezas_aa/b_B.png', Q:'assets/piezas_aa/b_Q.png', K:'assets/piezas_aa/b_K.png',  G:'assets/piezas_aa/black_General.png', V:'assets/piezas_aa/black_Verdugo.png' ,M:'assets/piezas_aa/black_Mago.png',W:'assets/piezas_aa/black_Maga.png',J:'assets/piezas_aa/black_Bufon.png', A:'assets/piezas_aa/black_Arquero.png', S:'assets/piezas_aa/black_Guerrero.png'}
 };
 const PIECES_UNICODE = { w:{P:'\\u2659',R:'\\u2656',N:'\\u2658',B:'\\u2657',Q:'\\u2655',K:'\\u2654'}, b:{P:'\\u265F',R:'\\u265C',N:'\\u265E',B:'\\u265D',Q:'\\u265B',K:'\\u265A'} };
-
-/* Sprites para Príncipe/Princesa */
-try{
-  PIECE_SPRITES.w.I = 'assets/piezas_aa/w_I.png';
-  PIECE_SPRITES.b.I = 'assets/piezas_aa/b_I.png';
-  PIECE_SPRITES.w.S = 'assets/piezas_aa/w_S.png';
-  PIECE_SPRITES.b.S = 'assets/piezas_aa/b_S.png';
-}catch(_){}
-
-function makePiece(t,c){ return { type:t, color:c, hasMoved:false }; }
-
+let __AJ_PIECE_UID__ = 0;
+function makePiece(t,c){ return { type:t, color:c, hasMoved:false, uid: `p${++__AJ_PIECE_UID__}` }; }
 
 function makeInitialBoard16x8(){
   const b = Array.from({length:8},()=>Array(16).fill(EMPTY));
   const back = ["R","N","B","Q","K","B","N","R"];
   const row = back.concat(back);
 
-  // Centro 8×8: configuración clásica de Modo Amenaza.
-  // Laterales: únicamente Príncipe/Princesa cautivos y Guerreros T
-  // en la misma fila de los cautivos.
+  /*
+   * MODO GUERRA — distribución sin peones:
+   * - Los peones desaparecen por completo.
+   * - Los 8 Guerreros con espada de cada bando pasan a ocupar la
+   *   segunda fila del territorio central, donde antes estaban los peones.
+   * - Los laterales conservan únicamente una fila de piezas especiales.
+   * - La geometría 16x8 y los offsets no cambian.
+   */
   for(let c=0;c<16;c++){
-    let t = row[c], colorB = 'b';
+    let backTypeB=row[c];
+    if(c<8){ if(backTypeB==='K') backTypeB='G'; else if(backTypeB==='Q') backTypeB='V'; else if(backTypeB==='B') backTypeB = (c===2?'M':(c===5?'W':backTypeB)); else if(backTypeB==='N') backTypeB = ((c===1||c===6)?'J':backTypeB); else if(backTypeB==='R') backTypeB = ((c===0||c===7)?'A':backTypeB); }
+    const pb = makePiece(backTypeB,'b');
+    const sb = makePiece('S','b');
+
     if(c<8){
-      if(t==='K'){ t='I'; colorB='w'; }
-      else if(t==='Q'){ t='S'; colorB='w'; }
-    }
-    const pb = makePiece(t, colorB);
-    if(c<8){
-      b[2][c] = (t==='I'||t==='S') ? pb : makePiece('T','b');
-    }else{
-      b[0][c] = pb;
-      b[1][c] = makePiece('P','b');
+      b[2][c] = pb;   // única fila especial negra en lateral
+    } else {
+      b[0][c] = pb;   // piezas especiales negras en la otra lateral
+      b[1][c] = sb;   // guerreros negros: reemplazan a los peones
     }
   }
 
   for(let c=0;c<16;c++){
-    let t = row[c], colorW = 'w';
+    let backTypeW=row[c];
+    if(c>=8){ if(backTypeW==='K') backTypeW='G'; else if(backTypeW==='Q') backTypeW='V'; else if(backTypeW==='B') backTypeW = (c===10?'M':(c===13?'W':backTypeW)); else if(backTypeW==='N') backTypeW = ((c===9||c===14)?'J':backTypeW); else if(backTypeW==='R') backTypeW = ((c===8||c===15)?'A':backTypeW); }
+    const pwb = makePiece(backTypeW,'w');
+    const sw = makePiece('S','w');
+
     if(c>=8){
-      if(t==='K'){ t='I'; colorW='b'; }
-      else if(t==='Q'){ t='S'; colorW='b'; }
-    }
-    const pwb = makePiece(t, colorW);
-    if(c>=8){
-      b[5][c] = (t==='I'||t==='S') ? pwb : makePiece('T','w');
-    }else{
-      b[7][c] = pwb;
-      b[6][c] = makePiece('P','w');
+      b[5][c] = pwb;   // única fila especial blanca en lateral
+    } else {
+      b[7][c] = pwb;   // piezas especiales blancas en la otra lateral
+      b[6][c] = sw;    // guerreros blancos: reemplazan a los peones
     }
   }
+  // Derechos iniciales de enroque: solo las piezas del juego central.
+  // Las piezas laterales que ingresen posteriormente no adquieren derecho a enrocar.
+  [[0,12],[0,8],[0,15],[7,4],[7,0],[7,7]].forEach(([rr,cc])=>{
+    if(b[rr] && b[rr][cc]) b[rr][cc].castleHome = true;
+  });
   return b;
 }
-
 const initialOffsets = [8,8,8,8,0,0,0,0];
 function toBaseCol(vc,row,offs){ return offs[row] + vc; }
 function buildVisible(board, offs){
@@ -3183,24 +3171,19 @@ function baseColAtDisplay(row, d, off){
 }
 function deepCopyBoard(b){ return b.map(row => row.map(q => q ? {...q} : q )); }
 function inside(r,c){ return r>=0 && r<8 && c>=0 && c<8; }
+function insideBoard(r,c){ return r>=0 && r<8 && c>=0 && c<16; }
 
 function pseudoMoves(vis, r, c){
   const p = vis[r][c]; if(!p) return [];
   const out = [];
-  // Modo Amenaza: I/S inmóviles
-  const __tp = vis[r][c];
-  if(__tp && (__tp.type==='I'||__tp.type==='S')) return [];
-  const isIS = (q)=> q && (q.type==='I'||q.type==='S');
-  const add=(rr,cc)=>{ if(!inside(rr,cc)) return; const t=vis[rr][cc]; if(!t || (t.color!==p.color && !isIS(t))) out.push([rr,cc]); };
+  const add=(rr,cc)=>{ if(!inside(rr,cc)) return; const t=vis[rr][cc]; if(!t || t.color!==p.color) out.push([rr,cc]); };
   if(p.type==='N'){ [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]].forEach(([dr,dc])=>add(r+dr,c+dc)); }
   else if(p.type==='K'){
-    // Rey clásico: 1 casillero en CUALQUIERA de las 8 direcciones.
-    const kingDirs = [
-      [-1,-1],[-1,0],[-1,1],
-      [0,-1],          [0,1],
-      [1,-1],[1,0],[1,1]
-    ];
-    for(const [dr,dc] of kingDirs) add(r+dr, c+dc);
+    for(let dr=-1; dr<=1; dr++){
+      for(let dc=-1; dc<=1; dc++){
+        if(dr || dc) add(r+dr, c+dc);
+      }
+    }
   }
   else if(p.type==='R'||p.type==='B'||p.type==='Q'){
     const dirs=[]; if(p.type!=='B') dirs.push([1,0],[-1,0],[0,1],[0,-1]); if(p.type!=='R') dirs.push([1,1],[1,-1],[-1,1],[-1,-1]);
@@ -3209,14 +3192,14 @@ function pseudoMoves(vis, r, c){
       while(inside(rr,cc)){
         const t=vis[rr][cc];
         if(!t) out.push([rr,cc]);
-        else { if(t.color!==p.color && !(t.type==='I'||t.type==='S')) out.push([rr,cc]); break; }
+        else { if(t.color!==p.color) out.push([rr,cc]); break; }
         rr+=dr; cc+=dc;
       }
     }
   } 
   else if(p.type==='G'){
     const dirs=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
-    const MAX=4;
+    const MAX=3;
     for(const [dr,dc] of dirs){
       let rr=r, cc=c; let hops=0;
       for(let step=1; step<=MAX; step++){
@@ -3240,37 +3223,90 @@ function pseudoMoves(vis, r, c){
       if(!t || t.color!==p.color) out.push([rr,cc]);
     }
   }
-else if(p.type==='T'){
+
+  else if(p.type==='M' || p.type==='W'){
+    const dirs = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+    for(const [dr,dc] of dirs){
+      const midr = r+dr, midc = c+dc;
+      const rr = r+2*dr, cc = c+2*dc;
+      if(!inside(rr,cc)) continue;
+      // no salto: intermedia libre
+      if(vis[midr][midc]) continue;
+      const t = vis[rr][cc];
+      if(!t || t.color!==p.color){ out.push([rr,cc]); }
+    }
+  }
+
+
+  else if(p.type==='J'){
+    // BUFÓN: salto sorpresa en cualquiera de las 8 direcciones.
+    // Mantiene la idea original de infiltración: salta una casilla
+    // intermedia y aterriza exactamente a 2 casillas. No captura.
+    const dirs = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+    for(const [dr,dc] of dirs){
+      const rr = r + 2*dr, cc = c + 2*dc;
+      if(!inside(rr,cc)) continue;
+      const t = vis[rr][cc];
+      if(!t){ out.push([rr,cc]); } // no captura
+    }
+  }
+
+  else if(p.type==='A'){
     const dir = p.color==='w' ? -1 : 1;
+    const targets = [
+      [2*dir, 0], [4*dir, 0],         // hacia adelante 2 o 4
+      [2*dir, 2], [2*dir, -2],        // diagonales a 2
+      [4*dir, 4], [4*dir, -4],        // diagonales a 4
+    ];
+    for(const [dr,dc] of targets){
+      const rr = r + dr, cc = c + dc;
+      if(!inside(rr,cc)) continue;
+      const t = vis[rr][cc];
+      if(!t || t.color!==p.color){ out.push([rr,cc]); }
+    }
+  }
+
+  else if(p.type==='S'){
+    const dir = (p.color==='w') ? -1 : 1;
     if(p.veteran){
-      const dirs = [[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]];
+      // VETERANO: puede avanzar o retroceder 1 o 2 casilleros,
+      // incluyendo las cuatro diagonales. No puede desplazarse lateralmente.
+      // La captura se permite en cualquiera de esos destinos.
+      const dirs = [
+        [1,0],[-1,0],
+        [1,1],[1,-1],[-1,1],[-1,-1]
+      ];
       for(const [dr,dc] of dirs){
         for(const dist of [1,2]){
           const rr=r+dr*dist, cc=c+dc*dist;
           if(!inside(rr,cc)) continue;
-          if(dist===2 && vis[r+dr]?.[c+dc]) continue;
           const t=vis[rr][cc];
-          if(!t || (t.color!==p.color && !isIS(t))) out.push([rr,cc]);
+          // No puede atravesar piezas intermedias en movimientos de 2.
+          if(dist===2 && vis[r+dr]?.[c+dc]) continue;
+          if(!t || t.color!==p.color) out.push([rr,cc]);
         }
       }
     }else{
+      // GUERRERO: puede avanzar 1 o 2 casilleros si el recorrido está libre.
       for(const dist of [1,2]){
         const rr=r+dir*dist, cc=c;
         if(!inside(rr,cc)) continue;
         if(vis[rr][cc]) break;
         out.push([rr,cc]);
       }
+      // Captura: 1 casillero hacia adelante o en diagonal hacia adelante.
       const rr=r+dir;
-      if(inside(rr,c) && vis[rr][c] && vis[rr][c].color!==p.color && !isIS(vis[rr][c])) out.push([rr,c]);
+      if(inside(rr,c) && vis[rr][c] && vis[rr][c].color!==p.color) out.push([rr,c]);
       for(const dc of [-1,1]){
         const cc=c+dc;
         if(!inside(rr,cc)) continue;
         const t=vis[rr][cc];
-        if(t && t.color!==p.color && !isIS(t)) out.push([rr,cc]);
+        if(t && t.color!==p.color) out.push([rr,cc]);
       }
     }
   }
-  else if(p.type==='P'){
+
+else if(p.type==='P'){
     const dir = p.color==='w' ? -1 : 1;
     const r1 = r + dir;
     if(inside(r1,c) && !vis[r1][c]) out.push([r1,c]);
@@ -3278,10 +3314,42 @@ else if(p.type==='T'){
     const r2 = r + 2*dir;
     if(r===start && !vis[r1][c] && inside(r2,c) && !vis[r2][c]) out.push([r2,c]);
     [[r1,c-1],[r1,c+1]].forEach(([rr,cc])=>{
-      if(inside(rr,cc) && vis[rr][cc] && vis[rr][cc].color!==p.color && vis[rr][cc].type!=='I' && vis[rr][cc].type!=='S') out.push([rr,cc]);
+      if(inside(rr,cc) && vis[rr][cc] && vis[rr][cc].color!==p.color) out.push([rr,cc]);
     });
   }
   return out;
+}
+function isSquareAttacked(vis, r, c, byColor){
+  // Ataques reales, no movimientos legales: un peón NO ataca hacia adelante.
+  for(let rr=0; rr<8; rr++) for(let cc=0; cc<8; cc++){
+    const q = vis[rr][cc];
+    if(!q || q.color!==byColor) continue;
+    if(q.type==='P'){
+      const dir = q.color==='w' ? -1 : 1;
+      if(rr+dir===r && (cc-1===c || cc+1===c)) return true;
+    }else{
+      const ms = pseudoMoves(vis, rr, cc);
+      for(const mv of ms){
+        if(mv[0]===r && mv[1]===c) return true;
+      }
+    }
+  }
+  return false;
+}
+function inCheck(vis, color){
+  // Ajetrez puede tener más de un Rey por bando. La posición es insegura
+  // si cualquiera de los Reyes propios está siendo atacado.
+  const kings=[];
+  for(let r=0;r<8;r++) for(let c=0;c<8;c++){
+    const q=vis[r][c];
+    if(q && q.type==='K' && q.color===color) kings.push([r,c]);
+  }
+  if(!kings.length) return false;
+  const opp = color==='w' ? 'b' : 'w';
+  for(const [kr,kc] of kings){
+    if(isSquareAttacked(vis, kr, kc, opp)) return true;
+  }
+  return false;
 }
 function inCheck(vis, color){
   let kR=-1,kC=-1;
@@ -3301,11 +3369,6 @@ function applyMove(board, offs, from, to, special){
   const toBC   = toBaseCol(to.c,   to.r,   offs);
   let captured = copy[to.r][toBC];
   let moved    = copy[from.r][fromBC];
-  // Prohibido capturar/ocupar I o S
-  if(captured && (captured.type==='I' || captured.type==='S')){
-    return { board, captured: null, illegal:true };
-  }
-
 
   if(special && special.enPassant){
     const dir = moved.color==='w' ? -1 : 1;
@@ -3315,17 +3378,10 @@ function applyMove(board, offs, from, to, special){
     copy[capR][capBC] = EMPTY;
   }
   copy[to.r][toBC] = moved ? {...moved, hasMoved:true} : moved;
-  if(moved && moved.type==='T'){
-    const endRow = moved.color==='w' ? 0 : 7;
-    if(to.r===endRow){
-      const gx=copy[to.r][toBC];
-      if(gx){ gx.veteran=true; gx.hasMoved=true; gx.__justVeteran=true; }
-    }
-  }
   copy[from.r][fromBC] = EMPTY;
 
   if(special && special.promotion){
-    copy[to.r][toBC] = { type: special.promotion, color: moved.color, hasMoved: true };
+    copy[to.r][toBC] = { type: special.promotion, color: moved.color, hasMoved: true, uid: `p${++__AJ_PIECE_UID__}` };
   }
   if(special && special.castle && special.rookFrom && special.rookTo){
     const rfBC = toBaseCol(special.rookFrom.c, special.rookFrom.r, offs);
@@ -3333,20 +3389,92 @@ function applyMove(board, offs, from, to, special){
     copy[special.rookTo.r][rtBC] = { ...copy[special.rookFrom.r][rfBC], hasMoved:true };
     copy[special.rookFrom.r][rfBC] = EMPTY;
   }
+  // Transformación de Mago/Maga al capturar (excepto Rey)
+  if(moved && (moved.type==='M' || moved.type==='W') && captured && captured.type!=='K'){
+    copy[to.r][toBC] = { type: captured.type, color: moved.color, hasMoved: true, uid: moved.uid };
+  }
+
+  // === Bufón (J): entretener Rey, Reina y General adyacentes durante 2 turnos ===
+  // Inicializar freeze arrays
+  for(let rr=0; rr<copy.length; rr++){
+    for(let cc=0; cc<copy[rr].length; cc++){
+      const pc = copy[rr][cc];
+      if(pc && !pc.freeze){ pc.freeze = []; }
+    }
+  }
+  // Si el capturado es un Bufón, eliminar TODOS los efectos que ese Bufón haya generado.
+  // El efecto no depende de que el Bufón siga en la casilla donde lo aplicó: dura sus
+  // dos oportunidades de movimiento del rival. Por eso se identifica por uid.
+  if(captured && captured.type==='J' && captured.uid){
+    for(let rr=0; rr<copy.length; rr++){
+      for(let cc=0; cc<copy[rr].length; cc++){
+        const pc = copy[rr][cc];
+        if(pc && Array.isArray(pc.freeze) && pc.freeze.length){
+          pc.freeze = pc.freeze.filter(f => !(f.kind==='J' && f.sourceId===captured.uid));
+        }
+      }
+    }
+  }
+  // Si se movió un Bufón, entretener SOLO a Rey, Reina y General durante 2 oportunidades
+  // de movimiento del bando rival. El efecto permanece aunque el Bufón luego se aleje.
+  if(moved && moved.type==='J'){
+    const opp = moved.color==='w' ? 'b' : 'w';
+    const sourceId = moved.uid || null;
+    const adj = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+    for(const [dr,dc] of adj){
+      const ar = to.r+dr, ac = toBC+dc;
+      if(!insideBoard(ar,ac)) continue;
+      const pc = copy[ar][ac];
+      if(pc && pc.color===opp && (pc.type==='K' || pc.type==='Q' || pc.type==='G')){
+        if(!pc.freeze) pc.freeze = [];
+        const old = sourceId ? pc.freeze.find(f => f.kind==='J' && f.sourceId===sourceId) : null;
+        if(old) old.turns = 2;
+        else pc.freeze.push({kind:'J', sourceId, turns:2});
+      }
+    }
+  }
+  // Reducir en 1 los turns de quien acaba de mover
+  const justMoved = moved ? moved.color : null;
+  if(justMoved){
+    for(let rr=0; rr<copy.length; rr++){
+      for(let cc=0; cc<copy[rr].length; cc++){
+        const pc = copy[rr][cc];
+        if(pc && pc.color===justMoved && pc.freeze && pc.freeze.length){
+          for(const f of pc.freeze){ if(f.turns>0) f.turns--; }
+          pc.freeze = pc.freeze.filter(f => f.turns>0);
+        }
+      }
+    }
+  }
+  // Guerrero 'S': al llegar a la última fila rival, gana 'veteran'
+  if(moved && moved.type==='S'){
+    const endRow = (moved.color==='w') ? 0 : (copy.length-1);
+    if(to.r === endRow){
+      const gx = copy[to.r][toBC];
+      if(gx){ gx.veteran = true; gx.hasMoved = true; } gx.__justVeteran = true;
+    }
+  }
+
+
   return { board: copy, captured, movedPiece: copy[to.r][toBC] };
 }
 function legalMovesFor(vis, board, offs, r, c, color, epTarget){
   const piece = vis[r][c]; if(!piece) return [];
+  // Un Bufón puede entretener una pieza, pero una pieza entretenida
+  // no puede realizar movimientos durante sus oportunidades bloqueadas.
+  if(piece.freeze && piece.freeze.some(f => f && f.turns > 0)) return [];
   const pseudo = pseudoMoves(vis, r, c);
   const out = [];
   for(const [rr,cc] of pseudo){
+    // El Rey no se captura en ajedrez; el mate se determina por falta de jugadas legales.
+    if(vis[rr][cc] && vis[rr][cc].type==='K') continue;
     if(piece.type==='P' && (rr===0 || rr===7)){
-      // Generar TODAS las promociones legales; la interfaz luego permite elegir Q/R/B/N.
-      for(const pt of ['Q','R','B','N']){
-        const promo = {promotion:pt};
+      // Promoción clásica: Q, R, B o N. La UI presenta las cuatro opciones.
+      for(const promoType of ['Q','R','B','N']){
+        const promo = {promotion:promoType};
         const {board:bP,captured} = applyMove(board, offs, {r,c}, {r:rr,c:cc}, promo);
         const vP = buildVisible(bP, offs);
-        if(!inCheck(vP, color)) out.push([rr,cc,promo,captured && captured.type==='K']);
+        if(!inCheck(vP, color)) out.push([rr,cc,promo,false]);
       }
       continue;
     }
@@ -3379,9 +3507,9 @@ function legalMovesFor(vis, board, offs, r, c, color, epTarget){
       const v = buildVisible(tb, offs);
       return !inCheck(v, color);
     };
-    if(hasNotMoved(piece) && !inCheck(vis, color)){
+    if(piece.castleHome && hasNotMoved(piece) && !inCheck(vis, color)){
       const right = (()=>{ let cc=c+1; while(cc<8){ const q=vis[r][cc]; if(q) return {q, col:cc}; cc++; } return null; })();
-      if(right && right.q.type==='R' && right.q.color===color && hasNotMoved(right.q)){
+      if(right && right.q.type==='R' && right.q.color===color && right.q.castleHome && hasNotMoved(right.q)){
         if(canUse(c+1) && canUse(c+2)){
           if(safeAfter(c+1,null) && safeAfter(c+2,{castle:'K',rookFrom:{r:r,c:right.col},rookTo:{r:r,c:c+1}})){
             out.push([r,c+2,{castle:'K',rookFrom:{r:r,c:right.col},rookTo:{r:r,c:c+1}},false]);
@@ -3389,7 +3517,7 @@ function legalMovesFor(vis, board, offs, r, c, color, epTarget){
         }
       }
       const left = (()=>{ let cc=c-1; while(cc>=0){ const q=vis[r][cc]; if(q) return {q, col:cc}; cc--; } return null; })();
-      if(left && left.q.type==='R' && left.q.color===color && hasNotMoved(left.q)){
+      if(left && left.q.type==='R' && left.q.color===color && left.q.castleHome && hasNotMoved(left.q)){
         if(canUse(c-1) && canUse(c-2) && canUse(c-3)){
           if(safeAfter(c-1,null) && safeAfter(c-2,{castle:'Q',rookFrom:{r:r,c:left.col},rookTo:{r:r,c:c-1}})){
             out.push([r,c-2,{castle:'Q',rookFrom:{r:r,c:left.col},rookTo:{r:r,c:c-1}},false]);
@@ -3416,6 +3544,46 @@ let CURRENT_GAME_ID = null;
 let MOVE_COUNT_IN_GAME = 0;
 
 const boardEl = document.getElementById('board');
+const ajBufonGuide = document.getElementById('aj-bufon-guide');
+function updateBufonGuide(){
+  try{
+    if(!ajBufonGuide) return;
+    const v = buildVisible(board, offsets);
+    const p = sel && v[sel.r] ? v[sel.r][sel.c] : null;
+    if(!p || p.type!=='J' || !Array.isArray(moves) || !moves.length){
+      ajBufonGuide.style.display = 'none';
+      return;
+    }
+
+    // Mostrar la guía SOLO si alguna de las casillas legales marcadas para el Bufón
+    // permite terminar adyacente a un objetivo válido (Rey, Reina o General enemigo).
+    const enemy = p.color==='w' ? 'b' : 'w';
+    let canEntertain = false;
+    for(const mv of moves){
+      const tr = mv && mv[0], tc = mv && mv[1];
+      if(!Number.isInteger(tr) || !Number.isInteger(tc) || tr<0 || tr>=8 || tc<0 || tc>=8) continue;
+      for(let dr=-1; dr<=1 && !canEntertain; dr++) for(let dc=-1; dc<=1 && !canEntertain; dc++){
+        if(!dr && !dc) continue;
+        const rr=tr+dr, cc=tc+dc;
+        if(rr<0 || rr>=8 || cc<0 || cc>=8) continue;
+        const q=v[rr]?.[cc];
+        if(q && q.color===enemy && (q.type==='K' || q.type==='Q' || q.type==='G')) canEntertain=true;
+      }
+      if(canEntertain) break;
+    }
+
+    ajBufonGuide.style.display = canEntertain ? 'block' : 'none';
+  }catch(_){ if(ajBufonGuide) ajBufonGuide.style.display='none'; }
+}
+
+(function(){
+  function refresh(){ try{ updateBufonGuide(); }catch(_){} }
+  document.addEventListener('click', ()=>setTimeout(refresh,0), true);
+  window.addEventListener('aj:turn:change', refresh);
+  window.addEventListener('aj:mode:change', refresh);
+})();
+
+
 const ctrlEl  = document.getElementById('shiftCtrl');
 const ctrlLbl = document.getElementById('shiftLbl');
 const chooseWrap  = document.getElementById('chooseWrap');
@@ -3606,38 +3774,7 @@ function evaluateStatus(nextToMove){
   }
 }
 
-
-// === Ajetrez: helper para colorear el botón Reiniciar cuando termina la partida ===
-(function(){
-  function normalize(s){ return (s||'').replace(/\s+/g,' ').trim().toLowerCase(); }
-  function findResetBtn(){
-    const labels = ['reiniciar','reset'];
-    const btns = Array.from(document.querySelectorAll('button, .btn'));
-    for(const b of btns){
-      const t = normalize(b.textContent);
-      if(labels.includes(t)) return b;
-    }
-    return null;
-  }
-  window.__AJ_GET_RESET_BTN__ = findResetBtn;
-  window.__AJ_UPDATE_RESET_STYLE__ = function(){
-    try{
-      const b = findResetBtn();
-      if(!b) return;
-      if(window.gameOver){
-        b.dataset._prevStyle = b.getAttribute('style') || '';
-        b.style.background = '#d00';
-        b.style.color = '#fff';
-        b.style.borderColor = '#fff';
-      }else{
-        b.setAttribute('style', b.dataset._prevStyle || '');
-      }
-    }catch(e){}
-  };
-  document.addEventListener('DOMContentLoaded', function(){ setTimeout(window.__AJ_UPDATE_RESET_STYLE__, 100); });
-})();
 function render(){
-  try{ window.__AJ_UPDATE_RESET_STYLE__ && window.__AJ_UPDATE_RESET_STYLE__(); }catch(_){ }
   const vis = buildVisible(board, offsets);
   const frag = document.createDocumentFragment();
   boardEl.innerHTML = '';
@@ -3660,6 +3797,10 @@ function render(){
       if(bc !== null){
         const p = board[r][bc];
         if(p){
+          const frozen = !!(p.freeze && p.freeze.some(f => f && f.turns > 0));
+          if(frozen) sq.classList.add('aj-frozen');
+          const pieceWrap = document.createElement('div');
+          pieceWrap.className = 'aj-frozen-piece-wrap';
           if(USE_SPRITES){
             const url = (PIECE_SPRITES[p.color] && PIECE_SPRITES[p.color][p.type]) || null;
             if(url){
@@ -3667,30 +3808,34 @@ function render(){
               img.style.width = `calc(var(--square) * 0.86)`;
               img.style.height = `calc(var(--square) * 0.86)`;
               img.style.background = `center / contain no-repeat url('${url}')`;
-              sq.appendChild(img);
+              pieceWrap.appendChild(img);
             }else{
               const sp = document.createElement('span');
               sp.className = 'piece fallback';
               sp.textContent = (PIECES_UNICODE[p.color]||{})[p.type] || p.type;
-              sq.appendChild(sp);
+              pieceWrap.appendChild(sp);
             }
           }else{
             const sp = document.createElement('span');
             sp.className = 'piece fallback';
             sp.textContent = (PIECES_UNICODE[p.color]||{})[p.type] || p.type;
-            sq.appendChild(sp);
+            pieceWrap.appendChild(sp);
           }
-        }
-      }
-
-      if(bc !== null){
-        const p = board[r][bc];
-        if(p && p.type==='T' && p.veteran){
-          const mark = document.createElement('span');
-          mark.className = 'aj-veteran-mark';
-          mark.textContent = '⚔️';
-          mark.title = 'Guerrero Veterano';
-          sq.appendChild(mark);
+          if(frozen){
+            const mark = document.createElement('span');
+            mark.className = 'aj-frozen-mark';
+            mark.textContent = '🎭';
+            mark.title = 'Entretenido por un Bufón';
+            pieceWrap.appendChild(mark);
+          }
+          if(p.type==='S' && p.veteran){
+            const mark = document.createElement('span');
+            mark.className = 'aj-veteran-mark';
+            mark.textContent = '⚔️';
+            mark.title = 'Guerrero Veterano';
+            pieceWrap.appendChild(mark);
+          }
+          sq.appendChild(pieceWrap);
         }
       }
 
@@ -3712,6 +3857,7 @@ function render(){
     }
   }
   boardEl.appendChild(frag);
+  try{ updateBufonGuide(); }catch(_){}
 }
 
 function onClickSquare(r, d){ if(gameOver) return; if(!window.GAME_STARTED) return; try{ if(window.GAME_MODE==='bot-vs-bot') return; }catch(_){ }
@@ -3750,14 +3896,14 @@ if (candidates && candidates.length) {
   const mover = vis[sel.r][sel.c];
   const promoCand = candidates.filter(mv => mv[2] && mv[2].promotion);
   if (mover && mover.type==='P' && promoCand.length > 0) {
-  showPromotionDialog(mover.color, function(choice){
-    if(!choice) return;
-    var chosen = promoCand.find(mv => mv[2] && mv[2].promotion===choice) || promoCand[0];
-    playMove(sel, {r, c}, chosen[2]||null, chosen[3]||false);
-  });
-  return;
-}
-const next = candidates[0];
+    showPromotionDialog(mover.color, function(choice){
+      if(!choice) return;
+      var chosen = promoCand.find(mv => mv[2] && mv[2].promotion===choice) || promoCand[0];
+      playMove(sel, {r, c}, chosen[2]||null, chosen[3]||false);
+    });
+    return;
+  }
+  const next = candidates[0];
   playMove(sel, {r, c}, next[2]||null, next[3]||false);
   return;
 }
@@ -3773,6 +3919,7 @@ const next = candidates[0];
   }
 
   const p = vis[r][c];
+  if(p && p.freeze && p.freeze.reduce((s,f)=>s+(f.turns||0),0)>0){ return; }
   if(p && p.color === turn){
     sel = { r, c };
     moves = legalMovesFor(vis, board, offsets, r, c, turn, epTarget);
@@ -3781,7 +3928,6 @@ const next = candidates[0];
 }
 
 function playMove(from, to, special, capturesKing){
-    window.__LAST_MOVED_BASE = { r: to.r, bc: toBaseCol(to.c, to.r, offsets), color: turn };
   const res = applyMove(board, offsets, from, to, special);
   const movedPiece = buildVisible(board, offsets)[from.r][from.c];
   let newBoard = res.board;
@@ -3794,47 +3940,15 @@ function playMove(from, to, special, capturesKing){
   }
 
   board = newBoard;
-  try{
-    if(res && res.movedPiece && res.movedPiece.type==='T' && res.movedPiece.__justVeteran){
-      if(typeof showVeteranBanner==='function') showVeteranBanner(res.movedPiece.color);
-    }
-  }catch(_){}
-
+  try{ if(res && res.movedPiece && res.movedPiece.type==='S' && res.movedPiece.__justVeteran){ showVeteranBanner(res.movedPiece.color); } }catch(_){}
   sel = null; moves = [];
-  // === Modo Amenaza: LIBERACIÓN tras la jugada ===
-  (function(){
-    try{
-      const vis2 = buildVisible(board, offsets);
-      const color = turn;
-      const rr = to.r, cc = to.c;
-      let liberated = false;
-      for(let dr=-1; dr<=1; dr++){
-        for(let dc=-1; dc<=1; dc++){
-          if(dr===0 && dc===0) continue;
-          const ar = rr+dr, ac = cc+dc;
-          if(inside(ar,ac)){
-            const q = vis2[ar][ac];
-            if(q && (q.type==='I' || q.type==='S') && q.color===color){ liberated = true; break; }
-          }
-        }
-      }
-      if(liberated){
-        const overlay = document.getElementById('overlay'); const banner = document.getElementById('banner');
-        overlay.style.display='flex'; banner.textContent='Príncipe y princesa liberados. ¡Haz ganado la partida!'; try{ window.__SND__ && __SND__.play('mate'); }catch(_){ } try{ window.__AJ_UPDATE_RESET_STYLE__(); }catch(_){ } try{ window.__SND__ && __SND__.play('mate'); }catch(_){ }
-        gameOver = true; winner = turn;
-        try{ finalizeGameLog && finalizeGameLog('liberation', winner); }catch(_){}
-        render(); return;
-      }
-    }catch(e){}
-  })();
-
   try{ if(res && res.captured){ window.__SND__ && __SND__.play('capture'); } else { window.__SND__ && __SND__.play('move'); } }catch(_){}
 
   try{ incrementMoveCount(); }catch(_){}
 
   if(capturesKing){
     const overlay = document.getElementById('overlay'); const banner = document.getElementById('banner');
-    overlay.style.display='flex'; banner.textContent='JAQUE MATE'; try{ window.__AJ_UPDATE_RESET_STYLE__(); }catch(_){ }
+    overlay.style.display='flex'; banner.textContent='JAQUE MATE';
     gameOver = true; winner = turn;
     try{ finalizeGameLog('mate', winner); }catch(_){}
     render(); return;
@@ -3852,42 +3966,7 @@ function playMove(from, to, special, capturesKing){
     applyShiftCtrlLockVisual();
     pendingChoice = null;
     hideCtrl();
-    
-  // === Modo Amenaza: LIBERACIÓN tras desplazar sección (sólo si la pieza movida queda adyacente) ===
-  (function(){
-    try{
-      const lm = window.__LAST_MOVED_BASE;
-      if(!lm || lm.color!==turn) { /* nada */ }
-      else{
-        const vc = ((lm.bc - offsets[lm.r]) % 16 + 16) % 16; // base->visible
-        if(vc>=0 && vc<8){
-          const rr = lm.r, cc = vc;
-          const vis2 = buildVisible(board, offsets);
-          let liberated=false;
-          for(let dr=-1; dr<=1 && !liberated; dr++){
-            for(let dc=-1; dc<=1 && !liberated; dc++){
-              if(dr===0 && dc===0) continue;
-              const ar=rr+dr, ac=cc+dc;
-              if(inside(ar,ac)){
-                const q = vis2[ar][ac];
-                if(q && (q.type==='I'||q.type==='S') && q.color===turn){ liberated=true; }
-              }
-            }
-          }
-          if(liberated){
-            const overlay = document.getElementById('overlay'); const banner = document.getElementById('banner');
-            overlay.style.display='flex'; banner.textContent='Príncipe y princesa liberados. ¡Haz ganado la partida!'; try{ window.__SND__ && __SND__.play('mate'); }catch(_){ } try{ window.__AJ_UPDATE_RESET_STYLE__(); }catch(_){ } try{ window.__SND__ && __SND__.play('mate'); }catch(_){ }
-            gameOver = true; winner = turn;
-            try{ finalizeGameLog && finalizeGameLog('liberation', winner); }catch(_){}
-            render(); return;
-          }
-        }
-      }
-    }catch(e){}
-  })();
-  if(gameOver) return;
-  turn = (turn==='w' ? 'b' : 'w');
- emitTurnChange();
+    turn = (turn==='w' ? 'b' : 'w'); emitTurnChange();
     evaluateStatus(turn);
     render();
   }
@@ -3915,42 +3994,7 @@ try{ window.__SND__ && __SND__.play('shift'); }catch(_){}
   applyShiftCtrlLockVisual();
   pendingChoice = null;
   hideCtrl();
-  
-  // === Modo Amenaza: LIBERACIÓN tras desplazar sección (sólo si la pieza movida queda adyacente) ===
-  (function(){
-    try{
-      const lm = window.__LAST_MOVED_BASE;
-      if(!lm || lm.color!==turn) { /* nada */ }
-      else{
-        const vc = ((lm.bc - offsets[lm.r]) % 16 + 16) % 16; // base->visible
-        if(vc>=0 && vc<8){
-          const rr = lm.r, cc = vc;
-          const vis2 = buildVisible(board, offsets);
-          let liberated=false;
-          for(let dr=-1; dr<=1 && !liberated; dr++){
-            for(let dc=-1; dc<=1 && !liberated; dc++){
-              if(dr===0 && dc===0) continue;
-              const ar=rr+dr, ac=cc+dc;
-              if(inside(ar,ac)){
-                const q = vis2[ar][ac];
-                if(q && (q.type==='I'||q.type==='S') && q.color===turn){ liberated=true; }
-              }
-            }
-          }
-          if(liberated){
-            const overlay = document.getElementById('overlay'); const banner = document.getElementById('banner');
-            overlay.style.display='flex'; banner.textContent='Príncipe y princesa liberados. ¡Haz ganado la partida!'; try{ window.__SND__ && __SND__.play('mate'); }catch(_){ } try{ window.__AJ_UPDATE_RESET_STYLE__(); }catch(_){ } try{ window.__SND__ && __SND__.play('mate'); }catch(_){ }
-            gameOver = true; winner = turn;
-            try{ finalizeGameLog && finalizeGameLog('liberation', winner); }catch(_){}
-            render(); return;
-          }
-        }
-      }
-    }catch(e){}
-  })();
-  if(gameOver) return;
-  turn = (turn==='w' ? 'b' : 'w');
- emitTurnChange();
+  turn = (turn==='w' ? 'b' : 'w'); emitTurnChange();
   evaluateStatus(turn);
   render();
 }
@@ -3960,42 +4004,7 @@ function keepRow(){
   applyShiftCtrlLockVisual();
   pendingChoice = null;
   hideCtrl();
-  
-  // === Modo Amenaza: LIBERACIÓN tras desplazar sección (sólo si la pieza movida queda adyacente) ===
-  (function(){
-    try{
-      const lm = window.__LAST_MOVED_BASE;
-      if(!lm || lm.color!==turn) { /* nada */ }
-      else{
-        const vc = ((lm.bc - offsets[lm.r]) % 16 + 16) % 16; // base->visible
-        if(vc>=0 && vc<8){
-          const rr = lm.r, cc = vc;
-          const vis2 = buildVisible(board, offsets);
-          let liberated=false;
-          for(let dr=-1; dr<=1 && !liberated; dr++){
-            for(let dc=-1; dc<=1 && !liberated; dc++){
-              if(dr===0 && dc===0) continue;
-              const ar=rr+dr, ac=cc+dc;
-              if(inside(ar,ac)){
-                const q = vis2[ar][ac];
-                if(q && (q.type==='I'||q.type==='S') && q.color===turn){ liberated=true; }
-              }
-            }
-          }
-          if(liberated){
-            const overlay = document.getElementById('overlay'); const banner = document.getElementById('banner');
-            overlay.style.display='flex'; banner.textContent='Príncipe y princesa liberados. ¡Haz ganado la partida!'; try{ window.__SND__ && __SND__.play('mate'); }catch(_){ } try{ window.__AJ_UPDATE_RESET_STYLE__(); }catch(_){ } try{ window.__SND__ && __SND__.play('mate'); }catch(_){ }
-            gameOver = true; winner = turn;
-            try{ finalizeGameLog && finalizeGameLog('liberation', winner); }catch(_){}
-            render(); return;
-          }
-        }
-      }
-    }catch(e){}
-  })();
-  if(gameOver) return;
-  turn = (turn==='w' ? 'b' : 'w');
- emitTurnChange();
+  turn = (turn==='w' ? 'b' : 'w'); emitTurnChange();
   evaluateStatus(turn);
   render();
 }
@@ -5874,8 +5883,8 @@ window.AJ_RULES.legalShift = function(row, target, boardRef, offsRef){
       if(!color && piece.side==='black') color='b';
     }
     if(!t) return {glyph:'', col:'#222'};
-    var mapW = {p:'♙', r:'♖', n:'♘', b:'♗', q:'♕', k:'♔'};
-    var mapB = {p:'♟', r:'♜', n:'♞', b:'♝', q:'♛', k:'♚'};
+    var mapW = {p:'♙', r:'♖', n:'♘', b:'♗', q:'♕', k:'♔', m:'♗', w:'♗', j:'♘', a:'♖', s:'♙'};
+    var mapB = {p:'♟', r:'♜', n:'♞', b:'♝', q:'♛', k:'♚', m:'♝', w:'♝', j:'♞', a:'♜', s:'♟'};
     t = (''+t).toLowerCase();
     var glyph = (color==='w')? (mapW[t]||'') : (mapB[t]||'');
     return {glyph:glyph, col: (color==='w')?'#111':'#111'};
@@ -11830,7 +11839,7 @@ catch(_){}
 })();
 </script>
 <script>
-// === Enrutador de versiones (selector del panel) — modo actual: amenaza ===
+// === Enrutador de versiones (selector del panel) — modo actual: guerra ===
 (function(){
   var ROUTE = {
     '3_0_simple':  'ajetrez_modo_clasico.html',
@@ -11838,7 +11847,7 @@ catch(_){}
     '3_0_amenaza': 'ajetrez_modo_amenaza.html',
     '3_0_guerra':  'ajetrez_modo_guerra.html'
   };
-  var CURRENT = '3_0_amenaza';
+  var CURRENT = '3_0_guerra';
   function hasGameInProgress(){
     try{ return ((window.moves&&window.moves.length>0) || (window.__AJ_CURRENT_GAME__ && (window.__AJ_CURRENT_GAME__.script||[]).length>0)) && !window.gameOver; }catch(_){
       return false;
@@ -11858,6 +11867,232 @@ catch(_){}
     if(sel.value !== CURRENT) { sel.value = CURRENT; try{ window.ajSyncVersionLabel && window.ajSyncVersionLabel(); }catch(_){ } }
     sel.addEventListener('change', function(e){ navigate(sel.value, e); }, true);
   });
+})();
+</script>
+<script>
+// === Reglas unificadas (selector "Reglas del juego") ===
+(function(){
+  function el(id){ return document.getElementById(id); }
+  var amen = `<div class="rules-block">
+  <h2>Ajetrez 3.0 — Modo Amenaza (Príncipe &amp; Princesa)</h2>
+  <h3>1) Objetivo</h3>
+  <ul>
+    <li><strong>Jaque mate</strong> al rey rival (clásico).</li>
+    <li><strong>Liberación:</strong> si al <em>terminar tu jugada</em> cualquier pieza propia queda en una casilla <strong>adyacente</strong> (8 direcciones) a <strong>tu</strong> Príncipe <em>o</em> Princesa, ganás de inmediato. Si hay mate y liberación en la misma jugada, prima la <strong>liberación</strong>.</li>
+  </ul>
+  <h3>2) Preparación y colocación</h3>
+  <ul>
+    <li>Tablero con un sector central 8×8 y secciones laterales por lado.</li>
+    <li>En laterales, las piezas que eran Rey/Reina se reemplazan por <strong>Príncipe (I)</strong> y <strong>Princesa (S)</strong>.</li>
+    <li><strong>Rehenes en territorio enemigo:</strong> en el lateral <em>blanco</em> están I/S <em>negros</em>; en el lateral <em>negro</em>, I/S <em>blancos</em>.</li>
+  </ul>
+  <h3>3) Comportamiento de I/S</h3>
+  <ul>
+    <li><strong>Inmóviles</strong>: no se mueven en toda la partida.</li>
+    <li><strong>No capturables</strong>: no puede ocuparse ni capturarse su casilla (intento ilegal).</li>
+    <li><strong>No atacan</strong> y <strong>bloquean</strong> su casilla como pieza propia (el caballo puede saltar).</li>
+  </ul>
+  <h3>4) Liberación (detalle operativo)</h3>
+  <ul>
+    <li>Se evalúa <strong>al terminar cada jugada</strong>.</li>
+    <li>Si la jugada permite <em>desplazar sección</em> luego de una captura, la liberación solo cuenta si <strong>la pieza que moviste</strong> termina adyacente a tu I/S.</li>
+    <li>Alcanza con quedar junto a <em>I</em> o <em>S</em> (uno de los dos). Estar junto a los rehenes rivales no hace nada.</li>
+  </ul>
+  <h3>5) Resto de reglas</h3>
+  <ul>
+    <li>Resto de piezas = ajedrez estándar: capturas, jaque, jaque mate, tablas, promoción, enroque, en passant, etc. (salvo I/S).</li>
+    <li>No se puede promocionar a Príncipe/Princesa.</li>
+  </ul>
+  <h3>6) Interfaz</h3>
+  <ul>
+    <li>Al liberar: aviso <em>“Príncipe y princesa liberados. ¡Haz ganado la partida!”</em>, suena el mismo audio que en mate y el botón <em>Reiniciar</em> se muestra en rojo.</li>
+  </ul>
+</div>`;
+  function setup(){
+    var sel = el('selRulesVersion') || el('selRules');
+    var box = el('rulesContent') || el('rulesPanel') || el('panelReglas');
+    if(!sel || !box) return;
+    // Guardamos el contenido original como "simple" (fallback)
+    var original = box.innerHTML;
+    var MAP = {
+      '3_0_simple': original,
+      '3_0_amenaza': amen,
+      '3_0_guerra': '<p><strong>Modo guerra</strong>: próximamente.</p>'
+    };
+    function apply(){
+      var v = sel.value;
+      if(!MAP[v]) v = '3_0_simple';
+      box.innerHTML = MAP[v];
+    }
+    sel.addEventListener('change', apply);
+    // Si ya está seleccionada Amenaza en este HTML, aplicamos
+    apply();
+  }
+  document.addEventListener('DOMContentLoaded', setup);
+})();
+</script>
+<style id="aj-veteran-marker-css">
+  .aj-frozen-piece-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;}
+  .aj-veteran-mark{
+    position:absolute; right:-4px; top:-5px;
+    width:22px; height:22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; line-height:1;
+    background:rgba(255,255,255,.95);
+    border:2px solid #333;
+    box-shadow:0 2px 6px rgba(0,0,0,.45);
+    z-index:5;
+    pointer-events:none;
+  }
+</style>
+<style>
+#promoOverlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:9999}
+#promoCard{background:#111;padding:16px 18px;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.5);border:1px solid #333;color:#eee;min-width:280px}
+#promoCard h3{margin:0 0 10px;font:700 18px/1.2 system-ui,Segoe UI,Roboto,Arial}
+#promoChoices{display:flex;gap:10px;justify-content:center}
+#promoChoices button{background:#222;border:2px solid #666;border-radius:12px;padding:8px;cursor:pointer}
+#promoChoices button:hover{transform:translateY(-1px);border-color:#fff}
+#promoChoices img{width:56px;height:56px;display:block}
+#promoClose{margin-top:10px;text-align:center;opacity:.7;font-size:12px}
+</style>
+<div aria-label="Elegir pieza de promoción" aria-modal="true" id="promoOverlay" role="dialog">
+<div id="promoCard">
+<h3>Elegí pieza de promoción</h3>
+<div id="promoChoices"></div>
+<div id="promoClose">Esc o click afuera para cancelar</div>
+</div>
+</div>
+<script>
+function showPromotionDialog(color, onChoose){
+  try{
+    const overlay = document.getElementById('promoOverlay');
+    /*promoFSRootPatch*/try{var __fsroot=document.fullscreenElement||document.getElementById('fsRoot')||document.body;if(overlay&&overlay.parentElement!==__fsroot){__fsroot.appendChild(overlay);}}catch(_){}const cont = document.getElementById('promoChoices');
+    cont.innerHTML='';
+    const order = ['Q','R','B','N'];
+    order.forEach(function(t){
+      const btn = document.createElement('button');
+      const img = document.createElement('img');
+      let url = null;
+      try{ url = PIECE_SPRITES[color] && PIECE_SPRITES[color][t]; }catch(_){}
+      if(!url){
+        // fallback unicode
+        const map = {w:{Q:'♕',R:'♖',B:'♗',N:'♘'}, b:{Q:'♛',R:'♜',B:'♝',N:'♞'}};
+        btn.textContent = (map[color]||map.w)[t];
+        btn.style.fontSize='40px';
+        btn.style.lineHeight='48px';
+      }else{
+        img.src = url; btn.appendChild(img);
+      }
+      btn.addEventListener('click', function(){
+        overlay.style.display='none';
+        onChoose && onChoose(t);
+      });
+      cont.appendChild(btn);
+    });
+    function close(){ overlay.style.display='none'; onChoose && onChoose(null); }
+    overlay.style.display='flex';
+    overlay.addEventListener('click', function(ev){ if(ev.target===overlay) close(); }, {once:true});
+    document.addEventListener('keydown', function esc(e){ if(e.key==='Escape'){ close(); document.removeEventListener('keydown', esc); } });
+  }catch(e){ console.error(e); onChoose && onChoose('Q'); }
+}
+
+function showVeteranBanner(color){
+  try{
+    const overlay = document.getElementById('promoOverlay');
+    const cont = document.getElementById('promoChoices');
+    const holder = document.getElementById('promoHolder') || cont.parentElement;
+    cont.innerHTML='';
+    // Simple message card
+    const card = document.createElement('div');
+    card.style.display='flex';
+    card.style.flexDirection='column';
+    card.style.alignItems='center';
+    card.style.gap='10px';
+    const msg = document.createElement('div');
+    msg.style.fontSize='1rem';
+    msg.style.textAlign='center';
+    msg.style.color='#eee';
+    msg.innerHTML = '¡Tu <b>Guerrero</b> se convirtió en <b>Veterano</b>!<br>Ahora puede mover y capturar 1 o 2 casilleros hacia adelante, hacia atrás y en diagonal.';
+    const ok = document.createElement('button');
+    ok.textContent = 'Entendido';
+    ok.style.padding='8px 16px';
+    ok.style.fontWeight='700';
+    ok.onclick = function(){ overlay.style.display='none'; };
+    card.appendChild(msg);
+    card.appendChild(ok);
+    cont.appendChild(card);
+    overlay.style.display='flex';
+  }catch(_){ /* ignore */ }
+}
+
+</script>
+<!-- === Reglas unificadas + estilo consistente === -->
+<style id="rules-block-style">
+.rules-block{font:16px/1.55 system-ui, Segoe UI, Roboto, Arial, sans-serif; color:#eaeaea}
+.rules-block h2{font-size:22px; line-height:1.25; margin:0 0 8px}
+.rules-block h3{font-size:18px; line-height:1.3; margin:12px 0 6px}
+.rules-block p, .rules-block li{font-size:16px}
+.rules-block ul{margin:6px 0 10px 18px}
+</style>
+<script>
+(function(){
+  function el(id){ return document.getElementById(id); }
+  var amen = `<div class="rules-block">
+  <h2>Ajetrez 3.0 — Modo Amenaza (Príncipe &amp; Princesa)</h2>
+  <h3>1) Objetivo</h3>
+  <ul>
+    <li><strong>Jaque mate</strong> al rey rival (clásico).</li>
+    <li><strong>Liberación:</strong> si al <em>terminar tu jugada</em> cualquier pieza propia queda en una casilla <strong>adyacente</strong> (8 direcciones) a <strong>tu</strong> Príncipe <em>o</em> Princesa, ganás de inmediato. Si hay mate y liberación en la misma jugada, prima la <strong>liberación</strong>.</li>
+  </ul>
+  <h3>2) Preparación y colocación</h3>
+  <ul>
+    <li>Tablero con un sector central 8×8 y secciones laterales por lado.</li>
+    <li>En laterales, las piezas que eran Rey/Reina se reemplazan por <strong>Príncipe (I)</strong> y <strong>Princesa (S)</strong>.</li>
+    <li><strong>Rehenes en territorio enemigo:</strong> en el lateral <em>blanco</em> están I/S <em>negros</em>; en el lateral <em>negro</em>, I/S <em>blancos</em>.</li>
+  </ul>
+  <h3>3) Comportamiento de I/S</h3>
+  <ul>
+    <li><strong>Inmóviles</strong>: no se mueven en toda la partida.</li>
+    <li><strong>No capturables</strong>: no puede ocuparse ni capturarse su casilla (intento ilegal).</li>
+    <li><strong>No atacan</strong> y <strong>bloquean</strong> su casilla como pieza propia (el caballo puede saltar).</li>
+  </ul>
+  <h3>4) Liberación (detalle operativo)</h3>
+  <ul>
+    <li>Se evalúa <strong>al terminar cada jugada</strong>.</li>
+    <li>Si la jugada permite <em>desplazar sección</em> luego de una captura, la liberación solo cuenta si <strong>la pieza que moviste</strong> termina adyacente a tu I/S.</li>
+    <li>Alcanza con quedar junto a <em>I</em> o <em>S</em> (uno de los dos). Estar junto a los rehenes rivales no hace nada.</li>
+  </ul>
+  <h3>5) Resto de reglas</h3>
+  <ul>
+    <li>Resto de piezas = ajedrez estándar: capturas, jaque, jaque mate, tablas, promoción, enroque, en passant, etc. (salvo I/S).</li>
+    <li>No se puede promocionar a Príncipe/Princesa.</li>
+  </ul>
+  <h3>6) Interfaz</h3>
+  <ul>
+    <li>Al liberar: aviso <em>“Príncipe y princesa liberados. ¡Haz ganado la partida!”</em>, suena el mismo audio que en mate y el botón <em>Reiniciar</em> se muestra en rojo.</li>
+  </ul>
+</div>`;
+  function setup(){
+    var sel = el('selRulesVersion') || el('selRules');
+    var box = el('rulesContent') || el('rulesPanel') || el('panelReglas');
+    if(!sel || !box) return;
+    // original como HTML y envuelto para tamaño/estilo consistente
+    var original = box.innerHTML;
+    var simpleWrapped = '<div class="rules-block">' + original + '</div>';
+    var MAP = {
+      '3_0_simple': simpleWrapped,
+      '3_0_amenaza': amen,
+      '3_0_guerra': '<div class="rules-block"><p><strong>Modo guerra</strong>: próximamente.</p></div>'
+    };
+    function apply(){
+      var v = sel.value;
+      if(!MAP[v]) v = '3_0_simple';
+      box.innerHTML = MAP[v];
+    }
+    sel.addEventListener('change', apply);
+    apply();
+  }
+  document.addEventListener('DOMContentLoaded', setup);
 })();
 </script>
 <!-- === AJETREZ: Reglas codificables + evaluador mejorado + ganchos de bot (solo lógica, sin tocar estilos) === -->
@@ -12061,78 +12296,7 @@ catch(_){}
 
   console.log('[AJ] Option C activada: 3 perfiles + libro + variación.');
 })();
-</script><div aria-label="Elegir pieza de promoción" aria-modal="true" id="promoOverlay" role="dialog">
-<div id="promoCard">
-<h3>Elegí pieza de promoción</h3>
-<div id="promoChoices"></div>
-<div id="promoClose">Esc o click afuera para cancelar</div>
-</div>
-</div>
-<script>
-function showPromotionDialog(color, onChoose){
-  try{
-    const overlay = document.getElementById('promoOverlay');try{var __fsroot = document.fullscreenElement || document.getElementById('fsRoot') || document.body;if(overlay && overlay.parentElement !== __fsroot){ __fsroot.appendChild(overlay); }}catch(_){ }
-    const cont = document.getElementById('promoChoices');
-    cont.innerHTML='';
-    const order = ['Q','R','B','N'];
-    order.forEach(function(t){
-      const btn = document.createElement('button');
-      const img = document.createElement('img');
-      let url = null;
-      try{ url = PIECE_SPRITES[color] && PIECE_SPRITES[color][t]; }catch(_){}
-      if(!url){
-        // fallback unicode
-        const map = {w:{Q:'♕',R:'♖',B:'♗',N:'♘'}, b:{Q:'♛',R:'♜',B:'♝',N:'♞'}};
-        btn.textContent = (map[color]||map.w)[t];
-        btn.style.fontSize='40px';
-        btn.style.lineHeight='48px';
-      }else{
-        img.src = url; btn.appendChild(img);
-      }
-      btn.addEventListener('click', function(){
-        overlay.style.display='none';
-        onChoose && onChoose(t);
-      });
-      cont.appendChild(btn);
-    });
-    function close(){ overlay.style.display='none'; onChoose && onChoose(null); }
-    overlay.style.display='flex';
-    overlay.addEventListener('click', function(ev){ if(ev.target===overlay) close(); }, {once:true});
-    document.addEventListener('keydown', function esc(e){ if(e.key==='Escape'){ close(); document.removeEventListener('keydown', esc); } });
-  }catch(e){ console.error(e); onChoose && onChoose('Q'); }
-}
-
-function showVeteranBanner(color){
-  try{
-    const overlay = document.getElementById('promoOverlay');
-    const cont = document.getElementById('promoChoices');
-    const holder = document.getElementById('promoHolder') || cont.parentElement;
-    cont.innerHTML='';
-    // Simple message card
-    const card = document.createElement('div');
-    card.style.display='flex';
-    card.style.flexDirection='column';
-    card.style.alignItems='center';
-    card.style.gap='10px';
-    const msg = document.createElement('div');
-    msg.style.fontSize='1rem';
-    msg.style.textAlign='center';
-    msg.style.color='#eee';
-    msg.innerHTML = '¡Tu <b>Guerrero</b> se convirtió en <b>Veterano</b>!<br>Ahora puede mover y capturar 1 casillero en todas las direcciones.';
-    const ok = document.createElement('button');
-    ok.textContent = 'Entendido';
-    ok.style.padding='8px 16px';
-    ok.style.fontWeight='700';
-    ok.onclick = function(){ overlay.style.display='none'; };
-    card.appendChild(msg);
-    card.appendChild(ok);
-    cont.appendChild(card);
-    overlay.style.display='flex';
-  }catch(_){ /* ignore */ }
-}
-
-</script>
-<style id="hide-rotate-overlays">
+</script><style id="hide-rotate-overlays">
   /* Forzar oculto cualquier cartel de rotación/orientación, sin afectar elementos normales */
   [id*="rotate-overlay"], [class*="rotate-overlay"],
   [id*="rotateNotice"], [class*="rotateNotice"],
@@ -13648,168 +13812,205 @@ function showVeteranBanner(color){
 }
 </style>
 
-<script id="aj-bot-special-ai-threat">
+<script id="aj-bot-special-ai-war">
 (function(){
 'use strict';
-if(window.__AJ_SPECIAL_AI_THREAT__) return;
-window.__AJ_SPECIAL_AI_THREAT__ = true;
+if(window.__AJ_SPECIAL_AI_WAR__) return;
+window.__AJ_SPECIAL_AI_WAR__=true;
 
 const INF=1e12, now=()=>performance&&performance.now?performance.now():Date.now();
 const opp=c=>c==='w'?'b':'w';
+const vals={P:100,N:320,B:330,R:500,Q:900,K:20000,G:700,V:850,M:420,W:420,J:300,A:440,S:130};
 const inside=(r,c)=>r>=0&&r<8&&c>=0&&c<8;
-const dist=(a,b)=>Math.max(Math.abs(a.r-b.r),Math.abs(a.c-b.c));
-
-function vis(board,offs){ return window.buildVisible(board,offs); }
-function moves(color,b,o){ try{return window.genMoves(b,o,color,window.epTarget)||[]}catch(_){return[];} }
-function apply(b,o,m){ try{return window.applyMove(b,o,m.from,m.to,m.special||null)||{board:b,offsets:o};}catch(_){return{board:b,offsets:o};} }
-function diff(color){
+function vis(b,o){return window.buildVisible(b,o);}
+function gen(c,b,o){try{return window.genMoves(b,o,c,window.epTarget)||[]}catch(_){return[];}}
+function app(b,o,m){try{return window.applyMove(b,o,m.from,m.to,m.special||null)||{board:b,offsets:o};}catch(_){return{board:b,offsets:o};}}
+function params(c){
   try{
-    const k=typeof window.getStoredDiffFor==='function'?window.getStoredDiffFor(color):'normal';
-    return (window.BOT_PARAMS&&window.BOT_PARAMS[k])||{timeMs:120,beam:10,noise:.1,blunder:0};
-  }catch(_){return {timeMs:120,beam:10,noise:.1,blunder:0};}
+    const k=typeof window.getStoredDiffFor==='function'?window.getStoredDiffFor(c):'normal';
+    return (window.BOT_PARAMS&&window.BOT_PARAMS[k])||{depth:1,timeMs:120,beam:10,noise:.1,blunder:0};
+  }catch(_){return{depth:1,timeMs:120,beam:10,noise:.1,blunder:0};}
 }
-function hostageSquares(b,o,color){
-  const out=[];
-  const v=vis(b,o);
-  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
-    const p=v[r][c]; if(p&&(p.type==='I'||p.type==='S')&&p.color===color) out.push({r,c,type:p.type});
+function adjacent(r,c,q){return Math.max(Math.abs(r-q.r),Math.abs(c-q.c))<=1;}
+function countFreeze(b,c){
+  let n=0, high=0;
+  for(const row of b)for(const p of row||[]){
+    if(!p||p.color!==opp(c)||!p.freeze||!p.freeze.length)continue;
+    n++; if((vals[p.type]||0)>=400)high++;
   }
-  /* Rehenes pueden estar fuera del 8x8: traducimos coordenadas base a visibles. */
-  try{
-    for(let r=0;r<8;r++)for(let bc=0;bc<24;bc++){
-      const p=b[r][bc]; if(!p||(p.type!=='I'&&p.type!=='S')||p.color!==color) continue;
-      const vc=((bc-o[r])%24+24)%24;
-      if(vc<8 && !out.some(x=>x.r===r&&x.c===vc)) out.push({r,c:vc,type:p.type});
-    }
-  }catch(_){}
+  return n+high*2;
+}
+function countTypes(b,o,color){
+  const v=vis(b,o), out={G:0,V:0,M:0,W:0,J:0,A:0,S:0,veteran:0};
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+    const p=v[r][c]; if(!p||p.color!==color)continue;
+    if(out[p.type]!=null)out[p.type]++;
+    if(p.type==='S'&&p.veteran)out.veteran++;
+  }
   return out;
 }
-function adjacentToOwnHostage(b,o,color,pos){
-  return hostageSquares(b,o,color).some(h=>Math.abs(h.r-pos.r)<=1&&Math.abs(h.c-pos.c)<=1&&(h.r!==pos.r||h.c!==pos.c));
-}
-function liberationMoves(b,o,color){
-  let n=0; const hs=hostageSquares(b,o,color);
-  if(!hs.length) return 0;
-  for(const m of moves(color,b,o)){
-    if(hs.some(h=>Math.abs(h.r-m.to.r)<=1&&Math.abs(h.c-m.to.c)<=1&&(h.r!==m.to.r||h.c!==m.to.c))) n++;
-  }
-  return n;
-}
-function specialThreatScore(m,b2,o2,color,before){
-  const p=m.piece||before[m.from.r]?.[m.from.c];
-  if(!p) return -INF;
+function specialScore(m,b,o,color){
+  const p=m.piece||vis(b,o)[m.from.r]?.[m.from.c], target=m.victim;
+  if(!p)return-INF;
+  const st=app(b,o,m), b2=st.board||b, o2=st.offsets||o, v2=vis(b2,o2);
   let s=0;
-  const hs=hostageSquares(b2,o2,color);
-  const oldHs=hostageSquares(window.board,window.offsets,color);
-  const oldD=oldHs.length?Math.min(...oldHs.map(h=>dist(m.from,h))):8;
-  const newD=hs.length?Math.min(...hs.map(h=>dist(m.to,h))):8;
 
-  /* La condición especial domina cualquier consideración de ajedrez clásico. */
-  if(adjacentToOwnHostage(b2,o2,color,m.to)) s+=90000000;
-  if(newD<oldD) s+=(oldD-newD)*900;
-  if(newD>oldD) s-=(newD-oldD)*500;
+  /* Toda captura sigue contando, pero las capturas con mecánica especial pesan más. */
+  if(m.isCapture)s+=vals[target?.type||'P']||80;
+  if(m.check)s+=900;
 
-  const lm=liberationMoves(b2,o2,color);
-  s+=lm*2600;
-  if(lm>0) s+=1800;
-
-  if(m.isCapture) s+=180;
-  if(m.check) s+=900;
-  const victim=m.victim;
-  if(victim){
-    const pv={P:100,N:320,B:330,R:500,Q:900,K:20000,I:0,S:0};
-    s+=(pv[victim.type]||80)*0.55;
+  if(p.type==='G'){
+    /* General: pieza de guerra de corto alcance; premia penetración y actividad. */
+    s+=55;
+    const central=(m.to.r>=2&&m.to.r<=5&&m.to.c>=2&&m.to.c<=5);
+    if(central)s+=120;
+    s+=Math.max(0,3-Math.max(Math.abs(m.to.r-3.5),Math.abs(m.to.c-3.5)))*35;
   }
 
-  /* Incentiva acercar piezas activas al territorio de liberación, no sólo capturar. */
-  if(p.type==='N') s+=40;
+  if(p.type==='M'||p.type==='W'){
+    /* Mago/Maga: capturar es valioso porque cambia permanentemente de identidad. */
+    if(target&&target.color!==color&&target.type!=='K'){
+      s+=260+((vals[target.type]||100)*0.90);
+      if(target.type==='Q'||target.type==='V')s+=260;
+      if(target.type==='R'||target.type==='A')s+=120;
+    }else{
+      /* Prepararse para una captura futura. */
+      const attacks=gen(color,b2,o2).filter(x=>x.from.r===m.to.r&&x.from.c===m.to.c&&x.isCapture).length;
+      s+=attacks*180;
+    }
+  }
+
+  if(p.type==='J'){
+    /* Bufón: no captura; su valor real es inmovilizar piezas rivales. */
+    const frozen=countFreeze(b2,color);
+    s+=frozen*180;
+    for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
+      if(!dr&&!dc)continue;
+      const r=m.to.r+dr,c=m.to.c+dc;
+      if(!inside(r,c))continue;
+      const q=v2[r][c];
+      if(q&&q.color===opp(color)){
+        s+=120;
+        if((vals[q.type]||0)>=500)s+=220;
+        if(q.type==='K')s+=450;
+      }
+    }
+  }
+
+  if(p.type==='A'){
+    /* Arquero: premia especialmente las capturas a 2/4 casillas y avance hacia el enemigo. */
+    if(m.isCapture)s+=180;
+    const advance=color==='w'?(m.from.r-m.to.r):(m.to.r-m.from.r);
+    s+=Math.max(0,advance)*30;
+    if(Math.abs(m.to.r-m.from.r)===4)s+=55;
+  }
+
+  if(p.type==='S'){
+    /* Guerrero: avanzar es la idea central; llegar a veterano es un gran hito. */
+    const advance=color==='w'?(m.from.r-m.to.r):(m.to.r-m.from.r);
+    s+=Math.max(0,advance)*75;
+    if(m.to.r===(color==='w'?0:7))s+=12000;
+    if(st.movedPiece&&st.movedPiece.veteran)s+=14000;
+    if(p.veteran)s+=70;
+  }
+
+  /* Nuevas piezas que aparecen al desplazar el tablero deben ser consideradas activas. */
+  const before=countTypes(b,o,color), after=countTypes(b2,o2,color);
+  for(const t of ['G','V','M','W','J','A','S']){
+    if(after[t]>before[t])s+=180;
+  }
+
+  /* Penalizar piezas propias congeladas y premiar neutralizarlas/cazar Bufones. */
+  const myFrozen=countFreeze(b2,opp(color));
+  s-=myFrozen*90;
+
   return s;
 }
-function scoreMove(m,color,b,o){
-  const before=vis(b,o);
-  const st=apply(b,o,m); const b2=st.board||b; const o2=st.offsets||o;
-  let s=specialThreatScore(m,b2,o2,color,before);
-  try{s+=0.30*(window.evaluate(b2,o2,color)||0);}catch(_){}
-  /* Evita repetir mecánicamente la última jugada. */
+function score(m,color,b,o){
+  const st=app(b,o,m), b2=st.board||b,o2=st.offsets||o;
+  let s=specialScore(m,b,o,color);
+  try{s+=0.28*(window.evaluate(b2,o2,color)||0);}catch(_){}
+  /* Evita repetir inmediatamente la misma maniobra. */
   try{
     const last=window.BOT_STATE&&window.BOT_STATE.lastOppMove;
-    if(last&&m.from.r===last.to.r&&m.from.c===last.to.c&&m.to.r===last.from.r&&m.to.c===last.from.c)s-=180;
+    if(last&&m.from.r===last.to.r&&m.from.c===last.to.c&&m.to.r===last.from.r&&m.to.c===last.from.c)s-=160;
   }catch(_){}
   return s;
 }
 function choose(color){
-  const p=diff(color), start=now(), all=moves(color,window.board,window.offsets);
-  if(!all.length) return null;
-  let ordered=all.slice().sort((a,b)=>{
-    const av=(a.isCapture?1:0)+(a.check?1:0), bv=(b.isCapture?1:0)+(b.check?1:0);
-    return bv-av;
-  });
-  const cap=Math.max(6,Math.min(18,p.beam||10));
-  if(ordered.length>cap) ordered=ordered.slice(0,cap);
+  const p=params(color),start=now(),all=gen(color,window.board,window.offsets);
+  if(!all.length)return null;
+  let ordered=all.slice().sort((a,b)=>score(b,color,window.board,window.offsets)-score(a,color,window.board,window.offsets));
+  const cap=Math.max(7,Math.min(18,p.beam||10));
+  if(ordered.length>cap)ordered=ordered.slice(0,cap);
   let best=null,bestScore=-INF;
   for(const m of ordered){
-    if(now()-start>(p.timeMs||120)) break;
-    let s=scoreMove(m,color,window.board,window.offsets);
-    /* En niveles altos, mirar una respuesta rival para no ganar una amenaza y perder la partida. */
-    if((p.depth||0)>=2 && now()-start<(p.timeMs||120)-8){
+    if(now()-start>(p.timeMs||120))break;
+    let s=score(m,color,window.board,window.offsets);
+    /* En dificultades altas, comprobar si la respuesta rival captura la pieza especial recién activada. */
+    if((p.depth||0)>=2&&now()-start<(p.timeMs||120)-8){
       try{
-        const st=apply(window.board,window.offsets,m);
-        const rs=moves(opp(color),st.board,st.offsets||window.offsets);
-        let worst=INF, n=0;
-        for(const r of rs.slice(0,8)){
-          const st2=apply(st.board,st.offsets||window.offsets,r);
+        const st=app(window.board,window.offsets,m);
+        const rs=gen(opp(color),st.board,st.offsets||window.offsets);
+        let worst=INF,n=0;
+        for(const r of rs.slice(0,7)){
+          const st2=app(st.board,st.offsets||window.offsets,r);
           const v=window.evaluate(st2.board,st2.offsets||st.offsets,color)||0;
-          worst=Math.min(worst,v); if(++n>=6||now()-start>(p.timeMs||120)-4)break;
+          worst=Math.min(worst,v);if(++n>=5||now()-start>(p.timeMs||120)-4)break;
         }
-        if(n)s+=0.18*worst;
+        if(n)s+=0.16*worst;
       }catch(_){}
     }
-    s+=(p.noise||0)*80*(Math.random()-.5);
+    s+=(p.noise||0)*70*(Math.random()-.5);
     if(s>bestScore){bestScore=s;best=m;}
   }
   if(best&&p.blunder&&Math.random()<p.blunder&&ordered.length>1){
-    const idx=Math.min(ordered.length-1,1+Math.floor(Math.random()*Math.min(3,ordered.length-1)));
-    best=ordered[idx];
+    best=ordered[1+Math.floor(Math.random()*Math.min(3,ordered.length-1))];
   }
   return best||all[0];
 }
 const originalPick=window.pickMove;
 window.pickMove=function(color){
-  try{return choose(color)|| (typeof originalPick==='function'?originalPick(color):null);}
+  try{return choose(color)||(typeof originalPick==='function'?originalPick(color):null);}
   catch(e){return typeof originalPick==='function'?originalPick(color):null;}
 };
 
-/* Decisión de desplazamiento: ahora busca activamente liberar I/S, no sólo material. */
+/* Desplazamientos: el bot busca introducir piezas de guerra y no sólo mejorar material clásico. */
 const originalShift=window.botDecideShift;
 window.botDecideShift=async function(row){
   try{
-    if(!window.pendingShift || typeof window.AJ_RULES?.legalShift!=='function'){
+    if(!window.pendingShift||typeof window.AJ_RULES?.legalShift!=='function'){
       return originalShift?originalShift.apply(this,arguments):undefined;
     }
-    const color=window.botSide||window.turn, b=window.board, o=window.offsets;
-    const choices=[null,0,8]; let best=null,bestScore=-INF;
+    const color=window.botSide||window.turn,b=window.board,o=window.offsets;
+    const choices=[null,0,8];let best=null,bestScore=-INF;
     for(const ch of choices){
       const o2=o.slice();
-      if(ch!==null) o2[row]=ch;
-      if(ch!==null&&!window.AJ_RULES.legalShift(row,ch,b,o)) continue;
-      const v=vis(b,o2);
+      if(ch!==null)o2[row]=ch;
+      if(ch!==null&&!window.AJ_RULES.legalShift(row,ch,b,o))continue;
+      const v=vis(b,o2), types=countTypes(b,o2,color), enemy=countTypes(b,o2,opp(color));
       let s=0;
-      try{s+=0.5*(window.evaluate(b,o2,color)||0);}catch(_){}
-      const hs=hostageSquares(b,o2,color);
-      if(hs.length){
-        let near=0;
-        for(let r=0;r<8;r++)for(let c=0;c<8;c++){
-          const q=v[r][c]; if(!q||q.color!==color||q.type==='I'||q.type==='S')continue;
-          const d=Math.min(...hs.map(h=>dist({r,c},h)));
-          if(d<=1) near+=50000;
-          else if(d<=2) near+=5000;
-          else if(d<=3) near+=1000;
+      try{s+=0.35*(window.evaluate(b,o2,color)||0);}catch(_){}
+      /* Aparición de unidades especiales. */
+      s+=types.G*220+types.V*160+types.M*180+types.W*180+types.J*260+types.A*190+types.S*130;
+      s-=enemy.J*40;
+      /* Bufones junto a objetivos valiosos = oportunidad inmediata. */
+      for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+        const q=v[r][c];if(!q||q.color!==color||q.type!=='J')continue;
+        for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
+          if(!dr&&!dc)continue;const rr=r+dr,cc=c+dc;if(!inside(rr,cc))continue;
+          const e=v[rr][cc];if(e&&e.color===opp(color))s+=((vals[e.type]||100)>=500?350:120);
         }
-        s+=near;
       }
-      s+=liberationMoves(b,o2,color)*7000;
-      if(ch!==null)s+=800; /* el bot no debe quedar atado a "mantener" */
-      s+=(Math.random()-0.5)*20;
+      /* Guerreros próximos a coronar/veteranizar. */
+      for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+        const q=v[r][c];if(q&&q.color===color&&q.type==='S'&&!q.veteran){
+          const d=color==='w'?r:7-r;
+          if(d<=1)s+=4500;else if(d<=2)s+=1200;
+        }
+      }
+      if(ch!==null)s+=650;
+      s+=(Math.random()-.5)*18;
       if(s>bestScore){bestScore=s;best=ch;}
     }
     if(best===null)return originalShift?originalShift.call(this,row):undefined;
@@ -13818,7 +14019,7 @@ window.botDecideShift=async function(row){
     return originalShift?originalShift.apply(this,arguments):undefined;
   }
 };
-console.log('[AJ] IA especial Modo Amenaza activa: prioridad a Liberación + desplazamientos tácticos.');
+console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + desplazamientos tácticos.');
 })();
 </script>
 
@@ -13906,11 +14107,11 @@ console.log('[AJ] IA especial Modo Amenaza activa: prioridad a Liberación + des
     if(pause && pause.parentElement !== clock) clock.appendChild(pause);
 
     clock.style.position='absolute';
-    clock.style.top='50%';
-    clock.style.right='0px';
+    clock.style.top='6px';
+    clock.style.right='10px';
     clock.style.left='auto';
     clock.style.bottom='auto';
-    clock.style.transform='translateY(-50%)';
+    clock.style.transform='none';
 
     if(pause){
       pause.style.position='static';
@@ -13943,55 +14144,6 @@ console.log('[AJ] IA especial Modo Amenaza activa: prioridad a Liberación + des
 </script>
 <!-- AJETREZ: FIN — arquitectura estable de reloj y Pausa -->
 
-
-
-<!-- AJETREZ: Corrección final — controles alineados con los límites del tablero -->
-<style id="aj-final-controls-board-alignment-last">
-#topBar{position:relative !important;}
-#topBar #timeIndicator{
-  position:absolute !important;
-  right:0 !important; left:auto !important;
-  top:50% !important; bottom:auto !important;
-  transform:translateY(-50%) !important;
-  margin:0 !important;
-  z-index:100 !important;
-}
-#topBar #timeIndicator #pauseBtn{
-  position:static !important;
-  left:auto !important; right:auto !important; top:auto !important; bottom:auto !important;
-  transform:none !important; margin:0 !important;
-}
-
-#bottomBar{
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) auto auto minmax(0,1fr) !important;
-  align-items:center !important;
-  column-gap:8px !important;
-  position:relative !important;
-  overflow:visible !important;
-}
-#bottomBar #donateBox{
-  grid-column:1 !important; justify-self:start !important; align-self:center !important;
-  position:static !important; transform:none !important; margin:0 !important;
-}
-#bottomBar #btnMegaMenu{
-  grid-column:2 !important; justify-self:end !important; align-self:center !important;
-  position:static !important; transform:none !important; margin:0 !important;
-}
-#bottomBar #btnRestartBR{
-  grid-column:3 !important; justify-self:start !important; align-self:center !important;
-  position:static !important; transform:none !important; margin:0 !important;
-}
-#bottomBar #rightControls{display:contents !important;}
-#bottomBar #btnFSBR{
-  grid-column:4 !important; justify-self:end !important; align-self:center !important;
-  position:static !important; transform:none !important; margin:0 !important;
-}
-@media (max-width:900px), (pointer:coarse){
-  #topBar #timeIndicator{right:0 !important; top:50% !important; transform:translateY(-50%) !important;}
-  #bottomBar #btnFSBR{justify-self:end !important;}
-}
-</style>
 
 <style id="aj-clock-pause-top-right-revert">
   /* Revertir el cambio anterior: reloj + pausa vuelven a la esquina superior derecha */
@@ -14716,7 +14868,8 @@ console.log('[AJ] IA especial Modo Amenaza activa: prioridad a Liberación + des
     rulesView.innerHTML = `
       <div id="ajRulesHeader"><button class="btn secondary" id="btnBackFromRules" type="button">← Volver al inicio</button><h2>📜 Reglas de Ajetrez</h2></div>
       <div id="ajRulesContent"><div class="aj-rules-card"><h3>Reglas de Ajetrez</h3><p class="aj-rules-intro">Selecciona una versión para consultar sus reglas.</p><div class="aj-rules-version-btns">
-        <button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Clásico</button><button class="aj-rules-version-btn" data-aj-rules-version="3_0_alianza" type="button">Versión 3.0 — Modo Alianza</button>
+        <button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Clásico</button>
+        <button class="aj-rules-version-btn" data-aj-rules-version="3_0_alianza" type="button">Versión 3.0 — Modo Alianza</button>
         <button class="aj-rules-version-btn" data-aj-rules-version="3_0_amenaza" type="button">Versión 3.0 — Modo Amenaza</button>
         <button class="aj-rules-version-btn" data-aj-rules-version="3_0_guerra" type="button">Versión 3.0 — Modo Guerra</button>
       </div></div></div>`;
@@ -15108,7 +15261,7 @@ console.log('[AJ] IA especial Modo Amenaza activa: prioridad a Liberación + des
       view.innerHTML=''+
         '<div id="ajRulesHeader"><button class="btn secondary" id="btnBackFromRules" type="button">← Volver al inicio</button><h2>📜 Reglas de Ajetrez</h2></div>'+
         '<div id="ajRulesContent"><div class="aj-rules-card"><h3>Reglas de Ajetrez</h3><p class="aj-rules-intro">Selecciona una versión para consultar sus reglas.</p><div class="aj-rules-version-btns">'+
-        '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Clásico</button><button class="aj-rules-version-btn" data-aj-rules-version="3_0_alianza" type="button">Versión 3.0 — Modo Alianza</button>'+
+        '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Clásico</button>'+
         '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_amenaza" type="button">Versión 3.0 — Modo Amenaza</button>'+
         '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_guerra" type="button">Versión 3.0 — Modo Guerra</button>'+
         '</div></div></div>' ;
@@ -15667,17 +15820,4 @@ console.log('[AJ] IA especial Modo Amenaza activa: prioridad a Liberación + des
   #ajConfigView .mp-tabs .tab-btn[data-tab="tab-registros-v2"],
   #btn-open-regv2-tab,
   #regv2-open{ display:none !important; }
-</style>
-
-<style id="aj-threat-veteran-marker-css">
-.aj-veteran-mark{
-  position:absolute; right:2px; top:2px;
-  width:22px; height:22px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  font-size:13px; line-height:1;
-  background:rgba(255,255,255,.95);
-  border:2px solid #333;
-  box-shadow:0 2px 6px rgba(0,0,0,.45);
-  z-index:5; pointer-events:none;
-}
 </style>
