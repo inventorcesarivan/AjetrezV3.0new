@@ -12945,6 +12945,17 @@ function showVeteranBanner(color){
 </script>
 <!-- /AJETREZ: AJUSTE FINAL — TODOS LOS CONTROLES SUPERIORES 2mm MAS ABAJO -->
 
+
+<style id="aj-final-fullscreen-donations-align">
+/* Alineación final: controles inferiores pegados al borde punteado del tablero,
+   sin cambiar de posición al entrar/salir de pantalla completa. */
+#bottomBar{position:absolute !important; left:0 !important; right:0 !important; bottom:0 !important; width:100% !important; box-sizing:border-box !important;}
+#bottomBar #btnPaypal, #bottomBar #btnMercadoPago{transform:scale(.90) !important; transform-origin:center bottom !important; margin-left:2px !important; margin-right:2px !important;}
+#bottomBar #btnFSBR{position:static !important; transform:none !important; margin:0 2px !important; align-self:center !important;}
+#bottomBar .donation-buttons, #bottomBar .donations, #bottomBar .imgbtn{margin-left:2px !important; margin-right:2px !important;}
+#fsRoot:fullscreen #bottomBar, #fsRoot:-webkit-full-screen #bottomBar{position:absolute !important; left:0 !important; right:0 !important; bottom:0 !important; width:100% !important;}
+#fsRoot:fullscreen #bottomBar #btnPaypal, #fsRoot:fullscreen #bottomBar #btnMercadoPago, #fsRoot:-webkit-full-screen #bottomBar #btnPaypal, #fsRoot:-webkit-full-screen #bottomBar #btnMercadoPago{transform:scale(.90) !important; transform-origin:center bottom !important;}
+</style>
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
