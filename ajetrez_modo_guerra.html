@@ -2804,6 +2804,232 @@ body[data-theme="noche"] .regv2-btn{
 }
 </style>
 
+
+<style id="aj-time-selector-topbar-fix">
+/* AJETREZ — Selector de duración junto al reloj.
+   Se saca del overlay de inicio para que sea realmente interactivo. */
+#topBar #aj-time-options{
+  position:absolute !important;
+  right:118px !important;
+  top:50% !important;
+  bottom:auto !important;
+  transform:translateY(-50%) !important;
+  z-index:2147483605 !important;
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:5px !important;
+  width:auto !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  pointer-events:auto !important;
+  color:#111 !important;
+}
+#topBar #aj-time-options label{
+  display:inline-block !important;
+  font-size:10px !important;
+  line-height:1 !important;
+  font-weight:800 !important;
+  color:#222 !important;
+  white-space:nowrap !important;
+  margin:0 !important;
+}
+#topBar #aj-time-mode{
+  width:105px !important;
+  min-width:105px !important;
+  height:25px !important;
+  padding:2px 22px 2px 7px !important;
+  margin:0 !important;
+  border:1px solid rgba(0,0,0,.38) !important;
+  border-radius:8px !important;
+  background:#fff !important;
+  color:#111 !important;
+  font-size:10px !important;
+  line-height:20px !important;
+  font-weight:800 !important;
+  cursor:pointer !important;
+  pointer-events:auto !important;
+  position:relative !important;
+  z-index:2147483606 !important;
+}
+#topBar #aj-time-mode option{ color:#111 !important; background:#fff !important; }
+#topBar #aj-time-options .aj-time-help{ display:none !important; }
+
+/* El selector ya no depende del overlay de inicio para recibir eventos. */
+#startOverlay #aj-time-options{ pointer-events:auto !important; }
+#startOverlay #aj-time-options #aj-time-mode{ pointer-events:auto !important; }
+
+/* Ocultar cualquier instancia accidental que todavía permanezca dentro del overlay. */
+#startOverlay > #aj-time-options{ display:none !important; }
+
+@media (max-width:900px), (pointer:coarse){
+  #topBar #aj-time-options{ right:108px !important; }
+  #topBar #aj-time-options label{ font-size:9px !important; }
+  #topBar #aj-time-mode{ width:96px !important; min-width:96px !important; font-size:9px !important; }
+}
+@media (max-width:620px){
+  #topBar #aj-time-options{ right:104px !important; }
+  #topBar #aj-time-options label{ display:none !important; }
+  #topBar #aj-time-mode{ width:92px !important; min-width:92px !important; }
+}
+</style>
+<script id="aj-time-selector-topbar-js">
+(function(){
+  function moveTimeSelector(){
+    var sel=document.getElementById('aj-time-options');
+    var top=document.getElementById('topBar');
+    if(!sel || !top) return false;
+    if(sel.parentElement !== top){
+      top.appendChild(sel);
+    }
+    sel.setAttribute('aria-label','Duración de la partida');
+    var select=document.getElementById('aj-time-mode');
+    if(select){
+      select.setAttribute('aria-label','Duración de la partida');
+      select.style.pointerEvents='auto';
+    }
+    return true;
+  }
+  function init(){
+    moveTimeSelector();
+    setTimeout(moveTimeSelector,50);
+    setTimeout(moveTimeSelector,250);
+    setTimeout(moveTimeSelector,800);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
+})();
+</script>
+
+
+<!-- AJETREZ: ajuste final del selector de duración -->
+<style id="aj-time-selector-final-position">
+  /* Selector negro, alineado con los controles superiores y desplazado hacia la izquierda */
+  #topBar #aj-time-options{
+    position:absolute !important;
+    right:145px !important;
+    top:auto !important;
+    bottom:1px !important;
+    transform:none !important;
+    z-index:2147483605 !important;
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:5px !important;
+    width:auto !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:5px 7px !important;
+    background:#111 !important;
+    color:#fff !important;
+    border:2px solid rgba(255,255,255,.82) !important;
+    border-radius:999px !important;
+    box-shadow:0 2px 8px rgba(0,0,0,.18) !important;
+    pointer-events:auto !important;
+  }
+
+  #topBar #aj-time-options label{
+    display:inline-block !important;
+    font-size:10px !important;
+    line-height:1 !important;
+    font-weight:800 !important;
+    color:#fff !important;
+    white-space:nowrap !important;
+    margin:0 !important;
+  }
+
+  #topBar #aj-time-mode{
+    width:105px !important;
+    min-width:105px !important;
+    height:25px !important;
+    padding:2px 22px 2px 7px !important;
+    margin:0 !important;
+    border:1px solid rgba(255,255,255,.65) !important;
+    border-radius:8px !important;
+    background:#111 !important;
+    color:#fff !important;
+    font-weight:800 !important;
+    cursor:pointer !important;
+    pointer-events:auto !important;
+    color-scheme:dark !important;
+  }
+
+  #topBar #aj-time-mode option{
+    background:#111 !important;
+    color:#fff !important;
+  }
+
+  #topBar #aj-time-options .aj-time-help{
+    display:none !important;
+  }
+
+  /* Evita que el selector conserve estilos del overlay original */
+  #startOverlay #aj-time-options{
+    pointer-events:auto !important;
+  }
+
+  @media (max-width:900px), (pointer:coarse){
+    #topBar #aj-time-options{
+      right:128px !important;
+      bottom:3px !important;
+    }
+    #topBar #aj-time-options label{
+      font-size:9px !important;
+    }
+    #topBar #aj-time-mode{
+      width:96px !important;
+      min-width:96px !important;
+      font-size:9px !important;
+    }
+  }
+
+  @media (max-width:620px){
+    #topBar #aj-time-options{
+      right:116px !important;
+    }
+    #topBar #aj-time-options label{
+      display:none !important;
+    }
+    #topBar #aj-time-mode{
+      width:92px !important;
+      min-width:92px !important;
+    }
+  }
+</style>
+
+
+<style id="aj-time-selector-final-size-v3">
+  /* Ajuste final: aprox. medio casillero más ancho y ligeramente más bajo */
+  #topBar #aj-time-options{
+    padding:3px 7px !important;
+  }
+  #topBar #aj-time-mode{
+    width:135px !important;
+    min-width:135px !important;
+    height:23px !important;
+    padding:1px 22px 1px 7px !important;
+  }
+  @media (max-width:900px), (pointer:coarse){
+    #topBar #aj-time-options{ padding:3px 6px !important; }
+    #topBar #aj-time-mode{
+      width:126px !important;
+      min-width:126px !important;
+      height:22px !important;
+      padding:1px 20px 1px 6px !important;
+    }
+  }
+  @media (max-width:620px){
+    #topBar #aj-time-mode{
+      width:120px !important;
+      min-width:120px !important;
+      height:22px !important;
+    }
+  }
+</style>
+
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div class="mode-group" id="modeGroup"><button aria-expanded="false" aria-haspopup="true" class="btn" id="btnMode" type="button">Modo de juego</button><span aria-live="polite" class="mode-indicator" id="modeIndicator">Player vs player (local)</span></div><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div><div aria-label="Elegir modo de juego" class="dropdown" id="modeDropdown" role="menu"><button class="btn dd-item" data-label="Versus Bot" data-mode="bot" style="position:static;" type="button">Player Vs Bot</button><button class="btn dd-item" data-label="Player vs player (local)" data-mode="pvp-local" style="position:static;" type="button">Player vs player (local)</button><button class="btn dd-item" data-label="Bot versus bot (demo)" data-mode="bot-vs-bot" style="position:static;" type="button">Bot versus bot (demo)</button><button class="btn dd-item" data-label="Modo Online" data-mode="online" style="position:static;" type="button">Modo Online</button></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
@@ -2834,7 +3060,29 @@ body[data-theme="noche"] .regv2-btn{
 </div>
 </div>
 <div aria-label="Overlay de inicio" aria-live="polite" id="startOverlay"><div class="start-card"><div style="font-weight:800; font-size:18px;">Comenzar partida
-</div><button id="btnStartGame" type="button">Comenzar partida</button><div class="hint">Pulsa para iniciar. Bloquea el juego en todos los modos hasta empezar.
+</div><style id="aj-time-selector-style">
+#aj-time-options{display:flex;flex-direction:column;align-items:center;gap:5px;margin:10px 0 8px;width:min(290px,90vw)}
+#aj-time-options label{font-size:13px;font-weight:800}
+#aj-time-mode{width:100%;padding:7px 10px;border:1px solid rgba(0,0,0,.28);border-radius:8px;background:#fff;color:#111;font-weight:700;cursor:pointer}
+.aj-time-help{font-size:11px;line-height:1.25;opacity:.72;text-align:center}
+#timeIndicator.timed .label:after{content:" total";opacity:.75}
+#timeIndicator.time-warning .dot{background:#f6ad55;box-shadow:0 0 10px rgba(246,173,85,.8)}
+#timeIndicator.time-critical .dot{background:#fc8181;box-shadow:0 0 10px rgba(252,129,129,.85)}
+</style>
+<div id="aj-time-options" aria-label="Duración de la partida">
+  <label for="aj-time-mode">Duración de la partida</label>
+  <select id="aj-time-mode">
+    <option value="0">Jugar libre</option>
+    <option value="300000">5 minutos</option>
+    <option value="600000">10 minutos</option>
+    <option value="900000">15 minutos</option>
+    <option value="1200000">20 minutos</option>
+    <option value="1500000">25 minutos</option>
+    <option value="1800000">30 minutos</option>
+  </select>
+  <div class="aj-time-help">En modo libre el reloj funciona como hasta ahora.</div>
+</div>
+<button id="btnStartGame" type="button">Comenzar partida</button><div class="hint">Pulsa para iniciar. Bloquea el juego en todos los modos hasta empezar.
 </div></div></div><div aria-label="Ajetrez base limpia" id="board"></div><div aria-label="Decidir desplazamiento de fila" class="shift-ctrl" id="shiftCtrl" role="group"><span class="lbl" id="shiftLbl">Fila</span><span id="chooseWrap"><button aria-label="Mantener" id="btnKeep" type="button">Mantener</button><button aria-label="Desplazar sección" id="btnShift" type="button">Desplazar sección</button></span><span id="confirmWrap" style="display:none"><span id="choiceTxt" style="font-size:12px;font-weight:700;margin-right:6px;opacity:.85">Confirmar:</span><button aria-label="Confirmar" class="confirm" id="btnConfirm" type="button">Confirmar</button><button aria-label="Volver a elegir" id="btnBack" type="button">Cambiar elección</button></span></div><div id="overlay"><div id="banner">FIN</div></div><div id="panelBackdrop"></div><div aria-labelledby="mpTitle" aria-modal="true" id="megaPanel" role="dialog"><div class="apply-toast" id="applyToast">✔ Cambios guardados
 </div><div class="mp-header"><div id="mpTitle">Panel de Ajetrez
 </div><div class="right"><span class="hint-sm" id="loggedUser"></span><button class="btn secondary" id="btnLogout" type="button">Cerrar sesión</button><button class="btn" id="btnClosePanel" type="button">Cerrar</button></div></div><div id="loginView"><h2>Iniciar sesión</h2><div class="field"><label for="inpUser">Usuario</label><input id="inpUser" placeholder="Tu nombre de usuario" type="text"/></div><div class="field"><label for="inpPass">Contraseña</label><input id="inpPass" placeholder="••••••••" type="password"/></div><button class="btn" id="btnLogin" type="button">Entrar</button><div class="hint-sm">*Login local (almacenado en este navegador). Próximamente: cuentas online.
@@ -6222,22 +6470,16 @@ window.AJ_RULES.legalShift = function(row, target, boardRef, offsRef){
     }
   }
 })();
-</script><!-- === Top-right Game Timer Indicator === --><style>
-  #timeIndicator{
-    position:absolute; top:6px; right:10px;
-    display:inline-flex; align-items:center; gap:8px;
-    padding:6px 10px; border-radius:999px;
-    background:rgba(0,0,0,.75); color:#fff; font-weight:800;
-    box-shadow:0 4px 10px rgba(0,0,0,.15);
-    z-index:21; /* above dropdown */
-    user-select:none;
-  }
-  #timeIndicator .dot{ width:8px; height:8px; border-radius:50%; background:#9ae6b4; box-shadow:0 0 10px rgba(154,230,180,.8); }
-  #timeIndicator.paused .dot{ background:#f6ad55; box-shadow:none; }
-  #timeIndicator.finished .dot{ background:#fc8181; }
-  #timeIndicator .label{ font-size:12px; opacity:.85; font-weight:700; }
-  #timeTxt{ font-variant-numeric:tabular-nums; letter-spacing:.5px; }
-</style><script>
+</script><!-- === Top-right Game Timer Indicator === --><style id="aj-time-selector-style">
+#aj-time-options{display:flex;flex-direction:column;align-items:center;gap:5px;margin:10px 0 8px;width:min(290px,90vw)}
+#aj-time-options label{font-size:13px;font-weight:800}
+#aj-time-mode{width:100%;padding:7px 10px;border:1px solid rgba(0,0,0,.28);border-radius:8px;background:#fff;color:#111;font-weight:700;cursor:pointer}
+.aj-time-help{font-size:11px;line-height:1.25;opacity:.72;text-align:center}
+#timeIndicator.timed .label:after{content:" total";opacity:.75}
+#timeIndicator.time-warning .dot{background:#f6ad55;box-shadow:0 0 10px rgba(246,173,85,.8)}
+#timeIndicator.time-critical .dot{background:#fc8181;box-shadow:0 0 10px rgba(252,129,129,.85)}
+</style>
+<script>
 (function(){
   if(window.__AJ_TIMER__) return; window.__AJ_TIMER__=true;
   const $ = (s,r=document)=>r.querySelector(s);
@@ -6249,108 +6491,188 @@ window.AJ_RULES.legalShift = function(row, target, boardRef, offsRef){
   box.innerHTML = '<span class="dot" aria-hidden="true"></span><span class="label">Tiempo</span><span id="timeTxt">00:00</span>';
   (topBar||document.body).appendChild(box);
 
-  // State
-  let startTS = null;     // timestamp (ms) when running started
-  let acc = 0;            // accumulated ms when paused
-  let tick = null;        // interval id
+  // Estado del reloj.
+  // durationMs = 0 => modo libre (cuenta ascendente).
+  // durationMs > 0 => duración total de la partida (cuenta regresiva).
+  let durationMs = 0;
+  let startTS = null;
+  let acc = 0;
+  let remainingMs = 0;
+  let tick = null;
   let running = false;
+  let timeoutHandled = false;
 
+  const SELECT_KEY = 'ajetrez.game.durationMs';
+  const allowed = [0,300000,600000,900000,1200000,1500000,1800000];
+
+  function readDuration(){
+    const sel = $('#aj-time-mode');
+    let v = 0;
+    try{ v = parseInt(localStorage.getItem(SELECT_KEY)||'0',10); }catch(_){ v=0; }
+    if(!allowed.includes(v)) v=0;
+    durationMs=v;
+    if(sel) sel.value=String(v);
+    return v;
+  }
+  function setDuration(v){
+    v = parseInt(v,10);
+    if(!allowed.includes(v)) v=0;
+    durationMs=v;
+    try{ localStorage.setItem(SELECT_KEY,String(v)); }catch(_){ }
+    reset();
+    updateModeClass();
+  }
+  function updateModeClass(){
+    box.classList.toggle('timed', durationMs>0);
+    box.classList.toggle('free', durationMs===0);
+    box.classList.remove('time-warning','time-critical');
+  }
   function fmt(ms){
-    ms = Math.max(0, ms|0);
+    ms = Math.max(0, Math.round(ms));
     const s = Math.floor(ms/1000);
     const m = Math.floor(s/60);
     const h = Math.floor(m/60);
     const mm = (m%60).toString().padStart(2,'0');
     const ss = (s%60).toString().padStart(2,'0');
-    return (h>0? (h.toString().padStart(2,'0')+':') : '') + mm + ':' + ss;
+    return (h>0 ? h.toString().padStart(2,'0')+':' : '') + mm + ':' + ss;
+  }
+  function elapsed(){ return running && startTS!=null ? (Date.now()-startTS) : 0; }
+  function currentValue(){
+    if(durationMs>0) return Math.max(0, remainingMs-elapsed());
+    return Math.max(0, acc+elapsed());
   }
   function render(){
-    const txt = $('#timeTxt');
-    if(!txt) return;
-    const now = Date.now();
-    const val = running ? (acc + (now - startTS)) : acc;
-    txt.textContent = fmt(val);
+    const txt=$('#timeTxt'); if(!txt) return;
+    const val=currentValue();
+    txt.textContent=fmt(val);
+    if(durationMs>0){
+      const ratio=durationMs ? val/durationMs : 1;
+      box.classList.toggle('time-warning', ratio<=0.25 && ratio>0.10);
+      box.classList.toggle('time-critical', ratio<=0.10 && ratio>0);
+    }
+  }
+  function handleTimeout(){
+    if(timeoutHandled) return;
+    timeoutHandled=true;
+    running=false; startTS=null;
+    if(tick){ clearInterval(tick); tick=null; }
+    remainingMs=0;
+    box.classList.add('finished');
+    box.classList.remove('paused','time-warning','time-critical');
+    render();
+
+    // El tiempo seleccionado es el tiempo TOTAL de la partida, compartido por ambos jugadores.
+    // Al agotarse, se finaliza la partida sin inventar un ganador.
+    try{
+      if(typeof window.gameOver!=='undefined') window.gameOver=true;
+      if(typeof window.winner!=='undefined') window.winner='draw';
+      const overlay=$('#overlay'), banner=$('#banner');
+      if(banner) banner.textContent='TIEMPO AGOTADO';
+      if(overlay) overlay.style.display='flex';
+      if(typeof window.finalizeGameLog==='function') window.finalizeGameLog('tiempo','draw');
+      window.dispatchEvent(new CustomEvent('aj:game:end',{detail:{result:'tiempo',winner:'draw'}}));
+    }catch(_){ }
   }
   function start(){
-    if(running) return;
-    running = true; startTS = Date.now();
+    if(running || timeoutHandled) return;
+    if(durationMs>0 && remainingMs<=0) remainingMs=durationMs;
+    running=true; startTS=Date.now();
     box.classList.remove('paused','finished');
     if(tick) clearInterval(tick);
-    tick = setInterval(render, 250);
+    tick=setInterval(function(){
+      render();
+      if(durationMs>0 && currentValue()<=0) handleTimeout();
+    },250);
     render();
   }
-  function stop() {
+  function stop(){
     if(!running) return;
-    acc += (Date.now() - startTS);
-    running = false; startTS = null;
+    const now=Date.now();
+    if(durationMs>0){
+      remainingMs=Math.max(0,remainingMs-(now-startTS));
+    }else{
+      acc += (now-startTS);
+    }
+    running=false; startTS=null;
     box.classList.add('paused');
-    if(tick) { clearInterval(tick); tick=null; }
+    if(tick){clearInterval(tick);tick=null;}
     render();
   }
   function reset(){
-    acc = 0; startTS = null; running=false;
-    box.classList.remove('paused','finished');
+    if(tick){clearInterval(tick);tick=null;}
+    startTS=null; running=false; acc=0; timeoutHandled=false;
+    remainingMs=durationMs>0?durationMs:0;
+    box.classList.remove('paused','finished','time-warning','time-critical');
     render();
   }
   function finish(){
-    stop(); box.classList.add('finished');
+    if(running) stop();
+    timeoutHandled=true;
+    box.classList.add('finished');
+    render();
   }
 
-  // Expose for other scripts (optional)
-  window.__AJ_TIMER_API__ = { start, stop, reset, finish, render };
+  window.__AJ_TIMER_API__={start,stop,reset,finish,render,setDuration,getDuration:()=>durationMs};
 
-  // Hook restartGame to reset timer
+  // Selector de duración.
+  function bindSelector(){
+    const sel=$('#aj-time-mode'); if(!sel) return false;
+    readDuration();
+    if(!sel.__aj_bound__){
+      sel.__aj_bound__=true;
+      sel.addEventListener('change',()=>setDuration(sel.value));
+    }
+    return true;
+  }
+  bindSelector();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindSelector,{once:true});
+
+  // Reinicio: conserva la duración elegida.
   (function(){
-    const g = window;
-    const orig = g.restartGame;
-    g.restartGame = function(){
-      try{ reset(); }catch(_){}
-      return orig ? orig.apply(this, arguments) : undefined;
+    const g=window, orig=g.restartGame;
+    g.restartGame=function(){
+      try{ readDuration(); reset(); }catch(_){ }
+      return orig ? orig.apply(this,arguments) : undefined;
     };
   })();
 
-  // Start on pressing "Comenzar partida" (overlay)
-  document.addEventListener('click', (e)=>{
-    if(e.target && e.target.id === 'btnStartGame'){
-      setTimeout(()=>{ try{ start(); }catch(_){}} , 10);
+  // Inicio de partida.
+  document.addEventListener('click',(e)=>{
+    if(e.target && e.target.id==='btnStartGame'){
+      setTimeout(()=>{try{readDuration();start();}catch(_){ }},10);
     }
-  }, true);
+  },true);
 
-  // Observe start overlay visibility changes (covers auto-inicio o cambios indirectos)
-  const startOv = $('#startOverlay');
+  // El overlay también cubre inicios indirectos.
+  const startOv=$('#startOverlay');
   if(startOv && window.MutationObserver){
-    const mo = new MutationObserver(()=>{
-      const style = window.getComputedStyle(startOv);
-      if(style.display==='none' || style.visibility==='hidden' || style.opacity==='0'){
-        start(); // overlay oculto => partida en curso
-      }else{
-        stop();  // overlay visible => pausa/espera
-      }
+    const mo=new MutationObserver(()=>{
+      const style=getComputedStyle(startOv);
+      if(style.display==='none'||style.visibility==='hidden'||style.opacity==='0') start();
+      else if(!timeoutHandled) stop();
     });
-    mo.observe(startOv, { attributes:true, attributeFilter:['style','class'] });
+    mo.observe(startOv,{attributes:true,attributeFilter:['style','class']});
   }
 
-  // Stop when FIN overlay appears
-  const fin = $('#overlay');
+  const fin=$('#overlay');
   if(fin && window.MutationObserver){
-    const mf = new MutationObserver(()=>{
-      const style = window.getComputedStyle(fin);
-      const visible = (style.display!=='none' && style.visibility!=='hidden' && style.opacity!=='0');
-      if(visible){ finish(); }
+    const mf=new MutationObserver(()=>{
+      const style=getComputedStyle(fin);
+      const visible=(style.display!=='none'&&style.visibility!=='hidden'&&style.opacity!=='0');
+      if(visible && !timeoutHandled) finish();
     });
-    mf.observe(fin, { attributes:true, attributeFilter:['style','class'] });
+    mf.observe(fin,{attributes:true,attributeFilter:['style','class']});
   }
 
-  // Also respond to custom events if the app emits them
-  window.addEventListener('aj:mode:change', ()=>{ reset(); });      // switching modes resets clock
-  window.addEventListener('aj:game:end', ()=>{ finish(); });
-  window.addEventListener('aj:game:pause', ()=>{ stop(); });
-  window.addEventListener('aj:game:resume', ()=>{ start(); });
+  window.addEventListener('aj:mode:change',()=>{readDuration();reset();});
+  window.addEventListener('aj:game:end',()=>{if(!timeoutHandled)finish();});
+  window.addEventListener('aj:game:pause',()=>{stop();});
+  window.addEventListener('aj:game:resume',()=>{start();});
 
-  // Initial render
-  render();
+  readDuration(); reset(); render();
 })();
-</script><style>
+</script>
+<style>
   #pauseBtn{
     cursor:pointer; border:none; outline:none;
     background:#e53e3e; color:#fff; font-weight:700;
