@@ -2948,6 +2948,97 @@ body[data-theme="noche"] .regv2-btn{
   }
 }
 </style>
+
+<style id="aj-fullscreen-mobile-max-gray-canvas-v3">
+/* Ajetrez — fullscreen móvil v3: usar toda la base gris como lienzo.
+   El tablero crece al máximo posible sin perder las barras superior/inferior. */
+@media (max-width:900px), (pointer:coarse){
+  #fsRoot:fullscreen,
+  #fsRoot:-webkit-full-screen{
+    width:100vw !important;
+    height:100dvh !important;
+    min-width:100vw !important;
+    min-height:100dvh !important;
+    max-width:100vw !important;
+    max-height:100dvh !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    overflow:hidden !important;
+    box-sizing:border-box !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    background:transparent !important;
+    --fs-toolbar-h:40px;
+    --fs-toolbar-gap:4px;
+  }
+
+  /* El tamaño se decide por el ancho total del tablero y por la altura disponible.
+     Ya no se reserva una franja vertical excesiva para las barras. */
+  #fsRoot:fullscreen,
+  #fsRoot:-webkit-full-screen{
+    --fs-square: min(
+      calc((100vw - 4px) / 24),
+      calc((100dvh - (2 * var(--fs-toolbar-h)) - (2 * var(--fs-toolbar-gap)) - 4px) / 8)
+    );
+    --square:var(--fs-square) !important;
+    --toolbar-h:var(--fs-toolbar-h) !important;
+    --toolbar-gap:var(--fs-toolbar-gap) !important;
+  }
+
+  #fsRoot:fullscreen .shell,
+  #fsRoot:-webkit-full-screen .shell{
+    width:100% !important;
+    height:100% !important;
+    min-height:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:grid !important;
+    grid-template-rows:var(--toolbar-h) var(--toolbar-gap) auto var(--toolbar-gap) var(--toolbar-h) !important;
+    align-content:center !important;
+    justify-items:center !important;
+    box-sizing:border-box !important;
+  }
+
+  #fsRoot:fullscreen #topBar,
+  #fsRoot:fullscreen #bottomBar,
+  #fsRoot:fullscreen .board-wrap,
+  #fsRoot:-webkit-full-screen #topBar,
+  #fsRoot:-webkit-full-screen #bottomBar,
+  #fsRoot:-webkit-full-screen .board-wrap{
+    width:calc(var(--square) * var(--board-cols)) !important;
+    max-width:100vw !important;
+    box-sizing:border-box !important;
+  }
+
+  #fsRoot:fullscreen #topBar,
+  #fsRoot:fullscreen #bottomBar,
+  #fsRoot:-webkit-full-screen #topBar,
+  #fsRoot:-webkit-full-screen #bottomBar{
+    height:var(--toolbar-h) !important;
+    min-height:var(--toolbar-h) !important;
+    max-height:var(--toolbar-h) !important;
+    overflow:visible !important;
+  }
+
+  #fsRoot:fullscreen #bottomBar,
+  #fsRoot:-webkit-full-screen #bottomBar{
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    margin:0 !important;
+  }
+
+  #fsRoot:fullscreen #topBar,
+  #fsRoot:-webkit-full-screen #topBar{
+    position:relative !important;
+    overflow:visible !important;
+  }
+}
+</style>
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
