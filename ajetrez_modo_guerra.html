@@ -16059,3 +16059,27 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
   #btn-open-regv2-tab,
   #regv2-open{ display:none !important; }
 </style>
+
+<style id="aj-final-menu-down-2mm-frame-up-3mm">
+/* Ajuste solicitado: solo posición visual del botón Menú y de la base gris. */
+#bottomBar #btnMegaMenu{
+  position: relative !important;
+  top: 2mm !important;
+}
+/* La base gris conserva su tamaño actual, pero se desplaza 3mm hacia arriba. */
+.frame::before{
+  top: 4mm !important;
+  bottom: 8mm !important;
+}
+@media (max-width:900px), (pointer:coarse){
+  .frame::before{
+    top: 4mm !important;
+    bottom: 8mm !important;
+  }
+}
+#fsRoot:fullscreen::before,
+#fsRoot:-webkit-full-screen::before{
+  top: -3mm !important;
+  bottom: 3mm !important;
+}
+</style>
