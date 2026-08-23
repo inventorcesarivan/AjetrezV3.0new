@@ -13599,35 +13599,119 @@ function showVeteranBanner(color){
     }
   }
 </style>
-<script id="aj-controls-top-left-authoritative-js">
+<style id="aj-controls-menu-restart-final-css">
+/*
+  AJETREZ — Configuración final:
+  Menú | Reiniciar | ... | Pantalla completa
+  Reiniciar queda fuera de #rightControls para evitar que las reglas
+  antiguas de controles superiores vuelvan a moverlo.
+*/
+#bottomBar{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto auto minmax(0,1fr) !important;
+  align-items:center !important;
+  column-gap:8px !important;
+  position:relative !important;
+  overflow:visible !important;
+}
+
+#bottomBar #donateBox{
+  grid-column:1 !important;
+  justify-self:start !important;
+  align-self:center !important;
+  position:static !important;
+  transform:none !important;
+  margin:0 !important;
+}
+
+#bottomBar #btnMegaMenu{
+  grid-column:2 !important;
+  justify-self:end !important;
+  align-self:center !important;
+  position:static !important;
+  transform:none !important;
+  margin:0 !important;
+}
+
+#bottomBar #btnRestartBR{
+  grid-column:3 !important;
+  justify-self:start !important;
+  align-self:center !important;
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+  margin:0 !important;
+  float:none !important;
+  flex:0 0 auto !important;
+  white-space:nowrap !important;
+}
+
+#bottomBar #rightControls{
+  display:contents !important;
+}
+
+#bottomBar #btnFSBR{
+  grid-column:4 !important;
+  justify-self:end !important;
+  align-self:center !important;
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+  margin:0 !important;
+}
+
+@media (max-width:900px), (pointer:coarse){
+  #bottomBar{
+    column-gap:6px !important;
+  }
+  #bottomBar #btnRestartBR{
+    justify-self:start !important;
+  }
+  #bottomBar #btnFSBR{
+    justify-self:end !important;
+  }
+}
+</style>
+<script id="aj-controls-menu-restart-final">
 (function(){
-  if(window.__AJ_CONTROLS_TOP_LEFT_AUTHORITATIVE__) return;
-  window.__AJ_CONTROLS_TOP_LEFT_AUTHORITATIVE__=true;
+  if(window.__AJ_CONTROLS_MENU_RESTART_FINAL__) return;
+  window.__AJ_CONTROLS_MENU_RESTART_FINAL__=true;
 
   function place(){
-    var top=document.getElementById('topBar');
+    var bottom=document.getElementById('bottomBar');
+    var menu=document.getElementById('btnMegaMenu');
     var group=document.getElementById('rightControls');
-    var fs=document.getElementById('btnFSBR');
     var restart=document.getElementById('btnRestartBR');
-    if(!top || !group || !fs || !restart) return false;
+    var fs=document.getElementById('btnFSBR');
+    if(!bottom || !menu || !group || !restart) return false;
 
-    /* El grupo debe pertenecer a la barra superior, no a la inferior. */
-    if(group.parentElement!==top) top.appendChild(group);
-    if(fs.parentElement!==group) group.appendChild(fs);
-    if(restart.parentElement!==group) group.appendChild(restart);
+    /* Reiniciar pertenece al bottomBar y queda inmediatamente después de Menú. */
+    if(restart.parentElement!==bottom || restart.previousElementSibling!==menu){
+      menu.insertAdjacentElement('afterend', restart);
+    }
 
-    /* Eliminar coordenadas inline heredadas de versiones anteriores. */
-    [group,fs,restart].forEach(function(el){
-      el.style.left='';
-      el.style.right='';
-      el.style.top='';
-      el.style.bottom='';
-      el.style.transform='';
+    /* Pantalla completa permanece dentro del grupo de controles. */
+    if(fs && fs.parentElement!==group){
+      group.appendChild(fs);
+    }
+
+    /* El grupo ya no debe contener Reiniciar. */
+    if(restart.parentElement===group){
+      bottom.insertBefore(restart, group);
+    }
+
+    /* Eliminar coordenadas heredadas que puedan desplazar Reiniciar. */
+    [restart].forEach(function(el){
+      el.style.position='static';
+      el.style.left='auto';
+      el.style.right='auto';
+      el.style.top='auto';
+      el.style.bottom='auto';
+      el.style.transform='none';
+      el.style.margin='0';
+      el.style.float='none';
     });
 
-    /* Orden definitivo. */
-    group.appendChild(fs);
-    group.appendChild(restart);
     return true;
   }
 
@@ -13637,14 +13721,18 @@ function showVeteranBanner(color){
     var timer=setInterval(function(){
       tries++;
       place();
-      if(tries>=30) clearInterval(timer);
+      if(tries>=40) clearInterval(timer);
     },100);
-    window.addEventListener('resize',place);
+
+    window.addEventListener('resize',function(){ requestAnimationFrame(place); });
     document.addEventListener('fullscreenchange',function(){ setTimeout(place,0); });
   }
 
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true});
-  else start();
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',start,{once:true});
+  }else{
+    start();
+  }
 })();
 </script>
 <!-- /AJETREZ: CONTROLES DEFINITIVOS -->
