@@ -2825,6 +2825,23 @@ body[data-theme="noche"] .regv2-btn{
     }
   }
 </style>
+
+<style id="aj-donate-final-left">
+/* Colabora: posición final a la izquierda, independiente de la grilla */
+#bottomBar #donateBox{
+  position:absolute !important; left:8px !important; right:auto !important;
+  top:50% !important; bottom:auto !important;
+  grid-column:auto !important; justify-self:auto !important; align-self:center !important;
+  transform:translateY(-50%) scale(.9) !important;
+  transform-origin:left center !important; margin:0 !important;
+  display:flex !important; align-items:center !important; gap:14px !important; z-index:13 !important;
+}
+#bottomBar #donateBox .label, #bottomBar #donateBox .imgbtn{ margin:0 !important; }
+@media (max-width:900px), (pointer:coarse){
+  #bottomBar #donateBox{left:6px !important; right:auto !important;}
+}
+</style>
+
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
@@ -14050,3 +14067,57 @@ console.log('[AJ] IA especial Modo Amenaza activa: prioridad a Liberación + des
     }
   }
 </style>
+<!-- AJETREZ: Corrección definitiva — Colaboración a la derecha en WEB y MÓVIL -->
+<style id="aj-donate-right-web-mobile-definitive">
+  /* El bloque de colaboración queda fuera de la grilla visual:
+     su posición horizontal depende exclusivamente de right. */
+  #bottomBar #donateBox{
+    position:absolute !important;
+    left:auto !important;
+    right:8px !important;
+    top:50% !important;
+    bottom:auto !important;
+    width:max-content !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:8px !important;
+    float:none !important;
+    clear:none !important;
+    grid-column:auto !important;
+    grid-row:auto !important;
+    justify-self:auto !important;
+    align-self:center !important;
+    transform:translateY(-50%) scale(.9) !important;
+    transform-origin:right center !important;
+    z-index:2147483000 !important;
+  }
+  #bottomBar #donateBox .label,
+  #bottomBar #donateBox .imgbtn{
+    position:static !important;
+    left:auto !important; right:auto !important;
+    top:auto !important; bottom:auto !important;
+    margin:0 !important;
+    transform:none !important;
+    float:none !important;
+  }
+  #bottomBar #donateBox .label{ margin-right:-8px !important; }
+
+  /* En móvil conserva la misma lógica, solo con un pequeño margen al borde. */
+  @media (max-width:900px), (pointer:coarse){
+    #bottomBar #donateBox{
+      left:auto !important;
+      right:6px !important;
+      top:50% !important;
+      bottom:auto !important;
+      gap:6px !important;
+      transform:translateY(-50%) scale(.9) !important;
+      transform-origin:right center !important;
+    }
+  }
+</style>
+
