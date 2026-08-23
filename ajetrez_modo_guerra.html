@@ -2770,6 +2770,20 @@ body[data-theme="noche"] .regv2-btn{
     top: calc(6px + 3mm + 5mm) !important;
   }
 </style>
+
+<style id="aj-mobile-payment-size-final">
+@media (max-width: 900px), (pointer: coarse){
+  #btnPaypal, #btnMercadoPago{
+    transform: scale(0.85) !important;
+    transform-origin: center center !important;
+    margin-left: -3px !important;
+    margin-right: -3px !important;
+  }
+  #btnPaypal img, #btnMercadoPago img{
+    display:block !important;
+  }
+}
+</style>
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
@@ -14252,3 +14266,147 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
 })();
 </script>
 <!-- /AJETREZ: SINCRONIZACION FINAL RELOJ + PAUSA -->
+
+
+<!-- AJETREZ: REINICIAR JUNTO AL RELOJ — CONFIGURACION UNIFICADA WEB/MOVIL/FULLSCREEN -->
+<style id="aj-restart-next-to-clock-final">
+  /*
+    El botón Reiniciar deja de depender de #rightControls para su posición.
+    Se integra visualmente en #timeIndicator, inmediatamente después del reloj
+    y antes del botón Pausa. Esto usa la misma regla en web, móvil y fullscreen.
+  */
+  #topBar #timeIndicator{
+    display:inline-flex !important;
+    align-items:center !important;
+  }
+
+  #topBar #timeIndicator #btnRestartBR{
+    position:static !important;
+    inset:auto !important;
+    float:none !important;
+    transform:none !important;
+    flex:0 0 auto !important;
+    align-self:center !important;
+    order:4 !important;
+    margin:0 0 0 8px !important;
+    white-space:nowrap !important;
+    width:auto !important;
+    min-width:0 !important;
+    z-index:2147483001 !important;
+  }
+
+  #topBar #timeIndicator #pauseBtn{
+    order:5 !important;
+    margin-left:8px !important;
+  }
+
+  /* Mantener el resto del reloj sin cambios de tamaño/posición. */
+  #topBar #timeIndicator .dot,
+  #topBar #timeIndicator .label,
+  #topBar #timeIndicator #timeTxt{
+    order:3 !important;
+  }
+
+  @media (max-width:900px), (pointer:coarse){
+    #topBar #timeIndicator #btnRestartBR{
+      margin-left:6px !important;
+    }
+  }
+
+  /* Fullscreen: exactamente la misma integración con el reloj. */
+  #fsRoot:fullscreen #topBar #timeIndicator #btnRestartBR{
+    position:static !important;
+    inset:auto !important;
+    transform:none !important;
+    margin-left:8px !important;
+  }
+
+  @media (max-width:900px), (pointer:coarse){
+    #fsRoot:fullscreen #topBar #timeIndicator #btnRestartBR{
+      margin-left:6px !important;
+    }
+  }
+</style>
+
+<script id="aj-restart-next-to-clock-final-js">
+(function(){
+  if(window.__AJ_RESTART_NEXT_TO_CLOCK_FINAL__) return;
+  window.__AJ_RESTART_NEXT_TO_CLOCK_FINAL__ = true;
+
+  function placeRestart(){
+    var top = document.getElementById('topBar');
+    var clock = document.getElementById('timeIndicator');
+    var restart = document.getElementById('btnRestartBR');
+    if(!top || !clock || !restart) return false;
+
+    /*
+      Insertarlo después de #timeTxt garantiza que "Reiniciar" quede
+      inmediatamente al lado del reloj, independientemente de cómo hayan
+      quedado los otros controles por las configuraciones anteriores.
+    */
+    var timeTxt = document.getElementById('timeTxt');
+    var pause = document.getElementById('pauseBtn');
+
+    if(timeTxt && timeTxt.parentElement === clock){
+      if(timeTxt.nextElementSibling !== restart){
+        clock.insertBefore(restart, pause && pause.parentElement === clock ? pause : null);
+      }
+    }else if(restart.parentElement !== clock){
+      clock.appendChild(restart);
+    }
+
+    /* Orden visual definitivo: reloj -> Reiniciar -> Pausa. */
+    restart.style.order = '4';
+    restart.style.position = 'static';
+    restart.style.inset = 'auto';
+    restart.style.transform = 'none';
+    restart.style.marginLeft = window.matchMedia('(max-width:900px), (pointer:coarse)').matches ? '6px' : '8px';
+    restart.style.marginRight = '0';
+    restart.style.top = 'auto';
+    restart.style.left = 'auto';
+    restart.style.right = 'auto';
+    restart.style.bottom = 'auto';
+
+    if(pause && pause.parentElement === clock){
+      pause.style.order = '5';
+      pause.style.marginLeft = '8px';
+    }
+    return true;
+  }
+
+  function start(){
+    placeRestart();
+
+    var top = document.getElementById('topBar');
+    if(top){
+      /*
+        Algunas de las configuraciones anteriores recolocan controles al
+        iniciar, cambiar tamaño o entrar/salir de fullscreen. Este observer
+        vuelve a aplicar solamente la relación Reiniciar -> reloj, sin tocar
+        la posición de los demás controles.
+      */
+      var observer = new MutationObserver(function(){
+        placeRestart();
+      });
+      observer.observe(top, {childList:true, subtree:true});
+
+      window.addEventListener('resize', function(){ setTimeout(placeRestart, 0); });
+      document.addEventListener('fullscreenchange', function(){ setTimeout(placeRestart, 0); });
+    }
+
+    var tries = 0;
+    var timer = setInterval(function(){
+      placeRestart();
+      tries++;
+      if(tries >= 60) clearInterval(timer);
+    }, 100);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', start, {once:true});
+  }else{
+    start();
+  }
+})();
+</script>
+<!-- /AJETREZ: REINICIAR JUNTO AL RELOJ -->
