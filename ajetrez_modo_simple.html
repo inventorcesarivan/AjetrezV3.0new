@@ -2794,6 +2794,8 @@ body[data-theme="noche"] .regv2-btn{
   }
 }
 </style>
+
+
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
@@ -2825,7 +2827,7 @@ body[data-theme="noche"] .regv2-btn{
 </div>
 <div aria-label="Overlay de inicio" aria-live="polite" id="startOverlay"><div class="start-card"><div style="font-weight:800; font-size:18px;">Comenzar partida
 </div><button id="btnStartGame" type="button">Comenzar partida</button><div class="hint">Pulsa para iniciar. Bloquea el juego en todos los modos hasta empezar.
-</div></div></div><div aria-label="Ajetrez base limpia" id="board"></div><div aria-label="Decidir desplazamiento de fila" class="shift-ctrl" id="shiftCtrl" role="group"><span class="lbl" id="shiftLbl">Fila</span><span id="chooseWrap"><button aria-label="Mantener" id="btnKeep" type="button">Mantener</button><button aria-label="Desplazar sección" id="btnShift" type="button">Desplazar sección</button></span><span id="confirmWrap" style="display:none"><span id="choiceTxt" style="font-size:12px;font-weight:700;margin-right:6px;opacity:.85">Confirmar:</span><button aria-label="Confirmar" class="confirm" id="btnConfirm" type="button">Confirmar</button><button aria-label="Volver a elegir" id="btnBack" type="button">Cambiar elección</button></span></div><div id="overlay"><div id="banner">FIN</div></div><div id="panelBackdrop"></div><div aria-labelledby="mpTitle" aria-modal="true" id="megaPanel" role="dialog"><div class="apply-toast" id="applyToast">✔ Cambios guardados
+</div></div></div><div aria-label="Ajetrez base limpia" id="board"></div><div aria-label="Decidir desplazamiento de fila" class="shift-ctrl" id="shiftCtrl" role="group"><span class="lbl" id="shiftLbl">Fila</span><span id="chooseWrap"><button aria-label="Mantener" id="btnKeep" type="button">Mantener</button><button aria-label="Desplazar sección" id="btnShift" type="button">Desplazar sección</button></span><span id="confirmWrap" style="display:none"><button aria-label="Confirmar" class="confirm" id="btnConfirm" type="button">Confirmar</button><button aria-label="Volver a elegir" id="btnBack" type="button">Cambiar elección</button></span></div><div id="overlay"><div id="banner">FIN</div></div><div id="panelBackdrop"></div><div aria-labelledby="mpTitle" aria-modal="true" id="megaPanel" role="dialog"><div class="apply-toast" id="applyToast">✔ Cambios guardados
 </div><div class="mp-header"><div id="mpTitle">Panel de Ajetrez
 </div><div class="right"><span class="hint-sm" id="loggedUser"></span><button class="btn secondary" id="btnLogout" type="button">Cerrar sesión</button><button class="btn" id="btnClosePanel" type="button">Cerrar</button></div></div><div id="loginView"><h2>Iniciar sesión</h2><div class="field"><label for="inpUser">Usuario</label><input id="inpUser" placeholder="Tu nombre de usuario" type="text"/></div><div class="field"><label for="inpPass">Contraseña</label><input id="inpPass" placeholder="••••••••" type="password"/></div><button class="btn" id="btnLogin" type="button">Entrar</button><div class="hint-sm">*Login local (almacenado en este navegador). Próximamente: cuentas online.
 </div></div><div id="tabsView"><div class="mp-tabs"><button class="tab-btn active" data-tab="tab-version">Versión de Ajetrez</button><button class="tab-btn" data-tab="tab-modos">Modos de juego</button><button class="tab-btn" data-tab="tab-personalizacion">Personalización</button><button class="tab-btn" data-tab="tab-registros" id="btnRegistrosTab">Registros</button></div><div class="mp-content"><div class="tab" id="tab-personalizacion" style="display:none"><h3>Personalización del juego</h3><div class="row"><div class="field"><label>Estilo de piezas</label><select id="selSprites"><option value="auto">Auto (usar sprites si están disponibles)</option><option value="sprites">Sprites (imágenes)</option><option value="unicode">Unicode (símbolos)</option></select>
@@ -3360,7 +3362,6 @@ function showChoose(row){
 }
 function showConfirm(label){
   applyShiftCtrlLockVisual();
-  document.getElementById('choiceTxt').textContent = 'Confirmar: ' + label;
   chooseWrap.style.display = 'none';
   confirmWrap.style.display = 'inline';
   ctrlEl.style.display = 'flex';
@@ -4384,8 +4385,6 @@ window.AJ_RULES.legalShift = function(row, target, boardRef, offsRef){
       }
       const tabs = Array.from(document.querySelectorAll('.tab'));
       tabs.forEach(t => t.style.display = (t.id===id)?'block':'none');
-      if(id==='tab-info'){ try{ renderLogs(); }catch(_){ } }
-    });
       if(id==='tab-info'){ try{ renderLogs(); }catch(_){ } }
     });
   })();
@@ -13994,3 +13993,377 @@ function showVeteranBanner(color){
 })();
 </script>
 <!-- /AJETREZ: REINICIAR JUNTO AL RELOJ -->
+
+
+<!-- AJETREZ: NUEVA ARQUITECTURA DEL MENÚ PRINCIPAL / CONFIGURAR PARTIDA -->
+<style id="aj-main-menu-v2-style">
+  #ajWelcomeView,
+  #ajMainMenuView,
+  #ajConfigView{
+    display:none;
+    flex:1;
+    min-height:0;
+    flex-direction:column;
+    overflow:hidden;
+  }
+
+  #ajWelcomeView{
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:28px 24px;
+    gap:14px;
+  }
+  #ajWelcomeView .aj-welcome-card{
+    width:min(520px, 92%);
+    padding:28px 26px;
+    border:1px solid rgba(0,0,0,.12);
+    border-radius:18px;
+    background:rgba(255,255,255,.96);
+    box-shadow:0 10px 28px rgba(0,0,0,.12);
+  }
+  #ajWelcomeView h2{ margin:0 0 12px; font-size:24px; }
+  #ajWelcomeView p{ margin:8px 0; line-height:1.5; }
+  #ajWelcomeView .aj-welcome-note{ font-weight:800; margin-top:16px; }
+  #btnConfigurarPartida{
+    margin-top:12px;
+    min-width:190px;
+    font-weight:900;
+  }
+
+  #ajMainMenuView{
+    padding:22px;
+    overflow:auto;
+  }
+  #ajMainMenuView .aj-main-menu-inner{
+    width:min(620px, 100%);
+    margin:auto;
+  }
+  #ajMainMenuView h2{
+    margin:0 0 8px;
+    text-align:center;
+  }
+  #ajMainMenuView .aj-main-menu-subtitle{
+    text-align:center;
+    opacity:.7;
+    margin:0 0 20px;
+  }
+  .aj-main-menu-option{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:15px 17px;
+    margin:10px 0;
+    border:1px solid rgba(0,0,0,.14);
+    border-radius:14px;
+    background:#f7f7f7;
+    cursor:pointer;
+    font-weight:900;
+    font-size:15px;
+  }
+  .aj-main-menu-option:hover{ background:#ededed; }
+  .aj-main-menu-option .desc{ font-weight:600; opacity:.68; font-size:12px; }
+
+  #ajConfigView{
+    overflow:hidden;
+  }
+  #ajConfigHeader{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    border-bottom:1px solid #eee;
+  }
+  #ajConfigHeader h2{ margin:0; font-size:17px; flex:1; }
+  #ajConfigHeader .btn{ white-space:nowrap; }
+  #ajConfigView #tabsView{
+    display:none;
+    flex:1;
+    min-height:0;
+    overflow:hidden;
+  }
+  #ajConfigView .mp-tabs{
+    flex:0 0 auto;
+  }
+  #ajConfigView .mp-content{
+    min-height:0;
+  }
+
+  @media (max-width:600px){
+    #ajWelcomeView{ padding:18px 12px; }
+    #ajWelcomeView .aj-welcome-card{ width:94%; padding:22px 16px; }
+    #ajWelcomeView h2{ font-size:21px; }
+    #ajMainMenuView{ padding:14px; }
+    #ajConfigHeader{ padding:8px 9px; }
+    #ajConfigHeader h2{ font-size:15px; }
+    #ajConfigHeader .btn{ padding:6px 9px; font-size:12px; }
+  }
+</style>
+<script id="aj-main-menu-v2-script">
+(function(){
+  if(window.__AJ_MAIN_MENU_V2__) return;
+  window.__AJ_MAIN_MENU_V2__ = true;
+
+  function qs(s,r){ return (r||document).querySelector(s); }
+  function qsa(s,r){ return Array.from((r||document).querySelectorAll(s)); }
+
+  function buildMenu(){
+    const panel = qs('#megaPanel');
+    const headerTitle = qs('#mpTitle', panel);
+    const loginView = qs('#loginView', panel);
+    const tabsView = qs('#tabsView', panel);
+    if(!panel || !loginView || !tabsView) return false;
+    if(qs('#ajWelcomeView', panel)) return true;
+
+    /* Bienvenida */
+    const welcome = document.createElement('div');
+    welcome.id = 'ajWelcomeView';
+    welcome.innerHTML = `
+      <div class="aj-welcome-card">
+        <h2>Bienvenido a Ajetrez</h2>
+        <p>¡Bienvenido! Nos alegra tenerte aquí. Antes de comenzar a jugar, primero debes configurar la partida.</p>
+        <p class="aj-welcome-note">Utiliza el botón de abajo para ir al menú principal y comenzar la configuración.</p>
+        <button class="btn" id="btnConfigurarPartida" type="button">Configurar partida</button>
+      </div>`;
+
+    /* Menú principal */
+    const mainMenu = document.createElement('div');
+    mainMenu.id = 'ajMainMenuView';
+    mainMenu.innerHTML = `
+      <div class="aj-main-menu-inner">
+        <h2>Menú principal</h2>
+        <p class="aj-main-menu-subtitle">Selecciona una sección.</p>
+        <button class="aj-main-menu-option" id="btnOpenConfigPartida" type="button">
+          <span>⚙ Configurar partida</span>
+          <span class="desc">Versión, modo, personalización y registros</span>
+        </button>
+      </div>`;
+
+    /* Configuración: reutiliza íntegramente las cuatro pestañas existentes */
+    const config = document.createElement('div');
+    config.id = 'ajConfigView';
+    const configHeader = document.createElement('div');
+    configHeader.id = 'ajConfigHeader';
+    configHeader.innerHTML = `
+      <button class="btn secondary" id="btnBackToMainMenu" type="button">← Menú</button>
+      <h2>⚙ Configurar partida</h2>`;
+    config.appendChild(configHeader);
+    config.appendChild(tabsView);
+
+    loginView.insertAdjacentElement('afterend', welcome);
+    welcome.insertAdjacentElement('afterend', mainMenu);
+    mainMenu.insertAdjacentElement('afterend', config);
+
+    return true;
+  }
+
+  function showOnly(view){
+    const panel = qs('#megaPanel');
+    const login = qs('#loginView',panel);
+    const welcome = qs('#ajWelcomeView',panel);
+    const main = qs('#ajMainMenuView',panel);
+    const config = qs('#ajConfigView',panel);
+    if(!panel || !login || !welcome || !main || !config) return;
+    welcome.style.display = 'none';
+    main.style.display = 'none';
+    config.style.display = 'none';
+    if(view==='none') return;
+    login.style.display = 'none';
+    if(view==='welcome') welcome.style.display='flex';
+    if(view==='main') main.style.display='flex';
+    if(view==='config') config.style.display='flex';
+  }
+
+  function openFirstConfigTab(){
+    const panel=qs('#megaPanel');
+    if(!panel) return;
+    const tabsView=qs('#tabsView',panel);
+    if(!tabsView) return;
+    tabsView.style.display='flex';
+    const buttons=qsa('.mp-tabs .tab-btn',panel);
+    const tabs=qsa('.mp-content > .tab',panel);
+    if(!buttons.length) return;
+    let active=buttons.find(b=>b.classList.contains('active')) || buttons[0];
+    buttons.forEach(b=>b.classList.toggle('active',b===active));
+    const id=active.getAttribute('data-tab');
+    tabs.forEach(t=>t.style.display=t.id===id?'block':'none');
+    if(id==='tab-registros' && window.renderLogs){ try{window.renderLogs();}catch(_){} }
+  }
+
+  function showWelcomeAfterLogin(){
+    buildMenu();
+    const title=qs('#mpTitle');
+    if(title) title.textContent='Bienvenido a Ajetrez';
+    showOnly('welcome');
+  }
+
+  function showMainMenu(){
+    buildMenu();
+    const title=qs('#mpTitle');
+    if(title) title.textContent='Menú principal';
+    showOnly('main');
+  }
+
+  function showConfig(){
+    buildMenu();
+    const title=qs('#mpTitle');
+    if(title) title.textContent='Configurar partida';
+    showOnly('config');
+    openFirstConfigTab();
+  }
+
+  function refreshNewMenu(){
+    buildMenu();
+    let u=null;
+    try{u=localStorage.getItem('aj_user');}catch(_){}
+    const login=qs('#loginView');
+    const tabs=qs('#tabsView');
+    if(!u){
+      if(login) login.style.display='flex';
+      showOnly('none');
+      return;
+    }
+    if(login) login.style.display='none';
+    showMainMenu();
+  }
+
+  /* Botones de navegación */
+  document.addEventListener('click',function(e){
+    const t=e.target && e.target.closest ? e.target.closest('#btnConfigurarPartida') : null;
+    if(t){ e.preventDefault(); e.stopPropagation(); showMainMenu(); return; }
+    const m=e.target && e.target.closest ? e.target.closest('#btnOpenConfigPartida') : null;
+    if(m){ e.preventDefault(); e.stopPropagation(); showConfig(); return; }
+    const back=e.target && e.target.closest ? e.target.closest('#btnBackToMainMenu') : null;
+    if(back){ e.preventDefault(); e.stopPropagation(); showMainMenu(); return; }
+  },true);
+
+  /* Captura del login: conserva el login actual y cambia el destino a bienvenida. */
+  document.addEventListener('click',function(e){
+    const btn=e.target && e.target.closest ? e.target.closest('#btnLogin') : null;
+    if(!btn) return;
+    const inp=qs('#inpUser');
+    const u=(inp && inp.value || '').trim();
+    if(!u) return;
+    setTimeout(function(){ showWelcomeAfterLogin(); },0);
+  },true);
+
+  /* Logout: volver al formulario de ingreso. */
+  document.addEventListener('click',function(e){
+    const btn=e.target && e.target.closest ? e.target.closest('#btnLogout') : null;
+    if(!btn) return;
+    setTimeout(function(){
+      const panel=qs('#megaPanel');
+      const login=qs('#loginView',panel);
+      if(login) login.style.display='flex';
+      showOnly('none');
+      const title=qs('#mpTitle');
+      if(title) title.textContent='Panel de Ajetrez';
+    },0);
+  },true);
+
+  /* Al abrir el menú con un usuario ya autenticado, entrar al menú principal. */
+  document.addEventListener('click',function(e){
+    const btn=e.target && e.target.closest ? e.target.closest('#btnMegaMenu') : null;
+    if(!btn) return;
+    setTimeout(function(){
+      let u=null; try{u=localStorage.getItem('aj_user');}catch(_){}
+      if(u) refreshNewMenu();
+    },20);
+  },true);
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',buildMenu,{once:true});
+  }else{
+    buildMenu();
+  }
+})();
+</script>
+<!-- /AJETREZ: NUEVA ARQUITECTURA DEL MENÚ PRINCIPAL / CONFIGURAR PARTIDA -->
+
+<!-- AJETREZ: REPARACIÓN FLUJO BIENVENIDA DESPUÉS DEL LOGIN -->
+<style id="aj-main-menu-v2-repair-style">
+  /* Garantiza contraste y visibilidad del panel de bienvenida. */
+  #megaPanel #ajWelcomeView{
+    color:#111 !important;
+    background:#fff !important;
+  }
+  #megaPanel #ajWelcomeView .aj-welcome-card{
+    color:#111 !important;
+    background:#fff !important;
+  }
+  #megaPanel #ajWelcomeView h2,
+  #megaPanel #ajWelcomeView p{
+    color:#111 !important;
+  }
+</style>
+<script id="aj-main-menu-v2-repair">
+(function(){
+  if(window.__AJ_MAIN_MENU_V2_REPAIR__) return;
+  window.__AJ_MAIN_MENU_V2_REPAIR__ = true;
+
+  function q(id){ return document.getElementById(id); }
+
+  function forceWelcome(){
+    var panel=q('megaPanel'), login=q('loginView'), welcome=q('ajWelcomeView'), main=q('ajMainMenuView'), config=q('ajConfigView');
+    if(!panel || !login || !welcome || !main || !config) return false;
+    var user='';
+    try{ user=(localStorage.getItem('aj_user')||'').trim(); }catch(_){ user=''; }
+    if(!user) return false;
+
+    /* Después de un login correcto, el destino inmediato debe ser Bienvenida. */
+    var alreadyWelcome=(login.style.display==='none' && welcome.style.display==='flex' && main.style.display==='none' && config.style.display==='none');
+    if(alreadyWelcome) return true;
+    login.style.display='none';
+    main.style.display='none';
+    config.style.display='none';
+    welcome.style.display='flex';
+    var title=q('mpTitle');
+    if(title) title.textContent='Bienvenido a Ajetrez';
+    return true;
+  }
+
+  function installObserver(){
+    var login=q('loginView');
+    if(!login || login.__ajWelcomeObserverInstalled) return;
+    login.__ajWelcomeObserverInstalled=true;
+    var observer=new MutationObserver(function(mutations){
+      var hidden=login.style.display==='none';
+      if(!hidden) return;
+      /* Si el usuario acaba de entrar, mostrar bienvenida aunque otro
+         controlador del menú haya actualizado primero las vistas. */
+      setTimeout(forceWelcome,0);
+    });
+    observer.observe(login,{attributes:true,attributeFilter:['style']});
+  }
+
+  function install(){
+    installObserver();
+    var loginBtn=q('btnLogin');
+    if(loginBtn && !loginBtn.__ajWelcomeRepair){
+      loginBtn.__ajWelcomeRepair=true;
+      /* Captura temprana: no depende de que los handlers antiguos de login
+         permitan llegar al listener de click. */
+      loginBtn.addEventListener('pointerup',function(){
+        setTimeout(function(){
+          var u=''; try{u=(localStorage.getItem('aj_user')||'').trim();}catch(_){ }
+          if(u) forceWelcome();
+        },80);
+      });
+    }
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',install,{once:true});
+  }else install();
+
+  /* Por si el panel se construye/reemplaza después. */
+  var rootObserver=new MutationObserver(function(){ install(); });
+  rootObserver.observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+<!-- /AJETREZ: REPARACIÓN FLUJO BIENVENIDA DESPUÉS DEL LOGIN -->
+
+
