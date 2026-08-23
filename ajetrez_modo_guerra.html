@@ -3039,6 +3039,21 @@ body[data-theme="noche"] .regv2-btn{
   }
 }
 </style>
+
+<style id="aj-frame-height-trim-half-square-final">
+/* Ajetrez — reducir visualmente la base contenedora desde abajo hacia arriba
+   aproximadamente medio casillero. No modifica el tamaño ni la posición del tablero. */
+.frame::before{
+  bottom:calc(3mm + (var(--square) * 0.5)) !important;
+}
+
+/* En fullscreen móvil la base gris ocupa toda la pantalla; aquí aplicamos
+   el mismo recorte únicamente por abajo, conservando el límite superior. */
+#fsRoot:fullscreen::before,
+#fsRoot:-webkit-full-screen::before{
+  bottom:calc(var(--square) * 0.5) !important;
+}
+</style>
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
