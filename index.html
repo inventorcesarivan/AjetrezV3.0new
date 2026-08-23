@@ -40,7 +40,7 @@
 <body>
   <div class="app">
     <!-- Carga directa del modo simple -->
-    <iframe id="game" src="ajetrez_modo_simple.html" allow="fullscreen *; gamepad *; screen-wake-lock; xr-spatial-tracking" allowfullscreen></iframe>
+    <iframe id="game" src="ajetrez_modo_clasico.html" allow="fullscreen *; gamepad *; screen-wake-lock; xr-spatial-tracking" allowfullscreen></iframe>
     <div class="overlay" id="overlay">
       <div class="panel">
         <h1>Modo horizontal</h1>
@@ -66,6 +66,7 @@
              window.navigator.standalone === true;
     }
 
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const overlay = document.getElementById('overlay');
     const btnGo = document.getElementById('btnGo');
     const btnInstall = document.getElementById('btnInstall');
@@ -101,11 +102,13 @@
     }
 
     // Si no es app instalada, pedir gesto para FS
-    if (!isStandalone()) {
-      // Intento inicial (algunos navegadores permiten si hubo gesto previo de navegación)
+    if (isMobile && !isStandalone()) {
+      // En móviles se mantiene el flujo de pantalla completa/orientación horizontal.
       setTimeout(()=> enterFS(document.documentElement), 0);
-      // Mostrar overlay hasta que el usuario toque
       overlay.style.display = 'flex';
+    } else {
+      // En PC/web se abre normalmente, sin forzar pantalla completa ni mostrar el aviso.
+      overlay.style.display = 'none';
     }
 
     function done() { overlay.style.display = 'none'; }
@@ -125,7 +128,7 @@
     // Si sale de FS en navegador, volver a mostrar el overlay
     function fsActive(){ return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement; }
     document.addEventListener('fullscreenchange', () => {
-      if (!fsActive() && !isStandalone()) {
+      if (isMobile && !fsActive() && !isStandalone()) {
         overlay.style.display = 'flex';
       }
     });

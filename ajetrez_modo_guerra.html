@@ -2861,228 +2861,6 @@ body[data-theme="noche"] .regv2-btn{
   #loginView .hint-sm { margin-top: 0 !important; }
 }
 </style>
-
-<style id="aj-mobile-fullscreen-perfect-center-v2">
-/* Ajetrez — corrección final de fullscreen móvil.
-   Calcula el tamaño del tablero usando AMBOS ejes de la pantalla para que
-   barra superior + tablero + barra inferior entren completos y el conjunto
-   quede centrado, sin perder los controles superiores.
-   Solo actúa en fullscreen móvil/táctil. */
-@media (max-width:900px), (pointer:coarse){
-  #fsRoot:fullscreen,
-  #fsRoot:-webkit-full-screen{
-    width:100vw !important;
-    height:100dvh !important;
-    min-width:100vw !important;
-    min-height:100dvh !important;
-    max-width:100vw !important;
-    max-height:100dvh !important;
-    margin:0 !important;
-    padding:0 !important;
-    border:0 !important;
-    border-radius:0 !important;
-    overflow:hidden !important;
-    box-sizing:border-box !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-  }
-
-  #fsRoot:fullscreen,
-  #fsRoot:-webkit-full-screen{
-    --fs-square: min(
-      calc((100vw - 8px) / 24),
-      calc((100dvh - (2 * var(--toolbar-h)) - (2 * var(--toolbar-gap)) - 8px) / 8)
-    );
-    --square: var(--fs-square) !important;
-  }
-
-  #fsRoot:fullscreen .shell,
-  #fsRoot:-webkit-full-screen .shell{
-    width:100% !important;
-    height:auto !important;
-    min-height:0 !important;
-    margin:0 !important;
-    display:grid !important;
-    grid-template-rows:var(--toolbar-h) var(--toolbar-gap) auto var(--toolbar-gap) var(--toolbar-h) !important;
-    align-content:center !important;
-    justify-items:center !important;
-    box-sizing:border-box !important;
-  }
-
-  #fsRoot:fullscreen #topBar,
-  #fsRoot:fullscreen #bottomBar,
-  #fsRoot:fullscreen .board-wrap,
-  #fsRoot:-webkit-full-screen #topBar,
-  #fsRoot:-webkit-full-screen #bottomBar,
-  #fsRoot:-webkit-full-screen .board-wrap{
-    width:calc(var(--square) * var(--board-cols)) !important;
-    max-width:calc(100vw - 8px) !important;
-    box-sizing:border-box !important;
-  }
-
-  #fsRoot:fullscreen #topBar,
-  #fsRoot:fullscreen #bottomBar,
-  #fsRoot:-webkit-full-screen #topBar,
-  #fsRoot:-webkit-full-screen #bottomBar{
-    height:var(--toolbar-h) !important;
-    min-height:var(--toolbar-h) !important;
-    max-height:var(--toolbar-h) !important;
-  }
-
-  #fsRoot:fullscreen #bottomBar,
-  #fsRoot:-webkit-full-screen #bottomBar{
-    position:relative !important;
-    left:auto !important;
-    right:auto !important;
-    bottom:auto !important;
-    margin:0 !important;
-    overflow:visible !important;
-  }
-
-  /* Evita que los controles superiores sean recortados por una barra desplazada. */
-  #fsRoot:fullscreen #topBar,
-  #fsRoot:-webkit-full-screen #topBar{
-    position:relative !important;
-    overflow:visible !important;
-  }
-}
-</style>
-
-<style id="aj-fullscreen-mobile-max-gray-canvas-v3">
-/* Ajetrez — fullscreen móvil v3: usar toda la base gris como lienzo.
-   El tablero crece al máximo posible sin perder las barras superior/inferior. */
-@media (max-width:900px), (pointer:coarse){
-  #fsRoot:fullscreen,
-  #fsRoot:-webkit-full-screen{
-    width:100vw !important;
-    height:100dvh !important;
-    min-width:100vw !important;
-    min-height:100dvh !important;
-    max-width:100vw !important;
-    max-height:100dvh !important;
-    margin:0 !important;
-    padding:0 !important;
-    border:0 !important;
-    border-radius:0 !important;
-    overflow:hidden !important;
-    box-sizing:border-box !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    background:transparent !important;
-    --fs-toolbar-h:40px;
-    --fs-toolbar-gap:4px;
-  }
-
-  /* El tamaño se decide por el ancho total del tablero y por la altura disponible.
-     Ya no se reserva una franja vertical excesiva para las barras. */
-  #fsRoot:fullscreen,
-  #fsRoot:-webkit-full-screen{
-    --fs-square: min(
-      calc((100vw - 4px) / 24),
-      calc((100dvh - (2 * var(--fs-toolbar-h)) - (2 * var(--fs-toolbar-gap)) - 4px) / 8)
-    );
-    --square:var(--fs-square) !important;
-    --toolbar-h:var(--fs-toolbar-h) !important;
-    --toolbar-gap:var(--fs-toolbar-gap) !important;
-  }
-
-  #fsRoot:fullscreen .shell,
-  #fsRoot:-webkit-full-screen .shell{
-    width:100% !important;
-    height:100% !important;
-    min-height:0 !important;
-    margin:0 !important;
-    padding:0 !important;
-    display:grid !important;
-    grid-template-rows:var(--toolbar-h) var(--toolbar-gap) auto var(--toolbar-gap) var(--toolbar-h) !important;
-    align-content:center !important;
-    justify-items:center !important;
-    box-sizing:border-box !important;
-  }
-
-  #fsRoot:fullscreen #topBar,
-  #fsRoot:fullscreen #bottomBar,
-  #fsRoot:fullscreen .board-wrap,
-  #fsRoot:-webkit-full-screen #topBar,
-  #fsRoot:-webkit-full-screen #bottomBar,
-  #fsRoot:-webkit-full-screen .board-wrap{
-    width:calc(var(--square) * var(--board-cols)) !important;
-    max-width:100vw !important;
-    box-sizing:border-box !important;
-  }
-
-  #fsRoot:fullscreen #topBar,
-  #fsRoot:fullscreen #bottomBar,
-  #fsRoot:-webkit-full-screen #topBar,
-  #fsRoot:-webkit-full-screen #bottomBar{
-    height:var(--toolbar-h) !important;
-    min-height:var(--toolbar-h) !important;
-    max-height:var(--toolbar-h) !important;
-    overflow:visible !important;
-  }
-
-  #fsRoot:fullscreen #bottomBar,
-  #fsRoot:-webkit-full-screen #bottomBar{
-    position:relative !important;
-    left:auto !important;
-    right:auto !important;
-    bottom:auto !important;
-    margin:0 !important;
-  }
-
-  #fsRoot:fullscreen #topBar,
-  #fsRoot:-webkit-full-screen #topBar{
-    position:relative !important;
-    overflow:visible !important;
-  }
-}
-</style>
-
-<style id="aj-frame-height-trim-half-square-final">
-/* Ajetrez — reducir visualmente la base contenedora desde abajo hacia arriba
-   aproximadamente medio casillero. No modifica el tamaño ni la posición del tablero. */
-.frame::before{
-  bottom:calc(3mm + (var(--square) * 0.5)) !important;
-}
-
-/* En fullscreen móvil la base gris ocupa toda la pantalla; aquí aplicamos
-   el mismo recorte únicamente por abajo, conservando el límite superior. */
-#fsRoot:fullscreen::before,
-#fsRoot:-webkit-full-screen::before{
-  bottom:calc(var(--square) * 0.5) !important;
-}
-</style>
-
-<style id="aj-final-frame-half-square-content-down-2mm">
-/* Ajuste visual final solicitado: reducir la altura de la base gris ~medio casillero
-   y bajar 2 mm todo el contenido que se encuentra sobre ella. No altera la lógica. */
-.frame::before{
-  bottom: calc(8mm + (var(--square) * 0.5)) !important;
-}
-
-/* El contenido completo del juego baja 2 mm, manteniendo intacta la base gris. */
-.frame > .shell{
-  transform: translateY(2mm) !important;
-}
-
-#fsRoot:fullscreen::before,
-#fsRoot:-webkit-full-screen::before{
-  bottom: calc(3mm + (var(--square) * 0.5)) !important;
-}
-
-#fsRoot:fullscreen > .shell,
-#fsRoot:-webkit-full-screen > .shell{
-  transform: translateY(2mm) !important;
-}
-</style>
-<style id="aj-frame-exterior-height-final">
-/* Ajuste visual: reducir aprox. medio casillero la altura del contenedor exterior desde abajo. */
-.frame{
-  clip-path: inset(0 0 0.5em 0) !important;
-}
-</style>
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
@@ -3165,7 +2943,7 @@ body[data-theme="noche"] .regv2-btn{
 <button class="btn small" id="btnZonasReset" type="button">Restablecer</button>
 </div>
 </div>
-</div><div class="field"><label>Estilo visual</label><div aria-label="Elegir estilo visual" class="row" id="themePicker" role="group"><button class="btn theme" data-theme="dia" title="Tonos claros, suaves" type="button">Día</button><button class="btn theme" data-theme="noche" title="Tonos oscuros, suaves" type="button">Noche</button><button class="btn theme" data-theme="madera" title="Tonos madera, suaves" type="button">Madera</button><button class="btn theme" data-theme="arena" title="Arena suave" type="button">Arena</button><button class="btn theme" data-theme="pizarra" title="Pizarra / gris" type="button">Pizarra</button><button class="btn theme" data-theme="oliva" title="Verde oliva suave" type="button">Oliva</button></div><span class="hint-sm">Los estilos son suaves para no distraer durante la partida.</span></div></div></div><div class="tab" id="tab-version" style="display:block"><h3>Versión de Ajetrez</h3><p>Versión actual del juego: <strong id="verActual">2.5 (Estable)</strong></p><div class="field"><label>Seleccionar versión</label><select id="selVersion"><option selected="" value="3_0_simple">Versión 3.0 (modo simple)</option><option value="3_0_amenaza">Versión 3.0 (modo amenaza)</option><option value="3_0_guerra">Versión 3.0 (modo guerra)</option></select></div><button class="btn" id="btnVersionRules" type="button">Reglas de la versión</button><div id="versionRulesPreview"><div class="version-preview" data-version="3_0_simple"><h4>Ajetrez Version 3.0 (Modo simple) — Reglas Básicas del juego</h4><div><p>En este modo, sólo el recuadro central del tablero es jugable. Las partes sobrantes (aunque contengan piezas) no participan hasta que sean ingresadas mediante el desplazamiento de secciones.</p><h5>Distribución de las piezas</h5><p>Por color, el tablero contiene:</p><ul><li>2 reyes</li><li>2 reinas</li><li>4 alfiles, 4 caballos, 4 torres</li><li>16 peones</li></ul><p>Las piezas son distribuidas en el recuadro central de la misma manera que en el ajedrez clásico. En los laterales, (si bien ocupan las mismas posiciones entre ellas). Las piezas se colocan desplazadas, 2 secciones hacia abajo en negras y 2 hacia arriba en blancas.</p><ul><li>Ajetrez respeta todas las reglas del clásico ajedrez, por lo tanto, se debe jugar de la misma manera y respetando las reglas generales del ajedrez clásico.</li><li>A su vez, añade nuevas reglas, que dependen del modo de juego que se utilice.</li><li>En este modo de juego (Modo simple). Luego de capturar, se puede elegir entre desplazar o mantener la sección del tablero donde ahora se ubica la pieza que realizó la captura.</li><li>Si decide desplazar. Se desplaza (hacia el lado opuesto al que se encuentra y solo una vez).</li><li>Luego de la elección de mantener, o desplazar la sección, queda cedido el turno al contrincante.</li><li>El desplazamiento de la sección, puede sacar, o introducir piezas del área jugable.</li></ul><h5>Función del desplazamiento de las secciones</h5><ul><li>Escapar de una captura.</li><li>Alterar las posibles estrategias del oponente.</li><li>Sacar piezas rivales del área jugable.</li><li>Ingresar piezas propias al área jugable.</li><li>También ingresar piezas del oponente para luego intentar capturarlas.</li></ul><p>Importante: Si una pieza sale del recuadro central, esto no significa que queda fuera de juego definitivamente; podría reingresar tras nuevos desplazamientos.</p><h5>⚠️ Imposibilidad de desplazamiento de secciones</h5><ul><li>En jaque/mate no hay desplazamientos de las secciones (aun cuando se haya capturado una pieza del oponente que se encuentre en la sección donde está el rey).</li><li>No se pueden desplazar secciones cuando esa acción implica que el recuadro central jugable quede sin piezas disponibles de alguno de los dos participantes.</li></ul></div></div><div class="version-preview" data-version="3_0_amenaza">
+</div><div class="field"><label>Estilo visual</label><div aria-label="Elegir estilo visual" class="row" id="themePicker" role="group"><button class="btn theme" data-theme="dia" title="Tonos claros, suaves" type="button">Día</button><button class="btn theme" data-theme="noche" title="Tonos oscuros, suaves" type="button">Noche</button><button class="btn theme" data-theme="madera" title="Tonos madera, suaves" type="button">Madera</button><button class="btn theme" data-theme="arena" title="Arena suave" type="button">Arena</button><button class="btn theme" data-theme="pizarra" title="Pizarra / gris" type="button">Pizarra</button><button class="btn theme" data-theme="oliva" title="Verde oliva suave" type="button">Oliva</button></div><span class="hint-sm">Los estilos son suaves para no distraer durante la partida.</span></div></div></div><div class="tab" id="tab-version" style="display:block"><h3>Versión de Ajetrez</h3><p>Versión actual del juego: <strong id="verActual">2.5 (Estable)</strong></p><div class="field"><label>Seleccionar versión</label><select id="selVersion"><option selected="" value="3_0_simple">Versión 3.0 (Modo Clásico)</option><option value="3_0_alianza">Versión 3.0 (Modo Alianza)</option><option value="3_0_amenaza">Versión 3.0 (Modo Amenaza)</option><option value="3_0_guerra">Versión 3.0 (Modo Guerra)</option></select></div><button class="btn" id="btnVersionRules" type="button">Reglas de la versión</button><div id="versionRulesPreview"><div class="version-preview" data-version="3_0_simple"><h4>Ajetrez Version 3.0 (Modo clásico) — Reglas Básicas del juego</h4><div><p>En este modo, sólo el recuadro central del tablero es jugable. Las partes sobrantes (aunque contengan piezas) no participan hasta que sean ingresadas mediante el desplazamiento de secciones.</p><h5>Distribución de las piezas</h5><p>Por color, el tablero contiene:</p><ul><li>2 reyes</li><li>2 reinas</li><li>4 alfiles, 4 caballos, 4 torres</li><li>16 peones</li></ul><p>Las piezas son distribuidas en el recuadro central de la misma manera que en el ajedrez clásico. En los laterales, (si bien ocupan las mismas posiciones entre ellas). Las piezas se colocan desplazadas, 2 secciones hacia abajo en negras y 2 hacia arriba en blancas.</p><ul><li>Ajetrez respeta todas las reglas del clásico ajedrez, por lo tanto, se debe jugar de la misma manera y respetando las reglas generales del ajedrez clásico.</li><li>A su vez, añade nuevas reglas, que dependen del modo de juego que se utilice.</li><li>En este modo de juego (Modo clásico). Luego de capturar, se puede elegir entre desplazar o mantener la sección del tablero donde ahora se ubica la pieza que realizó la captura.</li><li>Si decide desplazar. Se desplaza (hacia el lado opuesto al que se encuentra y solo una vez).</li><li>Luego de la elección de mantener, o desplazar la sección, queda cedido el turno al contrincante.</li><li>El desplazamiento de la sección, puede sacar, o introducir piezas del área jugable.</li></ul><h5>Función del desplazamiento de las secciones</h5><ul><li>Escapar de una captura.</li><li>Alterar las posibles estrategias del oponente.</li><li>Sacar piezas rivales del área jugable.</li><li>Ingresar piezas propias al área jugable.</li><li>También ingresar piezas del oponente para luego intentar capturarlas.</li></ul><p>Importante: Si una pieza sale del recuadro central, esto no significa que queda fuera de juego definitivamente; podría reingresar tras nuevos desplazamientos.</p><h5>⚠️ Imposibilidad de desplazamiento de secciones</h5><ul><li>En jaque/mate no hay desplazamientos de las secciones (aun cuando se haya capturado una pieza del oponente que se encuentre en la sección donde está el rey).</li><li>No se pueden desplazar secciones cuando esa acción implica que el recuadro central jugable quede sin piezas disponibles de alguno de los dos participantes.</li></ul></div></div><div class="version-preview" data-version="3_0_alianza"><h4>Ajetrez Version 3.0 (Modo Alianza) — Reglas Básicas del juego</h4><div><p>En este modo, sólo el recuadro central del tablero es jugable. Las partes sobrantes (aunque contengan piezas) no participan hasta que sean ingresadas mediante el desplazamiento de secciones.</p><h5>Distribución de las piezas</h5><p>Por color, el tablero contiene:</p><ul><li>2 reyes</li><li>2 reinas</li><li>4 alfiles, 4 caballos, 4 torres</li><li>16 peones</li></ul><p>Las piezas son distribuidas en el recuadro central de la misma manera que en el ajedrez clásico. En los laterales, (si bien ocupan las mismas posiciones entre ellas). Las piezas se colocan desplazadas, 2 secciones hacia abajo en negras y 2 hacia arriba en blancas.</p><ul><li>Ajetrez respeta todas las reglas del clásico ajedrez, por lo tanto, se debe jugar de la misma manera y respetando las reglas generales del ajedrez clásico.</li><li>A su vez, añade nuevas reglas, que dependen del modo de juego que se utilice.</li><li>En este modo de juego (Modo Alianza). Luego de capturar, se puede elegir entre desplazar o mantener la sección del tablero donde ahora se ubica la pieza que realizó la captura.</li><li>Si decide desplazar. Se desplaza (hacia el lado opuesto al que se encuentra y solo una vez).</li><li>Luego de la elección de mantener, o desplazar la sección, queda cedido el turno al contrincante.</li><li>El desplazamiento de la sección, puede sacar, o introducir piezas del área jugable.</li></ul><h5>Función del desplazamiento de las secciones</h5><ul><li>Escapar de una captura.</li><li>Alterar las posibles estrategias del oponente.</li><li>Sacar piezas rivales del área jugable.</li><li>Ingresar piezas propias al área jugable.</li><li>También ingresar piezas del oponente para luego intentar capturarlas.</li></ul><p>Importante: Si una pieza sale del recuadro central, esto no significa que queda fuera de juego definitivamente; podría reingresar tras nuevos desplazamientos.</p><h5>⚠️ Imposibilidad de desplazamiento de secciones</h5><ul><li>En jaque/mate no hay desplazamientos de las secciones (aun cuando se haya capturado una pieza del oponente que se encuentre en la sección donde está el rey).</li><li>No se pueden desplazar secciones cuando esa acción implica que el recuadro central jugable quede sin piezas disponibles de alguno de los dos participantes.</li></ul></div></div><div class="version-preview" data-version="3_0_amenaza">
 <h4>Ajetrez — Modo Amenaza (Reglas generales)</h4>
 <h5>1) Tablero y secciones</h5>
 <ul>
@@ -3175,105 +2953,95 @@ body[data-theme="noche"] .regv2-btn{
 <li>Después de una captura se puede mantener la sección o desplazarla hacia el lado opuesto, según las reglas del juego.</li>
 <li>El desplazamiento no puede realizarse cuando el jugador está en jaque ni cuando deja el área jugable sin piezas disponibles de alguno de los dos participantes.</li>
 </ul>
-<h5>2) Distribución lateral: Príncipe, Princesa y Guerreros</h5>
-<ul>
-<li>En los laterales se eliminan las piezas que anteriormente ocupaban esas secciones, con excepción del <strong>Príncipe</strong> y la <strong>Princesa</strong> cautivos.</li>
-<li>Los casilleros restantes de la fila donde están ubicados el Príncipe y la Princesa se completan con <strong>Guerreros con espada</strong>.</li>
-<li>Por lo tanto, al ingresar una sección lateral al área jugable aparecen los Guerreros junto con el Príncipe o la Princesa correspondiente, sin las demás piezas especiales de guerra.</li>
-</ul>
-<h5>3) Príncipe y Princesa</h5>
+<h5>2) Príncipe y Princesa</h5>
 <ul>
 <li>Cada bando posee un <strong>Príncipe</strong> y una <strong>Princesa</strong>, ubicados inicialmente en territorio enemigo.</li>
 <li>Estas piezas permanecen inmóviles: no pueden realizar movimientos propios.</li>
 <li>El Príncipe y la Princesa no pueden ser capturados ni ocupados por una pieza rival.</li>
 <li>Su función es representar piezas especiales que deben ser liberadas mediante el avance de las piezas propias.</li>
 </ul>
-<h5>4) Guerrero con espada</h5>
-<ul>
-<li><strong>Guerrero normal:</strong> puede mover 1 o 2 casilleros hacia adelante, siempre que el recorrido esté libre.</li>
-<li><strong>Captura:</strong> puede capturar 1 casillero hacia adelante o en cualquiera de las dos diagonales hacia adelante.</li>
-<li><strong>Sin captura al paso.</strong></li>
-<li><strong>Veterano:</strong> al llegar a la última fila rival no promociona a otra pieza; se convierte en Veterano.</li>
-<li>Como Veterano puede mover y capturar 1 o 2 casilleros hacia adelante, hacia atrás o en diagonal, pero no puede desplazarse lateralmente.</li>
-<li>En los movimientos de 2 casilleros no puede saltar piezas intermedias.</li>
-<li>Al convertirse en Veterano aparece el indicador ⚔️ sobre la pieza y un aviso informa sus nuevas habilidades.</li>
-</ul>
-<h5>5) Condición de Liberación</h5>
+<h5>3) Condición de Liberación</h5>
 <ul>
 <li>Un jugador logra la <strong>Liberación</strong> cuando una de sus piezas queda ubicada en una casilla adyacente a su propio Príncipe o Princesa.</li>
 <li>Se consideran adyacentes las ocho casillas que rodean directamente a la pieza especial (horizontal, vertical o diagonal).</li>
 <li>La liberación puede producirse después de una jugada normal o después de desplazar una sección del tablero.</li>
 <li>Cuando se cumple esta condición, la partida termina inmediatamente y gana el jugador que realizó la liberación.</li>
 </ul>
-<h5>6) Piezas clásicas del 8×8 central y final de la partida</h5>
+<h5>4) Jaque mate y final de la partida</h5>
 <ul>
-<li>Las piezas que comienzan en el 8×8 central conservan las reglas clásicas correspondientes.</li>
-<li>Los Guerreros que ingresan desde los laterales conservan las reglas especiales indicadas anteriormente.</li>
 <li>El jaque y el jaque mate continúan funcionando como en el ajedrez clásico.</li>
-<li>La partida puede finalizar por <strong>Jaque Mate</strong> o por <strong>Liberación</strong>.</li>
+<li>Por lo tanto, la partida puede finalizar por <strong>Jaque Mate</strong> o por <strong>Liberación</strong>.</li>
 <li>Si no existen jugadas legales y el jugador no está en jaque, se producen tablas.</li>
 </ul>
-<p><strong>Objetivo del Modo Amenaza:</strong> proteger y alcanzar las piezas especiales de tu bando mientras utilizás el movimiento de las secciones del tablero para modificar el campo de juego y abrirte camino hacia el Príncipe y la Princesa.</p>
+<p><strong>Objetivo del Modo Amenaza:</strong> proteger y alcanzar las piezas especiales de tu bando mientras utilizás el movimiento de las secciones del tablero para modificar el campo de juego y crear nuevas oportunidades.</p>
 </div><div class="version-preview" data-version="3_0_guerra">
 <h4>Ajetrez — Modo Guerra (Reglas generales)</h4>
 <h5>1) Tablero y secciones</h5>
 <ul>
 <li>El tablero está formado por 8 secciones horizontales (16×8) que pueden desplazarse; el recuadro central 8×8 es el único jugable al inicio.</li>
 <li>Las piezas ubicadas en los laterales no participan hasta que ingresan al 8×8 mediante un desplazamiento de secciones (según las reglas estándar del proyecto Ajetrez).</li>
-<li>El turno alterna blancas / negras de forma normal. Jaque y jaque mate se aplican como en ajedrez clásico, salvo lo indicado para las piezas especiales.</li>
+<li>El turno alterna blancas / negras de forma normal. Jaque y jaque mate se aplican como en ajedrez clásico (salvo lo indicado para piezas especiales).</li>
 </ul>
-<h5>2) Nueva distribución de las piezas</h5>
+<h5>2) Disposición inicial (qué cambia en los laterales)</h5>
+<p>En los laterales (no en el 8×8 central) se reemplazan las piezas clásicas por piezas “de guerra”:</p>
 <ul>
-<li>En <strong>Modo Guerra no existen peones</strong>.</li>
-<li>Los Guerreros con espada que anteriormente ocupaban los laterales pasan al área central y ocupan la posición que correspondería a los peones.</li>
-<li>En las secciones laterales queda únicamente <strong>una fila con las piezas especiales de guerra</strong>; la fila que contenía a los Guerreros ya no forma parte de la reserva lateral.</li>
-<li>Cuando una sección lateral ingresa al 8×8, introduce las piezas especiales correspondientes sin volver a incorporar peones.</li>
+<li>Rey (K) → <strong>General (G)</strong></li>
+<li>Dama (Q) → <strong>Verdugo (V)</strong> <em>(se mantienen sus reglas vigentes; no se modificaron en esta pasada)</em></li>
+<li>Alfiles (B) → <strong>Mago (M)</strong> y <strong>Maga (W)</strong></li>
+<li>Caballos (N) → <strong>Bufones (J)</strong></li>
+<li>Torres (R) → <strong>Arqueros (A)</strong></li>
+<li>Peones (P) de los laterales → <strong>Guerreros con espada (S)</strong></li>
 </ul>
+<p><strong>Importante:</strong> los peones del 8×8 central permanecen normales (P) con sus reglas clásicas.</p>
 <h5>3) Piezas especiales y sus reglas</h5>
 <p><strong>General (G)</strong></p>
 <ul>
-<li><strong>Alcance máximo:</strong> hasta 3 casilleros por movimiento.</li>
-<li><strong>Direcciones:</strong> ortogonales y diagonales.</li>
+<li><strong>Alcance máximo:</strong> hasta 3 casilleros por movimiento (ajuste actual).</li>
+<li><strong>Direcciones:</strong> ortogonales y diagonales (como “dama corta”).</li>
+<li><strong>Notas:</strong> conserva la lógica de salto corto si estaba activa en tu build (no modificada aquí).</li>
 </ul>
 <p><strong>Mago (M) / Maga (W)</strong></p>
 <ul>
 <li><strong>Movimiento:</strong> exactamente 2 casilleros en cualquiera de las 8 direcciones.</li>
 <li><strong>No saltan:</strong> la casilla intermedia debe estar vacía.</li>
-<li><strong>Transformación al capturar:</strong> si capturan una pieza que no sea el Rey, se transforman en esa pieza y no pueden volver a M/W durante la partida.</li>
+<li><strong>Transformación al capturar:</strong> si capturan una pieza que no sea el Rey, se transforman en esa pieza (y no pueden volver a M/W en toda la partida).</li>
 </ul>
 <p><strong>Bufón (J)</strong></p>
 <ul>
-<li><strong>Movimiento:</strong> patrón de caballo, pero no puede capturar; solo puede aterrizar en casillas vacías.</li>
-<li><strong>Entretener / inmovilizar:</strong> al finalizar su movimiento, las piezas rivales adyacentes en cualquiera de las 8 direcciones quedan inmovilizadas durante <strong>2 turnos del bando afectado</strong>.</li>
-<li><strong>Durante esos 2 turnos:</strong> una pieza inmovilizada no puede moverse, aunque el jugador afectado elija mover otra pieza. El efecto solo se reduce al completarse los turnos correspondientes de ese bando.</li>
-<li><strong>Levantar el efecto:</strong> si el Bufón que generó la inmovilización es capturado, se anula el efecto asociado a ese Bufón.</li>
+<li><strong>Movimiento:</strong> patrón de caballo, pero no puede capturar (solo aterriza en casillas vacías).</li>
+<li><strong>“Entretener” (stun) 2 turnos:</strong> al finalizar su movimiento, todas las piezas rivales adyacentes (8 direcciones) quedan sin poder moverse durante 2 turnos del rival.</li>
+<li><strong>Levantar el efecto:</strong> si el Bufón es capturado, se anula el efecto que provenía de la casilla de ese Bufón.</li>
 </ul>
 <p><strong>Arquero (A)</strong></p>
 <ul>
-<li><strong>Direcciones:</strong> solo hacia adelante y diagonales hacia adelante, según el color.</li>
-<li><strong>Distancias:</strong> exactamente 2 o 4 casilleros.</li>
-<li><strong>Salto:</strong> puede saltar piezas intermedias sin capturarlas.</li>
+<li><strong>Direcciones:</strong> solo hacia adelante y diagonales hacia adelante (según color).</li>
+<li><strong>Distancias:</strong> exactamente 2 o 4 casilleros (no 1 ni 3).</li>
+<li><strong>Salto:</strong> puede saltar piezas intermedias sin capturarlas (como el caballo).</li>
 <li><strong>Captura:</strong> solo en las casillas de destino de 2 o 4 pasos.</li>
 </ul>
-<p><strong>Guerrero con espada</strong></p>
+<p><strong>Guerrero con espada (T) — solo laterales</strong></p>
 <ul>
-<li><strong>Guerrero normal:</strong> puede mover 1 o 2 casilleros hacia adelante, siempre que el recorrido esté libre.</li>
-<li><strong>Captura:</strong> puede capturar 1 casillero hacia adelante o en cualquiera de las dos diagonales hacia adelante.</li>
+<li><strong>Antes de “veterano”:</strong>
+<ul>
+<li><strong>Mover:</strong> 1 o 2 casilleros hacia adelante si el recorrido está libre.</li>
+<li><strong>Capturar:</strong> 1 casillero hacia adelante o en diagonales hacia adelante.</li>
 <li><strong>Sin captura al paso.</strong></li>
-<li><strong>Veterano:</strong> al llegar a la última fila rival no promociona a otra pieza; se convierte en Veterano.</li>
-<li>Como Veterano puede mover y capturar 1 o 2 casilleros hacia adelante, hacia atrás o en diagonal, pero no puede desplazarse lateralmente.</li>
-<li>En los movimientos de 2 casilleros no puede saltar piezas intermedias.</li>
-<li>Al convertirse en Veterano aparece el indicador ⚔️ sobre la pieza y un aviso informa sus nuevas habilidades.</li>
 </ul>
-<h5>4) Piezas del 8×8 central</h5>
+</li>
+<li><strong>Al llegar a la última fila rival:</strong> no promociona; se vuelve “veterano” y, desde ese momento, puede mover y capturar 1 o 2 casilleros hacia adelante, hacia atrás y en diagonal; no puede desplazarse lateralmente y no puede saltar piezas.
+      <ul>
+<li><em>Aviso en pantalla:</em> al adquirir el estado veterano aparece un cartel informando sus nuevas habilidades.</li>
+</ul>
+</li>
+</ul>
+<h5>4) Piezas clásicas (8×8 central)</h5>
 <ul>
-<li>En Modo Guerra los peones han sido reemplazados por Guerreros con espada.</li>
-<li>Las demás piezas que comienzan en el 8×8 conservan las reglas clásicas correspondientes.</li>
-<li>Las piezas especiales que ingresan desde los laterales conservan sus reglas especiales.</li>
+<li>En el recuadro central el juego se rige por las reglas clásicas: peones con doble paso inicial, captura al paso, promoción, enroques, etc.</li>
+<li>Las piezas que ingresan desde los laterales lo hacen con sus reglas especiales (o clásicas, si corresponde).</li>
 </ul>
 <h5>5) Interacciones y consideraciones</h5>
 <ul>
-<li><strong>Inmovilización por Bufón:</strong> una pieza afectada permanece sin poder moverse durante los 2 turnos completos del bando afectado; mover otra pieza no elimina ni reinicia anticipadamente el efecto.</li>
+<li><strong>Congelamiento por Bufón:</strong> una pieza “entretenida” no puede moverse hasta que se cumplan sus 2 turnos o se capture al Bufón que generó ese efecto.</li>
 <li><strong>Transformaciones de M/W:</strong> al transformarse por captura, pierden para siempre su condición de Mago/Maga.</li>
 <li><strong>Secciones:</strong> el ingreso de laterales al 8×8 se realiza con las normas de desplazamiento ya establecidas en Ajetrez para evitar jugadas ilegales o estados imposibles.</li>
 </ul>
@@ -3281,17 +3049,15 @@ body[data-theme="noche"] .regv2-btn{
 <h5>6) Resumen rápido</h5>
 <ul>
 <li>Solo el 8×8 central es jugable; los laterales entran con desplazamientos.</li>
-<li>Modo Guerra no utiliza peones: los Guerreros ocupan su lugar en el área central.</li>
-<li>Los laterales conservan únicamente una fila de piezas especiales de guerra.</li>
-<li>El Guerrero mueve 1 o 2 hacia adelante y captura hacia adelante o en las diagonales delanteras.</li>
-<li>El Veterano mueve y captura 1 o 2 hacia adelante, hacia atrás o en diagonal, sin desplazamiento lateral.</li>
-<li>Indicador ⚔️ cuando un Guerrero se convierte en Veterano.</li>
-<li>El Bufón no captura y puede inmovilizar piezas rivales adyacentes durante 2 turnos del bando afectado.</li>
-<li>Mago/Maga mueven 2 y se transforman al capturar, salvo el Rey.</li>
-<li>Arquero avanza/captura solo adelante y diagonales adelante a 2 o 4 y puede saltar intermedias.</li>
-<li>General: máximo 3 casilleros por movimiento.</li>
+<li>En los laterales solo permanecen el Príncipe, la Princesa y Guerreros con espada (T).</li>
+<li>Peones del centro: clásicos. En los laterales, la fila de cautivos se completa con Guerreros (T).</li>
+<li>Cartel cuando un S se vuelve veterano.</li>
+<li>Bufón no captura pero inmoviliza rivales adyacentes 2 turnos.</li>
+<li>Mago/Maga mueven 2 y se transforman al capturar (salvo Rey).</li>
+<li>Arquero avanza/capta solo adelante/diagonales adelante a 2 o 4 y salta intermedias.</li>
+<li>General: máx. 3 casilleros por movimiento.</li>
 </ul>
-</div><div class="tab" id="tab-info" style="display:none"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3mm;"><h3 style="margin:0;"></h3><button class="btn small danger" id="btnClearLogs" style="margin-left:12px;">Borrar historial</button></div><div class="hint-sm">Se guarda <strong>localmente</strong> en este navegador.
+</div></div><div class="tab" id="tab-info" style="display:none"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3mm;"><h3 style="margin:0;"></h3><button class="btn small danger" id="btnClearLogs" style="margin-left:12px;">Borrar historial</button></div><div class="hint-sm">Se guarda <strong>localmente</strong> en este navegador.
 </div><div class="row"><div class="field"><label>Total jugadas</label><div class="pill" id="statTotal">0
 </div></div><div class="field"><label>Victorias Blancas</label><div class="pill" id="statW">0
 </div></div><div class="field"><label>Victorias Negras</label><div class="pill" id="statB">0
@@ -3403,19 +3169,7 @@ function baseColAtDisplay(row, d, off){
   if(d>=16 && off===0) return d-8;
   return null;
 }
-function deepCopyBoard(b){
-  return b.map(row => row.map(q => {
-    if(!q) return q;
-    const copy = {...q};
-    // El estado de inmovilización del Bufón es mutable y debe clonarse
-    // profundamente. Si solo clonamos la pieza, las simulaciones de jugadas
-    // del motor pueden descontar turnos del tablero real.
-    if(Array.isArray(q.freeze)){
-      copy.freeze = q.freeze.map(f => f ? {...f} : f);
-    }
-    return copy;
-  }));
-}
+function deepCopyBoard(b){ return b.map(row => row.map(q => q ? {...q} : q )); }
 function inside(r,c){ return r>=0 && r<8 && c>=0 && c<8; }
 function insideBoard(r,c){ return r>=0 && r<8 && c>=0 && c<16; }
 
@@ -10839,6 +10593,7 @@ catch(_){}
   }
   var STATUS_BY_VALUE = {
     "3_0_simple": "Estable",
+    "3_0_alianza": "Estable",
     "3_0_guerra": "Estable"
   };
   function syncVersionLabel(){
@@ -12087,7 +11842,8 @@ catch(_){}
 // === Enrutador de versiones (selector del panel) — modo actual: guerra ===
 (function(){
   var ROUTE = {
-    '3_0_simple':  'ajetrez_modo_simple.html',
+    '3_0_simple':  'ajetrez_modo_clasico.html',
+    '3_0_alianza': 'ajetrez_modo_alianza.html',
     '3_0_amenaza': 'ajetrez_modo_amenaza.html',
     '3_0_guerra':  'ajetrez_modo_guerra.html'
   };
@@ -12176,32 +11932,7 @@ catch(_){}
 })();
 </script>
 <style id="aj-veteran-marker-css">
-  /* Contenedor fijo para que los indicadores no cambien el tamaño ni la
-     posición de la pieza dentro de su casillero. */
-  .aj-frozen-piece-wrap{
-    position:relative;
-    width:calc(var(--square) * 0.86);
-    height:calc(var(--square) * 0.86);
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    flex:0 0 auto;
-  }
-  /* Indicador del Bufón: superpuesto, fuera del flujo normal.
-     Así nunca empuja la pieza ni invade el casillero vecino. */
-  .aj-frozen-mark{
-    position:absolute;
-    right:-4px; top:-5px;
-    width:22px; height:22px;
-    border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-size:13px; line-height:1;
-    background:rgba(255,255,255,.95);
-    border:2px solid #333;
-    box-shadow:0 2px 6px rgba(0,0,0,.45);
-    z-index:5;
-    pointer-events:none;
-  }
+  .aj-frozen-piece-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;}
   .aj-veteran-mark{
     position:absolute; right:-4px; top:-5px;
     width:22px; height:22px; border-radius:50%;
@@ -15137,7 +14868,8 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
     rulesView.innerHTML = `
       <div id="ajRulesHeader"><button class="btn secondary" id="btnBackFromRules" type="button">← Volver al inicio</button><h2>📜 Reglas de Ajetrez</h2></div>
       <div id="ajRulesContent"><div class="aj-rules-card"><h3>Reglas de Ajetrez</h3><p class="aj-rules-intro">Selecciona una versión para consultar sus reglas.</p><div class="aj-rules-version-btns">
-        <button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Simple</button>
+        <button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Clásico</button>
+        <button class="aj-rules-version-btn" data-aj-rules-version="3_0_alianza" type="button">Versión 3.0 — Modo Alianza</button>
         <button class="aj-rules-version-btn" data-aj-rules-version="3_0_amenaza" type="button">Versión 3.0 — Modo Amenaza</button>
         <button class="aj-rules-version-btn" data-aj-rules-version="3_0_guerra" type="button">Versión 3.0 — Modo Guerra</button>
       </div></div></div>`;
@@ -15529,7 +15261,7 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
       view.innerHTML=''+
         '<div id="ajRulesHeader"><button class="btn secondary" id="btnBackFromRules" type="button">← Volver al inicio</button><h2>📜 Reglas de Ajetrez</h2></div>'+
         '<div id="ajRulesContent"><div class="aj-rules-card"><h3>Reglas de Ajetrez</h3><p class="aj-rules-intro">Selecciona una versión para consultar sus reglas.</p><div class="aj-rules-version-btns">'+
-        '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Simple</button>'+
+        '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Clásico</button>'+
         '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_amenaza" type="button">Versión 3.0 — Modo Amenaza</button>'+
         '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_guerra" type="button">Versión 3.0 — Modo Guerra</button>'+
         '</div></div></div>' ;
@@ -15567,7 +15299,8 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
     if(!src || !body || !bd) return;
     body.innerHTML=src.innerHTML;
     var labels={
-      '3_0_simple':'Versión 3.0 — Modo Simple',
+      '3_0_simple':'Versión 3.0 — Modo Clásico',
+      '3_0_alianza':'Versión 3.0 — Modo Alianza',
       '3_0_amenaza':'Versión 3.0 — Modo Amenaza',
       '3_0_guerra':'Versión 3.0 — Modo Guerra'
     };
@@ -16087,28 +15820,4 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
   #ajConfigView .mp-tabs .tab-btn[data-tab="tab-registros-v2"],
   #btn-open-regv2-tab,
   #regv2-open{ display:none !important; }
-</style>
-
-<style id="aj-final-menu-down-2mm-frame-up-3mm">
-/* Ajuste solicitado: solo posición visual del botón Menú y de la base gris. */
-#bottomBar #btnMegaMenu{
-  position: relative !important;
-  top: 2mm !important;
-}
-/* La base gris conserva su tamaño actual, pero se desplaza 3mm hacia arriba. */
-.frame::before{
-  top: 4mm !important;
-  bottom: 8mm !important;
-}
-@media (max-width:900px), (pointer:coarse){
-  .frame::before{
-    top: 4mm !important;
-    bottom: 8mm !important;
-  }
-}
-#fsRoot:fullscreen::before,
-#fsRoot:-webkit-full-screen::before{
-  top: -3mm !important;
-  bottom: 3mm !important;
-}
 </style>
