@@ -6,35 +6,6 @@
   /* Desplazar los botones de pago 1 casillero a la derecha */
   #btnMercadoPago{ margin-left: calc(var(--casillero, 64px) * 0.5); }
 
-
-  /* Guía contextual del Bufón */
-  #aj-bufon-guide{
-    display:none;
-    width:min(92vw, 760px);
-    margin:8px auto 10px;
-    padding:9px 14px;
-    border:1px solid rgba(255,215,120,.45);
-    border-radius:12px;
-    background:rgba(35,25,10,.92);
-    color:#f8e7b0;
-    font-size:clamp(12px, 1.7vw, 15px);
-    line-height:1.35;
-    text-align:center;
-    box-shadow:0 4px 16px rgba(0,0,0,.18);
-  }
-  #aj-bufon-guide strong{color:#fff2c7}
-
-  /* Indicador visual provisional para piezas entretenidas por un Bufón */
-  .aj-frozen-piece-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
-  .aj-frozen-piece-wrap .aj-frozen-mark{
-    position:absolute; top:-0.16em; right:-0.08em; z-index:5;
-    font-size:clamp(12px, 1.7vw, 20px); line-height:1;
-    filter:drop-shadow(0 1px 1px rgba(0,0,0,.55));
-    pointer-events:none;
-  }
-  .sq.aj-frozen{
-    box-shadow:inset 0 0 0 2px rgba(120,60,180,.55), inset 0 0 14px rgba(170,90,220,.30);
-  }
 </style><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>Ajetrez — Panel con Login, Pestañas + Info Partidas (v3-fix2)</title><style>
   :root{
     --square: 56px;
@@ -2629,6 +2600,7 @@ body[data-theme="noche"] .regv2-btn{
   }
   @media (prefers-reduced-motion:reduce){#btnVersionRules{animation:none !important;}}
 </style>
+
 <style id="aj-mode-indicator-red-final">
   /* Indicador externo del modo: compacto y destacado */
   #topBar #modeGroup .mode-indicator{
@@ -2645,6 +2617,7 @@ body[data-theme="noche"] .regv2-btn{
     transform-origin:left center !important;
   }
 </style>
+
 <style id="aj-topbar-mode-buttons-uniform-final">
   /* Unificar tamaño y proporción de los dos controles externos de modo */
   #topBar #modeGroup{
@@ -2674,6 +2647,7 @@ body[data-theme="noche"] .regv2-btn{
     border-width:3px !important;
   }
 </style>
+
 <style id="aj-mobile-menu-responsive-final">
 /* AJETREZ — Ajuste móvil final del panel principal.
    El panel deja de depender del tamaño de las casillas para conservar
@@ -2775,6 +2749,8 @@ body[data-theme="noche"] .regv2-btn{
   }
 }
 </style>
+
+
 <style id="aj-mobile-fullscreen-layout-fix">
 /* Ajetrez — fullscreen móvil: barras completas y centrado del conjunto.
    Evita que el cálculo heredado de #bottomBar dependa de --square y termine
@@ -2818,6 +2794,7 @@ body[data-theme="noche"] .regv2-btn{
   }
 }
 </style>
+
 <style id="aj-fullscreen-mobile-bottom-controls-line-final">
 /* Fullscreen móvil: acercar la barra inferior a la línea inferior del tablero. */
 @media (max-width:900px), (pointer:coarse){
@@ -2826,6 +2803,7 @@ body[data-theme="noche"] .regv2-btn{
   }
 }
 </style>
+
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div class="mode-group" id="modeGroup"><button aria-expanded="false" aria-haspopup="true" class="btn" id="btnMode" type="button">Modo de juego</button><span aria-live="polite" class="mode-indicator" id="modeIndicator">Player vs player (local)</span></div><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div><div aria-label="Elegir modo de juego" class="dropdown" id="modeDropdown" role="menu"><button class="btn dd-item" data-label="Versus Bot" data-mode="bot" style="position:static;" type="button">Player Vs Bot</button><button class="btn dd-item" data-label="Player vs player (local)" data-mode="pvp-local" style="position:static;" type="button">Player vs player (local)</button><button class="btn dd-item" data-label="Bot versus bot (demo)" data-mode="bot-vs-bot" style="position:static;" type="button">Bot versus bot (demo)</button><button class="btn dd-item" data-label="Modo Online" data-mode="online" style="position:static;" type="button">Modo Online</button></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
@@ -2857,7 +2835,7 @@ body[data-theme="noche"] .regv2-btn{
 </div>
 <div aria-label="Overlay de inicio" aria-live="polite" id="startOverlay"><div class="start-card"><div style="font-weight:800; font-size:18px;">Comenzar partida
 </div><button id="btnStartGame" type="button">Comenzar partida</button><div class="hint">Pulsa para iniciar. Bloquea el juego en todos los modos hasta empezar.
-</div></div></div><div id="aj-bufon-guide"><strong>Bufón:</strong> una de las casillas marcadas te permite colocarlo junto a un <strong>Rey, Reina o General</strong> enemigo. Si lo hacés, esa pieza quedará entretenida y no podrá moverse durante <strong>2 turnos</strong>.</div><div aria-label="Ajetrez base limpia" id="board"></div><div aria-label="Decidir desplazamiento de fila" class="shift-ctrl" id="shiftCtrl" role="group"><span class="lbl" id="shiftLbl">Fila</span><span id="chooseWrap"><button aria-label="Mantener" id="btnKeep" type="button">Mantener</button><button aria-label="Desplazar sección" id="btnShift" type="button">Desplazar sección</button></span><span id="confirmWrap" style="display:none"><span id="choiceTxt" style="font-size:12px;font-weight:700;margin-right:6px;opacity:.85">Confirmar:</span><button aria-label="Confirmar" class="confirm" id="btnConfirm" type="button">Confirmar</button><button aria-label="Volver a elegir" id="btnBack" type="button">Cambiar elección</button></span></div><div id="overlay"><div id="banner">FIN</div></div><div id="panelBackdrop"></div><div aria-labelledby="mpTitle" aria-modal="true" id="megaPanel" role="dialog"><div class="apply-toast" id="applyToast">✔ Cambios guardados
+</div></div></div><div aria-label="Ajetrez base limpia" id="board"></div><div aria-label="Decidir desplazamiento de fila" class="shift-ctrl" id="shiftCtrl" role="group"><span class="lbl" id="shiftLbl">Fila</span><span id="chooseWrap"><button aria-label="Mantener" id="btnKeep" type="button">Mantener</button><button aria-label="Desplazar sección" id="btnShift" type="button">Desplazar sección</button></span><span id="confirmWrap" style="display:none"><span id="choiceTxt" style="font-size:12px;font-weight:700;margin-right:6px;opacity:.85">Confirmar:</span><button aria-label="Confirmar" class="confirm" id="btnConfirm" type="button">Confirmar</button><button aria-label="Volver a elegir" id="btnBack" type="button">Cambiar elección</button></span></div><div id="overlay"><div id="banner">FIN</div></div><div id="panelBackdrop"></div><div aria-labelledby="mpTitle" aria-modal="true" id="megaPanel" role="dialog"><div class="apply-toast" id="applyToast">✔ Cambios guardados
 </div><div class="mp-header"><div id="mpTitle">Panel de Ajetrez
 </div><div class="right"><span class="hint-sm" id="loggedUser"></span><button class="btn secondary" id="btnLogout" type="button">Cerrar sesión</button><button class="btn" id="btnClosePanel" type="button">Cerrar</button></div></div><div id="loginView"><h2>Iniciar sesión</h2><div class="field"><label for="inpUser">Usuario</label><input id="inpUser" placeholder="Tu nombre de usuario" type="text"/></div><div class="field"><label for="inpPass">Contraseña</label><input id="inpPass" placeholder="••••••••" type="password"/></div><button class="btn" id="btnLogin" type="button">Entrar</button><div class="hint-sm">*Login local (almacenado en este navegador). Próximamente: cuentas online.
 </div></div><div id="tabsView"><div class="mp-tabs"><button class="tab-btn active" data-tab="tab-version">Versión de Ajetrez</button><button class="tab-btn" data-tab="tab-modos">Modos de juego</button><button class="tab-btn" data-tab="tab-personalizacion">Personalización</button><button class="tab-btn" data-tab="tab-registros" id="btnRegistrosTab">Registros</button></div><div class="mp-content"><div class="tab" id="tab-personalizacion" style="display:none"><h3>Personalización del juego</h3><div class="row"><div class="field"><label>Estilo de piezas</label><select id="selSprites"><option value="auto">Auto (usar sprites si están disponibles)</option><option value="sprites">Sprites (imágenes)</option><option value="unicode">Unicode (símbolos)</option></select>
@@ -2892,191 +2870,119 @@ body[data-theme="noche"] .regv2-btn{
 <button class="btn small" id="btnZonasReset" type="button">Restablecer</button>
 </div>
 </div>
-</div><div class="field"><label>Estilo visual</label><div aria-label="Elegir estilo visual" class="row" id="themePicker" role="group"><button class="btn theme" data-theme="dia" title="Tonos claros, suaves" type="button">Día</button><button class="btn theme" data-theme="noche" title="Tonos oscuros, suaves" type="button">Noche</button><button class="btn theme" data-theme="madera" title="Tonos madera, suaves" type="button">Madera</button><button class="btn theme" data-theme="arena" title="Arena suave" type="button">Arena</button><button class="btn theme" data-theme="pizarra" title="Pizarra / gris" type="button">Pizarra</button><button class="btn theme" data-theme="oliva" title="Verde oliva suave" type="button">Oliva</button></div><span class="hint-sm">Los estilos son suaves para no distraer durante la partida.</span></div></div></div><div class="tab" id="tab-version" style="display:block"><h3>Versión de Ajetrez</h3><p>Versión actual del juego: <strong id="verActual">2.5 (Estable)</strong></p><div class="field"><label>Seleccionar versión</label><select id="selVersion"><option selected="" value="3_0_simple">Versión 3.0 (modo simple)</option><option value="3_0_amenaza">Versión 3.0 (modo amenaza)</option><option value="3_0_guerra">Versión 3.0 (modo guerra)</option></select></div><button class="btn" id="btnVersionRules" type="button">Reglas de la versión</button><div id="versionRulesPreview"><div class="version-preview" data-version="3_0_simple">
-<h4>Ajetrez 3.0 — Modo Simple</h4>
-<h5>1) Objetivo y área de juego</h5>
+</div><div class="field"><label>Estilo visual</label><div aria-label="Elegir estilo visual" class="row" id="themePicker" role="group"><button class="btn theme" data-theme="dia" title="Tonos claros, suaves" type="button">Día</button><button class="btn theme" data-theme="noche" title="Tonos oscuros, suaves" type="button">Noche</button><button class="btn theme" data-theme="madera" title="Tonos madera, suaves" type="button">Madera</button><button class="btn theme" data-theme="arena" title="Arena suave" type="button">Arena</button><button class="btn theme" data-theme="pizarra" title="Pizarra / gris" type="button">Pizarra</button><button class="btn theme" data-theme="oliva" title="Verde oliva suave" type="button">Oliva</button></div><span class="hint-sm">Los estilos son suaves para no distraer durante la partida.</span></div></div></div><div class="tab" id="tab-version" style="display:block"><h3>Versión de Ajetrez</h3><p>Versión actual del juego: <strong id="verActual">2.5 (Estable)</strong></p><div class="field"><label>Seleccionar versión</label><select id="selVersion"><option selected="" value="3_0_simple">Versión 3.0 (modo simple)</option><option value="3_0_amenaza">Versión 3.0 (modo amenaza)</option><option value="3_0_guerra">Versión 3.0 (modo guerra)</option></select></div><button class="btn" id="btnVersionRules" type="button">Reglas de la versión</button><div id="versionRulesPreview"><div class="version-preview" data-version="3_0_simple"><h4>Ajetrez Version 3.0 (Modo simple) — Reglas Básicas del juego</h4><div><p>En este modo, sólo el recuadro central del tablero es jugable. Las partes sobrantes (aunque contengan piezas) no participan hasta que sean ingresadas mediante el desplazamiento de secciones.</p><h5>Distribución de las piezas</h5><p>Por color, el tablero contiene:</p><ul><li>2 reyes</li><li>2 reinas</li><li>4 alfiles, 4 caballos, 4 torres</li><li>16 peones</li></ul><p>Las piezas son distribuidas en el recuadro central de la misma manera que en el ajedrez clásico. En los laterales, (si bien ocupan las mismas posiciones entre ellas). Las piezas se colocan desplazadas, 2 secciones hacia abajo en negras y 2 hacia arriba en blancas.</p><ul><li>Ajetrez respeta todas las reglas del clásico ajedrez, por lo tanto, se debe jugar de la misma manera y respetando las reglas generales del ajedrez clásico.</li><li>A su vez, añade nuevas reglas, que dependen del modo de juego que se utilice.</li><li>En este modo de juego (Modo simple). Luego de capturar, se puede elegir entre desplazar o mantener la sección del tablero donde ahora se ubica la pieza que realizó la captura.</li><li>Si decide desplazar. Se desplaza (hacia el lado opuesto al que se encuentra y solo una vez).</li><li>Luego de la elección de mantener, o desplazar la sección, queda cedido el turno al contrincante.</li><li>El desplazamiento de la sección, puede sacar, o introducir piezas del área jugable.</li></ul><h5>Función del desplazamiento de las secciones</h5><ul><li>Escapar de una captura.</li><li>Alterar las posibles estrategias del oponente.</li><li>Sacar piezas rivales del área jugable.</li><li>Ingresar piezas propias al área jugable.</li><li>También ingresar piezas del oponente para luego intentar capturarlas.</li></ul><p>Importante: Si una pieza sale del recuadro central, esto no significa que queda fuera de juego definitivamente; podría reingresar tras nuevos desplazamientos.</p><h5>⚠️ Imposibilidad de desplazamiento de secciones</h5><ul><li>En jaque/mate no hay desplazamientos de las secciones (aun cuando se haya capturado una pieza del oponente que se encuentre en la sección donde está el rey).</li><li>No se pueden desplazar secciones cuando esa acción implica que el recuadro central jugable quede sin piezas disponibles de alguno de los dos participantes.</li></ul></div></div><div class="version-preview" data-version="3_0_amenaza">
+<h4>Ajetrez — Modo Amenaza (Reglas generales)</h4>
+<h5>1) Tablero y secciones</h5>
 <ul>
-<li>El tablero completo está formado por <strong>8 secciones horizontales de 16 casillas</strong>. El área jugable visible es el <strong>8×8 central</strong>.</li>
-<li>Las piezas que quedan fuera del 8×8 no participan en las jugadas hasta que su sección vuelva a ingresar al área jugable mediante un desplazamiento.</li>
-<li>Una pieza que sale del 8×8 <strong>no queda eliminada</strong>: puede volver a entrar en una jugada posterior.</li>
+<li>El tablero está formado por 8 secciones horizontales (16×8) que pueden desplazarse; el recuadro central 8×8 es el área jugable.</li>
+<li>Las piezas ubicadas en los laterales no participan hasta que ingresan al 8×8 mediante el desplazamiento de una sección.</li>
+<li>El juego mantiene las reglas básicas del ajedrez clásico y las reglas de desplazamiento propias de Ajetrez.</li>
+<li>Después de una captura se puede mantener la sección o desplazarla hacia el lado opuesto, según las reglas del juego.</li>
+<li>El desplazamiento no puede realizarse cuando el jugador está en jaque ni cuando deja el área jugable sin piezas disponibles de alguno de los dos participantes.</li>
 </ul>
-<h5>2) Distribución de piezas</h5>
-<p>Cada color dispone de <strong>2 Reyes, 2 Damas, 4 Alfiles, 4 Caballos, 4 Torres y 16 Peones</strong>. La disposición central utiliza la formación del ajedrez clásico; las piezas laterales se encuentran desplazadas respecto del centro.</p>
-<h5>3) Movimiento de las piezas</h5>
+<h5>2) Príncipe y Princesa</h5>
 <ul>
-<li>Las piezas clásicas utilizan los movimientos implementados del ajedrez clásico.</li>
-<li>Los peones tienen avance simple, doble avance inicial y capturas diagonales.</li>
-<li>Se implementan <strong>enroque</strong>, <strong>captura al paso</strong> y <strong>promoción</strong>.</li>
-<li>La promoción permite elegir <strong>Dama, Torre, Alfil o Caballo</strong>.</li>
-<li>El Rey no puede realizar un movimiento que deje en jaque a su propio bando ni quedar adyacente a otro Rey.</li>
-<li>La partida puede terminar por jaque mate; también se reconocen las tablas cuando el jugador al turno no tiene jugadas legales y no está en jaque.</li>
+<li>Cada bando posee un <strong>Príncipe</strong> y una <strong>Princesa</strong>, ubicados inicialmente en territorio enemigo.</li>
+<li>Estas piezas permanecen inmóviles: no pueden realizar movimientos propios.</li>
+<li>El Príncipe y la Princesa no pueden ser capturados ni ocupados por una pieza rival.</li>
+<li>Su función es representar piezas especiales que deben ser liberadas mediante el avance de las piezas propias.</li>
 </ul>
-<h5>4) Captura y elección de desplazamiento</h5>
+<h5>3) Condición de Liberación</h5>
 <ul>
-<li>Después de una captura, <strong>el jugador que capturó</strong> debe decidir entre <strong>mantener</strong> la sección o <strong>desplazarla</strong>.</li>
-<li>Si elige mantener, la sección permanece donde estaba y el turno pasa al rival.</li>
-<li>Si elige desplazar, la sección capturada se mueve una sola vez hacia la posición opuesta disponible del tablero. El desplazamiento puede introducir o retirar piezas del 8×8.</li>
-<li>Después de mantener o desplazar, termina el turno y juega el rival.</li>
+<li>Un jugador logra la <strong>Liberación</strong> cuando una de sus piezas queda ubicada en una casilla adyacente a su propio Príncipe o Princesa.</li>
+<li>Se consideran adyacentes las ocho casillas que rodean directamente a la pieza especial (horizontal, vertical o diagonal).</li>
+<li>La liberación puede producirse después de una jugada normal o después de desplazar una sección del tablero.</li>
+<li>Cuando se cumple esta condición, la partida termina inmediatamente y gana el jugador que realizó la liberación.</li>
 </ul>
-<h5>5) Restricciones del desplazamiento</h5>
+<h5>4) Jaque mate y final de la partida</h5>
 <ul>
-<li>No se puede desplazar una sección si el jugador que decide está en <strong>jaque</strong>.</li>
-<li>No se puede desplazar si el resultado deja el 8×8 sin ninguna pieza de uno de los dos bandos.</li>
-<li>No se puede desplazar si el resultado deja al 8×8 sin al menos un Rey de cualquiera de los dos bandos.</li>
-<li>No se puede desplazar si el resultado deja a los Reyes en casillas adyacentes.</li>
-<li>Si la partida ya terminó, no puede realizarse ningún desplazamiento.</li>
+<li>El jaque y el jaque mate continúan funcionando como en el ajedrez clásico.</li>
+<li>Por lo tanto, la partida puede finalizar por <strong>Jaque Mate</strong> o por <strong>Liberación</strong>.</li>
+<li>Si no existen jugadas legales y el jugador no está en jaque, se producen tablas.</li>
 </ul>
-<h5>6) Final de la partida</h5>
-<ul>
-<li><strong>Jaque mate:</strong> cuando el jugador en turno está en jaque y no dispone de ninguna jugada legal.</li>
-<li><strong>Tablas:</strong> cuando el jugador en turno no dispone de jugadas legales y no está en jaque.</li>
-</ul>
-<h5>7) Principio fundamental de Ajetrez</h5>
-<p>El movimiento de las secciones modifica permanentemente el campo de juego disponible para ambos jugadores. Una buena jugada debe considerar tanto el movimiento de las piezas como la posición futura de las secciones.</p>
-</div><div class="version-preview" data-version="3_0_amenaza">
-<h4>Ajetrez 3.0 — Modo Amenaza (Príncipe &amp; Princesa)</h4>
-<h5>1) Objetivo</h5>
-<ul>
-<li>La partida conserva el objetivo clásico de lograr <strong>jaque mate</strong> al rival.</li>
-<li>Además existe una segunda condición de victoria: la <strong>Liberación</strong>.</li>
-<li>La Liberación se consigue cuando una pieza propia queda adyacente a <strong>tu propio Príncipe o Princesa</strong>.</li>
-<li>Si una misma jugada produce jaque mate y Liberación, <strong>prevalece la Liberación</strong>.</li>
-</ul>
-<h5>2) Tablero y desplazamiento</h5>
-<ul>
-<li>El tablero está compuesto por <strong>8 secciones horizontales de 16 casillas</strong>, con un área jugable central de <strong>8×8</strong>.</li>
-<li>Las piezas laterales no participan hasta ingresar al área jugable mediante el desplazamiento de una sección.</li>
-<li>Después de una captura, el jugador que capturó puede <strong>mantener</strong> la sección o <strong>desplazarla una sola vez</strong> hacia la posición opuesta disponible.</li>
-<li>El desplazamiento puede introducir o retirar piezas del 8×8.</li>
-<li>Una pieza que sale del área jugable no queda eliminada y puede volver a ingresar posteriormente.</li>
-</ul>
-<h5>3) Príncipe (I) y Princesa (S)</h5>
-<ul>
-<li>Cada bando posee un <strong>Príncipe (I)</strong> y una <strong>Princesa (S)</strong>.</li>
-<li>Son colocados inicialmente como <strong>rehenes en territorio enemigo</strong>: los I/S negros se encuentran en el lateral blanco y los I/S blancos en el lateral negro.</li>
-<li>Son <strong>inmóviles</strong>: no realizan movimientos propios.</li>
-<li>Su casilla no puede ser ocupada ni capturada por una pieza rival.</li>
-<li>No atacan otras casillas, pero su casilla funciona como ocupada y no puede ser atravesada como si estuviera vacía.</li>
-</ul>
-<h5>4) Condición de Liberación</h5>
-<ul>
-<li>La condición se evalúa al terminar cada jugada.</li>
-<li>Se considera adyacente cualquiera de las <strong>8 casillas</strong> que rodean directamente al Príncipe o a la Princesa: horizontal, vertical o diagonal.</li>
-<li>La Liberación puede producirse después de un movimiento normal.</li>
-<li>También puede producirse después del desplazamiento de una sección posterior a una captura.</li>
-<li>Cuando existe desplazamiento, la condición se comprueba sobre <strong>la pieza que realizó la jugada</strong> y su posición final después del desplazamiento.</li>
-<li>Estar junto al Príncipe o Princesa del rival <strong>no</strong> produce Liberación.</li>
-<li>Al producirse la Liberación, la partida termina inmediatamente y gana el jugador que la consiguió.</li>
-</ul>
-<h5>5) Reglas de las piezas clásicas</h5>
-<ul>
-<li>Las piezas clásicas utilizan las reglas implementadas del ajedrez clásico.</li>
-<li>Se mantienen el doble avance inicial del peón, captura al paso, promoción y enroque.</li>
-<li>La promoción permite elegir <strong>Dama, Torre, Alfil o Caballo</strong>; no se puede promocionar a Príncipe ni Princesa.</li>
-<li>El Rey no puede quedar en una posición ilegal de jaque y los Reyes no pueden quedar adyacentes.</li>
-</ul>
-<h5>6) Restricciones del desplazamiento</h5>
-<ul>
-<li>No se puede desplazar una sección cuando el jugador que decide está en <strong>jaque</strong>.</li>
-<li>No se puede desplazar si el 8×8 resultante queda sin piezas de uno de los bandos.</li>
-<li>No se puede desplazar si el 8×8 resultante queda sin al menos un Rey de cualquiera de los dos bandos.</li>
-<li>No se puede desplazar si el desplazamiento deja a los Reyes adyacentes.</li>
-<li>Si la partida ya terminó, no se permiten nuevas acciones de desplazamiento.</li>
-</ul>
-<h5>7) Final de la partida</h5>
-<ul>
-<li><strong>Liberación:</strong> victoria inmediata al cumplir la condición de adyacencia con el propio I/S.</li>
-<li><strong>Jaque mate:</strong> cuando el jugador en turno está en jaque y no tiene jugadas legales.</li>
-<li><strong>Tablas:</strong> cuando no hay jugadas legales y el jugador en turno no está en jaque.</li>
-</ul>
+<p><strong>Objetivo del Modo Amenaza:</strong> proteger y alcanzar las piezas especiales de tu bando mientras utilizás el movimiento de las secciones del tablero para modificar el campo de juego y crear nuevas oportunidades.</p>
 </div><div class="version-preview" data-version="3_0_guerra">
-<h4>Ajetrez 3.0 — Modo Guerra</h4>
-<h5>1) Objetivo y tablero</h5>
+<h4>Ajetrez — Modo Guerra (Reglas generales)</h4>
+<h5>1) Tablero y secciones</h5>
 <ul>
-<li>El tablero está formado por <strong>8 secciones horizontales de 16 casillas</strong> y un área jugable central de <strong>8×8</strong>.</li>
-<li>Al comenzar, el 8×8 central es el área jugable. Las piezas laterales ingresan al juego cuando una sección es desplazada.</li>
-<li>El turno alterna entre blancas y negras.</li>
-<li>El jaque y el jaque mate siguen la lógica del ajedrez clásico, con las excepciones propias de las piezas de guerra.</li>
+<li>El tablero está formado por 8 secciones horizontales (16×8) que pueden desplazarse; el recuadro central 8×8 es el único jugable al inicio.</li>
+<li>Las piezas ubicadas en los laterales no participan hasta que ingresan al 8×8 mediante un desplazamiento de secciones (según las reglas estándar del proyecto Ajetrez).</li>
+<li>El turno alterna blancas / negras de forma normal. Jaque y jaque mate se aplican como en ajedrez clásico (salvo lo indicado para piezas especiales).</li>
 </ul>
-<h5>2) Piezas de guerra en los laterales</h5>
+<h5>2) Disposición inicial (qué cambia en los laterales)</h5>
+<p>En los laterales (no en el 8×8 central) se reemplazan las piezas clásicas por piezas “de guerra”:</p>
 <ul>
-<li>Rey lateral → <strong>General (G)</strong>.</li>
-<li>Dama lateral → <strong>Verdugo (V)</strong>.</li>
-<li>Alfiles laterales → <strong>Mago (M)</strong> y <strong>Maga (W)</strong>.</li>
-<li>Caballos laterales → <strong>Bufones (J)</strong>.</li>
-<li>Torres laterales → <strong>Arqueros (A)</strong>.</li>
-<li>Peones laterales → <strong>Guerreros con espada (S)</strong>.</li>
-<li>Los peones del 8×8 central permanecen como <strong>peones clásicos (P)</strong>.</li>
+<li>Rey (K) → <strong>General (G)</strong></li>
+<li>Dama (Q) → <strong>Verdugo (V)</strong> <em>(se mantienen sus reglas vigentes; no se modificaron en esta pasada)</em></li>
+<li>Alfiles (B) → <strong>Mago (M)</strong> y <strong>Maga (W)</strong></li>
+<li>Caballos (N) → <strong>Bufones (J)</strong></li>
+<li>Torres (R) → <strong>Arqueros (A)</strong></li>
+<li>Peones (P) de los laterales → <strong>Guerreros con espada (S)</strong></li>
 </ul>
-<h5>3) General (G)</h5>
+<p><strong>Importante:</strong> los peones del 8×8 central permanecen normales (P) con sus reglas clásicas.</p>
+<h5>3) Piezas especiales y sus reglas</h5>
+<p><strong>General (G)</strong></p>
 <ul>
-<li>Puede desplazarse en las <strong>8 direcciones</strong>, ortogonales y diagonales.</li>
-<li>Alcanza hasta <strong>3 casillas</strong> por movimiento.</li>
-<li>La implementación actual permite superar como máximo un obstáculo ocupado durante ese recorrido; después de un segundo obstáculo el movimiento se detiene.</li>
-<li>Puede capturar una pieza rival en una casilla de destino válida.</li>
+<li><strong>Alcance máximo:</strong> hasta 3 casilleros por movimiento (ajuste actual).</li>
+<li><strong>Direcciones:</strong> ortogonales y diagonales (como “dama corta”).</li>
+<li><strong>Notas:</strong> conserva la lógica de salto corto si estaba activa en tu build (no modificada aquí).</li>
 </ul>
-<h5>4) Verdugo (V)</h5>
+<p><strong>Mago (M) / Maga (W)</strong></p>
 <ul>
-<li>Se desplaza exactamente <strong>2 casillas en línea recta ortogonal</strong>: arriba, abajo, izquierda o derecha.</li>
-<li>No utiliza diagonales.</li>
-<li>Puede capturar una pieza rival situada en la casilla de destino.</li>
+<li><strong>Movimiento:</strong> exactamente 2 casilleros en cualquiera de las 8 direcciones.</li>
+<li><strong>No saltan:</strong> la casilla intermedia debe estar vacía.</li>
+<li><strong>Transformación al capturar:</strong> si capturan una pieza que no sea el Rey, se transforman en esa pieza (y no pueden volver a M/W en toda la partida).</li>
 </ul>
-<h5>5) Mago (M) y Maga (W)</h5>
+<p><strong>Bufón (J)</strong></p>
 <ul>
-<li>Se desplazan exactamente <strong>2 casillas</strong> en cualquiera de las 8 direcciones.</li>
-<li><strong>No pueden saltar:</strong> la casilla intermedia debe estar vacía.</li>
-<li>Si capturan una pieza que <strong>no sea un Rey</strong>, se transforman permanentemente en el tipo de la pieza capturada.</li>
-<li>Después de transformarse, no pueden volver a ser Mago/Maga.</li>
+<li><strong>Movimiento:</strong> patrón de caballo, pero no puede capturar (solo aterriza en casillas vacías).</li>
+<li><strong>“Entretener” (stun) 2 turnos:</strong> al finalizar su movimiento, todas las piezas rivales adyacentes (8 direcciones) quedan sin poder moverse durante 2 turnos del rival.</li>
+<li><strong>Levantar el efecto:</strong> si el Bufón es capturado, se anula el efecto que provenía de la casilla de ese Bufón.</li>
 </ul>
-<h5>6) Bufón (J)</h5>
+<p><strong>Arquero (A)</strong></p>
 <ul>
-<li>Se desplaza exactamente <strong>2 casillas en cualquiera de las 8 direcciones</strong>, saltando la casilla intermedia.</li>
-<li><strong>No puede capturar</strong>: solo puede terminar en una casilla vacía.</li>
-<li>Al finalizar su movimiento, puede aplicar el efecto <strong>Entretener</strong> a las piezas rivales adyacentes.</li>
-<li>El efecto dura <strong>2 oportunidades de movimiento del bando rival</strong>.</li>
-<li>En la implementación actual, el efecto bloquea específicamente a <strong>Rey, Dama y General</strong> rivales que estén adyacentes al Bufón al producirse el efecto.</li>
-<li>El efecto permanece identificado con el Bufón que lo generó aunque este se aleje de la casilla original.</li>
-<li>Si el Bufón es capturado, se eliminan los efectos de congelamiento que ese Bufón había generado.</li>
+<li><strong>Direcciones:</strong> solo hacia adelante y diagonales hacia adelante (según color).</li>
+<li><strong>Distancias:</strong> exactamente 2 o 4 casilleros (no 1 ni 3).</li>
+<li><strong>Salto:</strong> puede saltar piezas intermedias sin capturarlas (como el caballo).</li>
+<li><strong>Captura:</strong> solo en las casillas de destino de 2 o 4 pasos.</li>
 </ul>
-<h5>7) Arquero (A)</h5>
+<p><strong>Guerrero con espada (S) — solo laterales</strong></p>
 <ul>
-<li>Solo puede desplazarse hacia adelante o diagonalmente hacia adelante según su color.</li>
-<li>Puede alcanzar exactamente <strong>2 o 4 casillas</strong> de distancia.</li>
-<li>Puede saltar piezas intermedias.</li>
-<li>Puede capturar en la casilla de destino si allí existe una pieza rival.</li>
+<li><strong>Antes de “veterano”:</strong>
+<ul>
+<li><strong>Mover:</strong> 1 casillero hacia adelante o en diagonal hacia adelante (también si está vacío).</li>
+<li><strong>Capturar:</strong> 1 casillero hacia adelante y diagonales hacia adelante.</li>
+<li><strong>Sin doble paso y sin captura al paso.</strong></li>
 </ul>
-<h5>8) Guerrero con espada (S)</h5>
-<ul>
-<li>Antes de convertirse en veterano, avanza <strong>1 casilla hacia adelante</strong> si está vacía.</li>
-<li>También puede capturar <strong>1 casilla hacia adelante</strong> si hay una pieza rival.</li>
-<li>Puede capturar <strong>1 casilla en diagonal hacia adelante</strong>.</li>
-<li>No tiene doble avance inicial ni captura al paso.</li>
-<li>Al llegar a la última fila del territorio rival, se convierte en <strong>Veterano</strong>.</li>
-<li>El Veterano puede mover y capturar <strong>1 casilla en cualquiera de las 8 direcciones</strong>, incluyendo hacia atrás.</li>
-<li>Al convertirse en Veterano se muestra un aviso en pantalla.</li>
+</li>
+<li><strong>Al llegar a la última fila rival:</strong> no promociona; se vuelve “veterano” y, desde ese momento, puede mover y capturar 1 casillero en cualquiera de las 8 direcciones (también hacia atrás).
+      <ul>
+<li><em>Aviso en pantalla:</em> al adquirir el estado veterano aparece un cartel informando sus nuevas habilidades.</li>
 </ul>
-<h5>9) Piezas clásicas del 8×8</h5>
-<ul>
-<li>Las piezas clásicas del área central mantienen las reglas implementadas del ajedrez clásico.</li>
-<li>Los peones centrales tienen doble avance inicial, captura al paso y promoción.</li>
-<li>La promoción permite elegir <strong>Dama, Torre, Alfil o Caballo</strong>.</li>
-<li>Se mantiene el enroque.</li>
-<li>Las piezas de guerra que ingresan desde los laterales conservan sus reglas especiales.</li>
+</li>
 </ul>
-<h5>10) Desplazamiento de secciones</h5>
+<h5>4) Piezas clásicas (8×8 central)</h5>
 <ul>
-<li>Después de una captura, el jugador que capturó puede <strong>mantener</strong> la sección o <strong>desplazarla una sola vez</strong> hacia la posición opuesta disponible.</li>
-<li>El desplazamiento puede introducir o retirar piezas del 8×8.</li>
-<li>Una pieza que sale del área jugable no queda eliminada y puede regresar posteriormente.</li>
-<li>No se puede desplazar si el jugador que decide está en <strong>jaque</strong>.</li>
-<li>No se puede desplazar si el 8×8 resultante queda sin piezas de uno de los bandos.</li>
-<li>No se puede desplazar si el 8×8 resultante queda sin al menos un Rey de cualquiera de los bandos.</li>
-<li>No se puede desplazar si el desplazamiento deja a los Reyes adyacentes.</li>
+<li>En el recuadro central el juego se rige por las reglas clásicas: peones con doble paso inicial, captura al paso, promoción, enroques, etc.</li>
+<li>Las piezas que ingresan desde los laterales lo hacen con sus reglas especiales (o clásicas, si corresponde).</li>
 </ul>
-<h5>11) Final de la partida</h5>
+<h5>5) Interacciones y consideraciones</h5>
 <ul>
-<li><strong>Jaque mate:</strong> cuando el jugador en turno está en jaque y no tiene jugadas legales.</li>
-<li><strong>Tablas:</strong> cuando no existen jugadas legales y el jugador en turno no está en jaque.</li>
+<li><strong>Congelamiento por Bufón:</strong> una pieza “entretenida” no puede moverse hasta que se cumplan sus 2 turnos o se capture al Bufón que generó ese efecto.</li>
+<li><strong>Transformaciones de M/W:</strong> al transformarse por captura, pierden para siempre su condición de Mago/Maga.</li>
+<li><strong>Secciones:</strong> el ingreso de laterales al 8×8 se realiza con las normas de desplazamiento ya establecidas en Ajetrez para evitar jugadas ilegales o estados imposibles.</li>
+</ul>
+<hr/>
+<h5>6) Resumen rápido</h5>
+<ul>
+<li>Solo el 8×8 central es jugable; los laterales entran con desplazamientos.</li>
+<li>En los laterales hay piezas de guerra (G, V, M/W, J, A, S).</li>
+<li>Peones del centro: clásicos. Peones laterales: Guerreros (S).</li>
+<li>Cartel cuando un S se vuelve veterano.</li>
+<li>Bufón no captura pero inmoviliza rivales adyacentes 2 turnos.</li>
+<li>Mago/Maga mueven 2 y se transforman al capturar (salvo Rey).</li>
+<li>Arquero avanza/capta solo adelante/diagonales adelante a 2 o 4 y salta intermedias.</li>
+<li>General: máx. 3 casilleros por movimiento.</li>
 </ul>
 </div></div><div class="tab" id="tab-info" style="display:none"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3mm;"><h3 style="margin:0;"></h3><button class="btn small danger" id="btnClearLogs" style="margin-left:12px;">Borrar historial</button></div><div class="hint-sm">Se guarda <strong>localmente</strong> en este navegador.
 </div><div class="row"><div class="field"><label>Total jugadas</label><div class="pill" id="statTotal">0
@@ -3085,6 +2991,8 @@ body[data-theme="noche"] .regv2-btn{
 </div></div><div class="field"><label>Tablas</label><div class="pill" id="statD">0
 </div></div></div><div id="infoSplit"><div id="infoLeft"><div style="margin-top:10px;max-height:120px;overflow:auto;border:1px solid #eee;border-radius:10px;"><table class="simple" id="logsTable"><thead><tr><th>Fecha</th><th>Modo</th><th>Resultado</th><th>Ganador</th><th>Movs</th></tr></thead><tbody></tbody></table></div><div id="replayDock" style="display:none"></div><!-- Replay panel will be injected here --><div id="replayDock"></div></div></div></div><div class="row" style="margin-top:8px;"></div></div>
 <div class="tab" id="tab-modos" style="display:none"><h3>Modos de juego</h3><div class="row"><button class="btn mode" data-gmode="pvp-local">Player vs player (local)</button><button class="btn mode" data-gmode="bot">Player Vs Bot</button><button class="btn mode" data-gmode="bot-vs-bot">Bot vs Bot (demo)</button><button class="btn mode" data-gmode="online">Modo Online</button></div><div aria-live="polite" id="modeHelp" role="note"><span class="title">¿Cómo funciona este modo?</span><div class="body">Elegí un modo para ver una breve explicación.</div></div><p class="hint-sm">Al elegir un modo, la partida se reinicia automáticamente.</p></div>
+
+
 <div class="tab" id="tab-mas" style="display:none"><h3>Más funciones</h3><p>Acá vamos a agregar: estilos claros/oscuros, selector de temas, perfiles, estadísticas detalladas, etc.</p></div></div></div></div></div><div style="height:var(--toolbar-gap)"></div><div aria-label="Barra inferior" class="bar" id="bottomBar">
 <div aria-label="Botones de donación" id="donateBox">
 <span class="label">Colabora</span>
@@ -3129,13 +3037,12 @@ const SPRITE_PROBE = 'assets/piezas_aa/w_P.png';
 })();
 
 const EMPTY = null;
-let __AJ_PIECE_UID__ = 0;
 const PIECE_SPRITES = {
   w: {P:'assets/piezas_aa/w_P.png', R:'assets/piezas_aa/w_R.png', N:'assets/piezas_aa/w_N.png', B:'assets/piezas_aa/w_B.png', Q:'assets/piezas_aa/w_Q.png', K:'assets/piezas_aa/w_K.png',  G:'assets/piezas_aa/white_General.png', V:'assets/piezas_aa/white_Verdugo.png' ,M:'assets/piezas_aa/white_Mago.png',W:'assets/piezas_aa/white_Maga.png',J:'assets/piezas_aa/white_Bufon.png', A:'assets/piezas_aa/white_Arquero.png', S:'assets/piezas_aa/white_Guerrero.png'},
   b: {P:'assets/piezas_aa/b_P.png', R:'assets/piezas_aa/b_R.png', N:'assets/piezas_aa/b_N.png', B:'assets/piezas_aa/b_B.png', Q:'assets/piezas_aa/b_Q.png', K:'assets/piezas_aa/b_K.png',  G:'assets/piezas_aa/black_General.png', V:'assets/piezas_aa/black_Verdugo.png' ,M:'assets/piezas_aa/black_Mago.png',W:'assets/piezas_aa/black_Maga.png',J:'assets/piezas_aa/black_Bufon.png', A:'assets/piezas_aa/black_Arquero.png', S:'assets/piezas_aa/black_Guerrero.png'}
 };
 const PIECES_UNICODE = { w:{P:'\\u2659',R:'\\u2656',N:'\\u2658',B:'\\u2657',Q:'\\u2655',K:'\\u2654'}, b:{P:'\\u265F',R:'\\u265C',N:'\\u265E',B:'\\u265D',Q:'\\u265B',K:'\\u265A'} };
-function makePiece(t,c){ return { type:t, color:c, hasMoved:false, uid: `p${++__AJ_PIECE_UID__}` }; }
+function makePiece(t,c){ return { type:t, color:c, hasMoved:false }; }
 
 function makeInitialBoard16x8(){
   const b = Array.from({length:8},()=>Array(16).fill(EMPTY));
@@ -3155,11 +3062,6 @@ function makeInitialBoard16x8(){
     const pwp = makePiece('P','w'); const sw = makePiece('S','w');
     if(c>=8){ b[5][c] = pwb; b[4][c] = sw; } else { b[7][c] = pwb; b[6][c] = pwp; }
   }
-  // Derechos iniciales de enroque: solo las piezas del juego central.
-  // Las piezas laterales que ingresen posteriormente no adquieren derecho a enrocar.
-  [[0,12],[0,8],[0,15],[7,4],[7,0],[7,7]].forEach(([rr,cc])=>{
-    if(b[rr] && b[rr][cc]) b[rr][cc].castleHome = true;
-  });
   return b;
 }
 const initialOffsets = [8,8,8,8,0,0,0,0];
@@ -3175,9 +3077,8 @@ function baseColAtDisplay(row, d, off){
   if(d>=16 && off===0) return d-8;
   return null;
 }
-function deepCopyBoard(b){ return b.map(row => row.map(q => { if(!q) return q; const cp={...q}; if(Array.isArray(q.freeze)) cp.freeze=q.freeze.map(f=>({...f})); return cp; })); }
+function deepCopyBoard(b){ return b.map(row => row.map(q => q ? {...q} : q )); }
 function inside(r,c){ return r>=0 && r<8 && c>=0 && c<8; }
-function insideBoard(r,c){ return r>=0 && r<8 && c>=0 && c<16; }
 
 function pseudoMoves(vis, r, c){
   const p = vis[r][c]; if(!p) return [];
@@ -3245,12 +3146,9 @@ function pseudoMoves(vis, r, c){
 
 
   else if(p.type==='J'){
-    // BUFÓN: salto sorpresa en cualquiera de las 8 direcciones.
-    // Mantiene la idea original de infiltración: salta una casilla
-    // intermedia y aterriza exactamente a 2 casillas. No captura.
-    const dirs = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
-    for(const [dr,dc] of dirs){
-      const rr = r + 2*dr, cc = c + 2*dc;
+    const L = [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[-1,2],[1,-2],[-1,-2]];
+    for(const [dr,dc] of L){
+      const rr = r+dr, cc = c+dc;
       if(!inside(rr,cc)) continue;
       const t = vis[rr][cc];
       if(!t){ out.push([rr,cc]); } // no captura
@@ -3312,35 +3210,15 @@ else if(p.type==='P'){
   }
   return out;
 }
-function isSquareAttacked(vis, r, c, byColor){
-  // Ataques reales, no movimientos legales: un peón NO ataca hacia adelante.
-  for(let rr=0; rr<8; rr++) for(let cc=0; cc<8; cc++){
-    const q = vis[rr][cc];
-    if(!q || q.color!==byColor) continue;
-    if(q.type==='P'){
-      const dir = q.color==='w' ? -1 : 1;
-      if(rr+dir===r && (cc-1===c || cc+1===c)) return true;
-    }else{
-      const ms = pseudoMoves(vis, rr, cc);
-      for(const mv of ms){
-        if(mv[0]===r && mv[1]===c) return true;
-      }
-    }
-  }
-  return false;
-}
 function inCheck(vis, color){
-  // Ajetrez puede tener más de un Rey por bando. La posición es insegura
-  // si cualquiera de los Reyes propios está siendo atacado.
-  const kings=[];
-  for(let r=0;r<8;r++) for(let c=0;c<8;c++){
-    const q=vis[r][c];
-    if(q && q.type==='K' && q.color===color) kings.push([r,c]);
-  }
-  if(!kings.length) return false;
+  let kR=-1,kC=-1;
+  for(let r=0;r<8;r++) for(let c=0;c<8;c++){ const q=vis[r][c]; if(q && q.type==='K' && q.color===color){ kR=r; kC=c; } }
+  if(kR<0) return false;
   const opp = color==='w' ? 'b' : 'w';
-  for(const [kr,kc] of kings){
-    if(isSquareAttacked(vis, kr, kc, opp)) return true;
+  for(let r=0;r<8;r++) for(let c=0;c<8;c++){
+    const q=vis[r][c]; if(!q || q.color!==opp) continue;
+    const ms=pseudoMoves(vis,r,c);
+    for(const [rr,cc] of ms){ if(rr===kR && cc===kC) return true; }
   }
   return false;
 }
@@ -3362,7 +3240,7 @@ function applyMove(board, offs, from, to, special){
   copy[from.r][fromBC] = EMPTY;
 
   if(special && special.promotion){
-    copy[to.r][toBC] = { type: special.promotion, color: moved.color, hasMoved: true, uid: `p${++__AJ_PIECE_UID__}` };
+    copy[to.r][toBC] = { type: special.promotion, color: moved.color, hasMoved: true };
   }
   if(special && special.castle && special.rookFrom && special.rookTo){
     const rfBC = toBaseCol(special.rookFrom.c, special.rookFrom.r, offs);
@@ -3372,10 +3250,10 @@ function applyMove(board, offs, from, to, special){
   }
   // Transformación de Mago/Maga al capturar (excepto Rey)
   if(moved && (moved.type==='M' || moved.type==='W') && captured && captured.type!=='K'){
-    copy[to.r][toBC] = { type: captured.type, color: moved.color, hasMoved: true, uid: moved.uid };
+    copy[to.r][toBC] = { type: captured.type, color: moved.color, hasMoved: true };
   }
 
-  // === Bufón (J): entretener Rey, Reina y General adyacentes durante 2 turnos ===
+  // === Bufón (J): "entretener" piezas rivales adyacentes 2 turnos ===
   // Inicializar freeze arrays
   for(let rr=0; rr<copy.length; rr++){
     for(let cc=0; cc<copy[rr].length; cc++){
@@ -3383,34 +3261,30 @@ function applyMove(board, offs, from, to, special){
       if(pc && !pc.freeze){ pc.freeze = []; }
     }
   }
-  // Si el capturado es un Bufón, eliminar TODOS los efectos que ese Bufón haya generado.
-  // El efecto no depende de que el Bufón siga en la casilla donde lo aplicó: dura sus
-  // dos oportunidades de movimiento del rival. Por eso se identifica por uid.
-  if(captured && captured.type==='J' && captured.uid){
-    for(let rr=0; rr<copy.length; rr++){
-      for(let cc=0; cc<copy[rr].length; cc++){
-        const pc = copy[rr][cc];
-        if(pc && Array.isArray(pc.freeze) && pc.freeze.length){
-          pc.freeze = pc.freeze.filter(f => !(f.kind==='J' && f.sourceId===captured.uid));
-        }
-      }
-    }
-  }
-  // Si se movió un Bufón, entretener SOLO a Rey, Reina y General durante 2 oportunidades
-  // de movimiento del bando rival. El efecto permanece aunque el Bufón luego se aleje.
-  if(moved && moved.type==='J'){
-    const opp = moved.color==='w' ? 'b' : 'w';
-    const sourceId = moved.uid || null;
+  // Si el capturado es un Bufón, eliminar efectos desde su casilla
+  if(captured && captured.type==='J'){
     const adj = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
     for(const [dr,dc] of adj){
       const ar = to.r+dr, ac = toBC+dc;
-      if(!insideBoard(ar,ac)) continue;
+      if(!inside(ar,ac)) continue;
       const pc = copy[ar][ac];
-      if(pc && pc.color===opp && (pc.type==='K' || pc.type==='Q' || pc.type==='G')){
+      if(pc && pc.freeze && pc.freeze.length){
+        pc.freeze = pc.freeze.filter(f => !(f.kind==='J' && f.srcR===to.r && f.srcC===toBC));
+      }
+    }
+  }
+  // Si se movió un Bufón, aplicar/renovar 2 turnos a rivales adyacentes
+  if(moved && moved.type==='J'){
+    const opp = moved.color==='w' ? 'b' : 'w';
+    const adj = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+    for(const [dr,dc] of adj){
+      const ar = to.r+dr, ac = toBC+dc;
+      if(!inside(ar,ac)) continue;
+      const pc = copy[ar][ac];
+      if(pc && pc.color===opp){
         if(!pc.freeze) pc.freeze = [];
-        const old = sourceId ? pc.freeze.find(f => f.kind==='J' && f.sourceId===sourceId) : null;
-        if(old) old.turns = 2;
-        else pc.freeze.push({kind:'J', sourceId, turns:2});
+        const old = pc.freeze.find(f => f.kind==='J' && f.srcR===to.r && f.srcC===toBC);
+        if(old) old.turns = 2; else pc.freeze.push({kind:'J', srcR:to.r, srcC:toBC, turns:2});
       }
     }
   }
@@ -3441,22 +3315,14 @@ function applyMove(board, offs, from, to, special){
 }
 function legalMovesFor(vis, board, offs, r, c, color, epTarget){
   const piece = vis[r][c]; if(!piece) return [];
-  // Un Bufón puede entretener una pieza, pero una pieza entretenida
-  // no puede realizar movimientos durante sus oportunidades bloqueadas.
-  if(piece.freeze && piece.freeze.some(f => f && f.turns > 0)) return [];
   const pseudo = pseudoMoves(vis, r, c);
   const out = [];
   for(const [rr,cc] of pseudo){
-    // El Rey no se captura en ajedrez; el mate se determina por falta de jugadas legales.
-    if(vis[rr][cc] && vis[rr][cc].type==='K') continue;
     if(piece.type==='P' && (rr===0 || rr===7)){
-      // Promoción clásica: Q, R, B o N. La UI presenta las cuatro opciones.
-      for(const promoType of ['Q','R','B','N']){
-        const promo = {promotion:promoType};
-        const {board:bP,captured} = applyMove(board, offs, {r,c}, {r:rr,c:cc}, promo);
-        const vP = buildVisible(bP, offs);
-        if(!inCheck(vP, color)) out.push([rr,cc,promo,false]);
-      }
+      const promo = {promotion:'Q'};
+      const {board:bP,captured} = applyMove(board, offs, {r,c}, {r:rr,c:cc}, promo);
+      const vP = buildVisible(bP, offs);
+      if(!inCheck(vP, color)) out.push([rr,cc,promo,captured && captured.type==='K']);
       continue;
     }
     let special = null;
@@ -3488,9 +3354,9 @@ function legalMovesFor(vis, board, offs, r, c, color, epTarget){
       const v = buildVisible(tb, offs);
       return !inCheck(v, color);
     };
-    if(piece.castleHome && hasNotMoved(piece) && !inCheck(vis, color)){
+    if(hasNotMoved(piece) && !inCheck(vis, color)){
       const right = (()=>{ let cc=c+1; while(cc<8){ const q=vis[r][cc]; if(q) return {q, col:cc}; cc++; } return null; })();
-      if(right && right.q.type==='R' && right.q.color===color && right.q.castleHome && hasNotMoved(right.q)){
+      if(right && right.q.type==='R' && right.q.color===color && hasNotMoved(right.q)){
         if(canUse(c+1) && canUse(c+2)){
           if(safeAfter(c+1,null) && safeAfter(c+2,{castle:'K',rookFrom:{r:r,c:right.col},rookTo:{r:r,c:c+1}})){
             out.push([r,c+2,{castle:'K',rookFrom:{r:r,c:right.col},rookTo:{r:r,c:c+1}},false]);
@@ -3498,7 +3364,7 @@ function legalMovesFor(vis, board, offs, r, c, color, epTarget){
         }
       }
       const left = (()=>{ let cc=c-1; while(cc>=0){ const q=vis[r][cc]; if(q) return {q, col:cc}; cc--; } return null; })();
-      if(left && left.q.type==='R' && left.q.color===color && left.q.castleHome && hasNotMoved(left.q)){
+      if(left && left.q.type==='R' && left.q.color===color && hasNotMoved(left.q)){
         if(canUse(c-1) && canUse(c-2) && canUse(c-3)){
           if(safeAfter(c-1,null) && safeAfter(c-2,{castle:'Q',rookFrom:{r:r,c:left.col},rookTo:{r:r,c:c-1}})){
             out.push([r,c-2,{castle:'Q',rookFrom:{r:r,c:left.col},rookTo:{r:r,c:c-1}},false]);
@@ -3525,46 +3391,6 @@ let CURRENT_GAME_ID = null;
 let MOVE_COUNT_IN_GAME = 0;
 
 const boardEl = document.getElementById('board');
-const ajBufonGuide = document.getElementById('aj-bufon-guide');
-function updateBufonGuide(){
-  try{
-    if(!ajBufonGuide) return;
-    const v = buildVisible(board, offsets);
-    const p = sel && v[sel.r] ? v[sel.r][sel.c] : null;
-    if(!p || p.type!=='J' || !Array.isArray(moves) || !moves.length){
-      ajBufonGuide.style.display = 'none';
-      return;
-    }
-
-    // Mostrar la guía SOLO si alguna de las casillas legales marcadas para el Bufón
-    // permite terminar adyacente a un objetivo válido (Rey, Reina o General enemigo).
-    const enemy = p.color==='w' ? 'b' : 'w';
-    let canEntertain = false;
-    for(const mv of moves){
-      const tr = mv && mv[0], tc = mv && mv[1];
-      if(!Number.isInteger(tr) || !Number.isInteger(tc) || tr<0 || tr>=8 || tc<0 || tc>=8) continue;
-      for(let dr=-1; dr<=1 && !canEntertain; dr++) for(let dc=-1; dc<=1 && !canEntertain; dc++){
-        if(!dr && !dc) continue;
-        const rr=tr+dr, cc=tc+dc;
-        if(rr<0 || rr>=8 || cc<0 || cc>=8) continue;
-        const q=v[rr]?.[cc];
-        if(q && q.color===enemy && (q.type==='K' || q.type==='Q' || q.type==='G')) canEntertain=true;
-      }
-      if(canEntertain) break;
-    }
-
-    ajBufonGuide.style.display = canEntertain ? 'block' : 'none';
-  }catch(_){ if(ajBufonGuide) ajBufonGuide.style.display='none'; }
-}
-
-(function(){
-  function refresh(){ try{ updateBufonGuide(); }catch(_){} }
-  document.addEventListener('click', ()=>setTimeout(refresh,0), true);
-  window.addEventListener('aj:turn:change', refresh);
-  window.addEventListener('aj:mode:change', refresh);
-})();
-
-
 const ctrlEl  = document.getElementById('shiftCtrl');
 const ctrlLbl = document.getElementById('shiftLbl');
 const chooseWrap  = document.getElementById('chooseWrap');
@@ -3777,10 +3603,6 @@ function render(){
       if(bc !== null){
         const p = board[r][bc];
         if(p){
-          const frozen = !!(p.freeze && p.freeze.some(f => f && f.turns > 0));
-          if(frozen) sq.classList.add('aj-frozen');
-          const pieceWrap = document.createElement('div');
-          pieceWrap.className = 'aj-frozen-piece-wrap';
           if(USE_SPRITES){
             const url = (PIECE_SPRITES[p.color] && PIECE_SPRITES[p.color][p.type]) || null;
             if(url){
@@ -3788,27 +3610,19 @@ function render(){
               img.style.width = `calc(var(--square) * 0.86)`;
               img.style.height = `calc(var(--square) * 0.86)`;
               img.style.background = `center / contain no-repeat url('${url}')`;
-              pieceWrap.appendChild(img);
+              sq.appendChild(img);
             }else{
               const sp = document.createElement('span');
               sp.className = 'piece fallback';
               sp.textContent = (PIECES_UNICODE[p.color]||{})[p.type] || p.type;
-              pieceWrap.appendChild(sp);
+              sq.appendChild(sp);
             }
           }else{
             const sp = document.createElement('span');
             sp.className = 'piece fallback';
             sp.textContent = (PIECES_UNICODE[p.color]||{})[p.type] || p.type;
-            pieceWrap.appendChild(sp);
+            sq.appendChild(sp);
           }
-          if(frozen){
-            const mark = document.createElement('span');
-            mark.className = 'aj-frozen-mark';
-            mark.textContent = '🎭';
-            mark.title = 'Entretenido por un Bufón';
-            pieceWrap.appendChild(mark);
-          }
-          sq.appendChild(pieceWrap);
         }
       }
 
@@ -3830,7 +3644,6 @@ function render(){
     }
   }
   boardEl.appendChild(frag);
-  try{ updateBufonGuide(); }catch(_){}
 }
 
 function onClickSquare(r, d){ if(gameOver) return; if(!window.GAME_STARTED) return; try{ if(window.GAME_MODE==='bot-vs-bot') return; }catch(_){ }
@@ -3983,7 +3796,6 @@ function keepRow(){
 }
 
 function restartGame(){
-  try{ if(ajBufonGuide) ajBufonGuide.style.display='none'; }catch(_){}
   try{ window.__BOT_SCHEDULED__=false; window.__BOT_SCHEDULED_SIDE__=null; }catch(_){ }
   try{ window.__GAME_SESSION__=(window.__GAME_SESSION__|0)+1; window.GAME_STARTED=false; }catch(_){ }
 
@@ -4035,7 +3847,7 @@ render(); applyShiftCtrlLockVisual();
   };
 
   window.piezaNombre = window.piezaNombre || function(t){
-    const map={P:'peón',N:'caballo',B:'alfil',R:'torre',Q:'dama',K:'rey',G:'General',V:'Verdugo',M:'Mago',W:'Maga',J:'Bufón',A:'Arquero',S:'Guerrero'}; return map[t]||'pieza';
+    const map={P:'peón',N:'caballo',B:'alfil',R:'torre',Q:'dama',K:'rey'}; return map[t]||'pieza';
   };
 })();
 </script><!-- BOT básico + encadenado con cola --><script>
@@ -4132,7 +3944,7 @@ function getParamsFor(color){
 }
 
 // Valores de piezas (centipawns)
-const PV = { 'P':100, 'S':125, 'J':300, 'N':320, 'B':330, 'M':360, 'W':360, 'A':450, 'R':500, 'V':650, 'G':700, 'Q':900, 'K':20000 };
+const PV = { 'P':100, 'N':320, 'B':330, 'R':500, 'Q':900, 'K':20000 };
 
 // Tablas piece-square muy simples (orientadas para blancas).
 // Para negras se espeja por filas (r -> 7-r).
@@ -4238,7 +4050,6 @@ function genMoves(boardState, offsState, color, ep){
 function evaluate(boardState, offsState, side){
   const vis = buildVisible(boardState, offsState);
   let white = 0, black = 0;
-  let frozenWhite = 0, frozenBlack = 0;
 
   for(let r=0;r<8;r++){
     for(let c=0;c<8;c++){
@@ -4249,17 +4060,8 @@ function evaluate(boardState, offsState, side){
       const ps = pst[rr][c];
       const val = base + ps;
       if(p.color==='w') white += val; else black += val;
-
-      // El entretenimiento del Bufón es una ventaja estratégica real.
-      if(p.freeze && p.freeze.some(f => f && f.turns > 0)){
-        const control = 18 + Math.min(70, base * 0.08);
-        if(p.color==='w') frozenWhite += control; else frozenBlack += control;
-      }
     }
   }
-
-  white += frozenWhite;
-  black += frozenBlack;
 
   // Movilidad (peso suave)
   try{
@@ -4334,74 +4136,40 @@ function scoreMove(m){
 
 // pickMove con dificultad real
 function pickMove(color){
-  const params = getParamsFor(color);
-  const moves = genMoves(board, offsets, color, epTarget);
-  if(moves.length===0) return null;
-
-  // Orden inicial y recorte por haz (beam)
-  let ordered = orderMoves(moves);
-  if(params.depth>0 && params.beam && ordered.length>params.beam){
-    ordered = ordered.slice(0, params.beam).concat(ordered.slice(params.beam).sort(()=>Math.random()-0.5).slice(0, 4));
+ const params=getParamsFor(color), moves=genMoves(board,offsets,color,epTarget); if(!moves.length)return null;
+ const opp=color==='w'?'b':'w';
+ const variant=(()=>{try{for(const row of board)for(const q of row||[])if(q&&['G','V','M','W','J','A'].includes(q.type))return 'guerra';for(const row of board)for(const q of row||[])if(q&&q.type==='I')return 'amenaza';}catch(_){ }return 'simple';})();
+ const PV2=variant==='guerra'?{P:100,N:280,B:300,R:480,Q:850,K:20000,G:650,V:900,M:430,W:430,J:280,A:470,S:130}:{P:100,N:320,B:330,R:500,Q:900,K:20000};
+ function score(m){const p=m.piece||buildVisible(board,offsets)[m.from.r]?.[m.from.c];if(!p)return-1e9;const st=applyMove(board,offsets,m.from,m.to,m.special||null),b2=st.board||board,o2=st.offsets||offsets,v=buildVisible(b2,o2);let s=m.isCapture?(PV2[m.victim?.type]||100):0;s+=(7-(Math.abs(m.to.r-3.5)+Math.abs(m.to.c-3.5)))*5;
+  if(variant==='amenaza'){
+   for(let r=0;r<8;r++)for(let c=0;c<8;c++){const q=v[r][c];if(!q||q.color!==color)continue;if(q.type==='I'||q.type==='S'){for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;const rr=r+dr,cc=c+dc;if(rr>=0&&rr<8&&cc>=0&&cc<8){const x=v[rr][cc];if(x&&x.color===color&&x.type!=='I'&&x.type!=='S')s+=15000;}}}else{const d=Math.abs(m.to.r-r)+Math.abs(m.to.c-c);s+=Math.max(0,7-d)*20;}}}
+  if(variant==='guerra'){
+   if(['G','V','M','W','J','A','S'].includes(p.type))s+=100;
+   if(p.type==='M'||p.type==='W')s+=m.isCapture&&m.victim?.type!=='K'?600:genMoves(b2,o2,color,epTarget).filter(x=>x.from.r===m.to.r&&x.from.c===m.to.c&&x.isCapture).length*220;
+   if(p.type==='J')for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const rr=m.to.r+dr,cc=m.to.c+dc,q=v[rr]?.[cc];if(q&&q.color!==color)s+=(PV2[q.type]||100)>=500?450:160;}
+   if(p.type==='A')s+=Math.max(0,color==='w'?m.from.r-m.to.r:m.to.r-m.from.r)*45+(m.isCapture?220:0);
+   if(p.type==='S'){const adv=color==='w'?m.from.r-m.to.r:m.to.r-m.from.r;s+=Math.max(0,adv)*100;if(st.movedPiece?.veteran)s+=15000;if(m.to.r===(color==='w'?0:7))s+=12000;}
+   let f=0;for(const row of b2)for(const q of row||[])if(q?.freeze?.length)f+=q.color===color?-110:120;s+=f;
   }
-
-  const deadline = (performance && performance.now) ? (performance.now() + (params.timeMs||120)) : Number.POSITIVE_INFINITY;
-
-  // Si profundidad 0: selección heurística simple con ruido y posible blunder
-  if(params.depth===0){
-    // Evaluar superficialmente
-    const scored = ordered.map(m=>{
-      const victimVal = m.isCapture ? (PV[m.victim?.type||'P']||100) : 0;
-      const base = victimVal + (PV[m.piece.type]||0)*0.01;
-      const jitter = (params.noise||0)* (Math.random()*100);
-      return {m, v: base + jitter};
-    }).sort((a,b)=>b.v-a.v);
-    let choice = scored[0].m;
-    if(params.blunder && Math.random()<params.blunder){
-      // elegir una del tercio inferior si hay
-      const idx = Math.floor(Math.random() * Math.max(1, Math.floor(scored.length/3)));
-      choice = scored[scored.length-1 - idx].m;
-    }
-    return choice;
-  }
-
-  // Búsqueda con alfa-beta + qsearch, con tope de tiempo
-  let best = null, bestScore = -1e9;
-  const side = color;
-  for(const m of ordered){
-    if(performance && performance.now && performance.now()>deadline) break;
-    const nxt = applyMove(board, offsets, m.from, m.to, m.special);
-    const sc = -search(nxt.board, offsets, (side==='w'?'b':'w'), params.depth-1, -1e9, 1e9, deadline);
-    const noise = (params.noise||0) * (Math.random()*20);
-    const score = sc + noise;
-    if(score > bestScore){ bestScore = score; best = m; }
-  }
-
-  // Blunder opcional
-  if(best && params.blunder && Math.random()<params.blunder && ordered.length>1){
-    const k = Math.min(3, Math.floor(ordered.length/2));
-    const i = Math.floor(1 + Math.random()*k);
-    best = ordered[i];
-  }
-
-  return best || ordered[0];
+  try{s+=.30*(evaluate(b2,o2,color)||0)}catch(_){ } return s;
+ }
+ let arr=moves.slice().sort((a,b)=>score(b)-score(a));const beam=Math.max(8,Math.min(20,params.beam||12));if(arr.length>beam)arr=arr.slice(0,beam);const deadline=performance?.now?performance.now()+(params.timeMs||120):Infinity;let best=arr[0],bs=-1e12;
+ for(const m of arr){if(performance?.now&&performance.now()>deadline)break;let s=score(m);if((params.depth||0)>0)try{const n=applyMove(board,offsets,m.from,m.to,m.special);s+=.55*search(n.board,offsets,opp,params.depth-1,-1e9,1e9,deadline)}catch(_){ }s+=(params.noise||0)*60*(Math.random()-.5);if(s>bs){bs=s;best=m}}
+ if(params.blunder&&Math.random()<params.blunder&&arr.length>1)best=arr[1+Math.floor(Math.random()*Math.min(3,arr.length-1))];return best;
 }
 
   function nextFrame(){ return new Promise(r=> (window.requestAnimationFrame? requestAnimationFrame(()=>r()) : setTimeout(()=>r(),0)) ); }
 async function scheduleBotMove(){
-    // Sincronizar el bot local con el turno reiniciado.
-    // Al reiniciar una partida, window.botSide vuelve a ser 'w', pero la
-    // variable local del motor puede conservar el color de la partida anterior.
-    if(window.GAME_MODE==='bot-vs-bot' && typeof window.botSide!=='undefined'){
-      botSide = window.botSide;
-    }
     // In-flight guard
     if(window.__BOT_SCHEDULED__) return;
     const __sessionAtSchedule = (window.__GAME_SESSION__|0);
     const __sideAtSchedule = (typeof botSide!=='undefined') ? botSide : (typeof turn!=='undefined'?turn:'w');
-    window.__BOT_SCHEDULED__ = true; window.__BOT_SCHEDULED_SIDE__ = __sideAtSchedule;
- if(!window.GAME_STARTED) return;
+    if(!window.GAME_STARTED) return;
     if(!botEnabled || gameOver || pendingShift || turn !== botSide) return;
-    await nextFrame(); const mv = pickMove(botSide); if(!mv) return;
+    window.__BOT_SCHEDULED__ = true; window.__BOT_SCHEDULED_SIDE__ = __sideAtSchedule;
+    await nextFrame();
+    if(__sessionAtSchedule!==(window.__GAME_SESSION__|0)||!window.GAME_STARTED||gameOver||pendingShift||turn!==botSide){window.__BOT_SCHEDULED__=false;window.__BOT_SCHEDULED_SIDE__=null;return;}
+    const mv=pickMove(botSide); if(!mv){window.__BOT_SCHEDULED__=false;window.__BOT_SCHEDULED_SIDE__=null;return;}
     const pieceName = (window.piezaNombre? window.piezaNombre(mv.piece.type) : 'pieza');
     const msg = `🤖 Bot mueve: ${pieceName} ${algebra(mv.from.r, mv.from.c)} → ${algebra(mv.to.r, mv.to.c)}`;
     await BOT_UI.showFor(msg, BOT_TIMING.announceMove, ()=>{
@@ -4420,97 +4188,16 @@ async function scheduleBotMove(){
 
   
 async function botDecideShift(row){
-  if(!botEnabled || gameOver || !pendingShift || turn !== botSide) return;
-
-  // --- Evaluación heurística: elegir entre mantener vs desplazar (0 o 8) ---
-  // Clonar estado
-  const baseBoard = deepCopyBoard(board);
-  const baseOffsets = offsets.slice();
-  const myColor = botSide;
-
-  function pieceValue(t){
-    switch(t){
-      case 'P': return 100;
-      case 'S': return 125;
-      case 'J': return 300;
-      case 'N': return 320;
-      case 'B': return 330;
-      case 'M': return 360;
-      case 'W': return 360;
-      case 'A': return 450;
-      case 'R': return 500;
-      case 'V': return 650;
-      case 'G': return 700;
-      case 'Q': return 900;
-      case 'K': return 0;
-      default: return 0;
-    }
-  }
-
-  function mobility(vis, b, off, color){
-    // Similar a allLegalMoves pero parametrizado
-    let count = 0;
-    for(let r=0;r<8;r++){
-      for(let c=0;c<16;c++){
-        const p = vis[r][c];
-        if(!p || p.color!==color) continue;
-        const ms = legalMovesFor(vis, b, off, r, c, color, epTarget);
-        count += ms.length;
-      }
-    }
-    return count;
-  }
-
-  function evaluatePosition(b, off, my){
-    // material + pequeña bonificación por movilidad
-    const vis = buildVisible(b, off);
-    let matW=0, matB=0;
-    for(let r=0;r<8;r++){
-      for(let c=0;c<16;c++){
-        const p = vis[r][c];
-        if(!p) continue;
-        const v = pieceValue(p.type);
-        if(p.color==='w') matW += v; else matB += v;
-      }
-    }
-    const mobW = mobility(vis, b, off, 'w');
-    const mobB = mobility(vis, b, off, 'b');
-    const scoreW = matW + mobW*2; // peso liviano a movilidad
-    const scoreB = matB + mobB*2;
-    return (my==='w' ? (scoreW - scoreB) : (scoreB - scoreW));
-  }
-
-  function evalKeep(){
-    // Mantener: offsets iguales
-    return evaluatePosition(baseBoard, baseOffsets, myColor);
-  }
-
-  function evalShiftTo(target){
-    if(!(window.AJ_RULES && typeof window.AJ_RULES.legalShift==='function')) return -1e9;
-    try{
-      if(!window.AJ_RULES.legalShift(row, target, baseBoard, baseOffsets)) return -1e9;
-    }catch(_){ return -1e9; }
-    const off2 = baseOffsets.slice();
-    off2[row] = target;
-    return evaluatePosition(baseBoard, off2, myColor);
-  }
-
-  const keepScore = evalKeep();
-  const s0 = evalShiftTo(0);
-  const s8 = evalShiftTo(8);
-
-  let action = 'keep', target = null;
-  let best = keepScore;
-  if(s0 > best){ best = s0; action = 'shift'; target = 0; }
-  if(s8 > best){ best = s8; action = 'shift'; target = 8; }
-
-  // Ejecutar respetando el timing (HUD headless mantiene ms)
-  await BOT_UI.showFor('', BOT_TIMING.announceShift, ()=>{
-    try{
-      if(action==='keep'){ keepRow(); }
-      else { doShiftTo(row, target); }
-    }catch(_){}
-  }, Math.max(120, Math.round(BOT_TIMING.announceShift*0.10)) );
+ if(!botEnabled||gameOver||!pendingShift||turn!==botSide)return;const color=botSide,opp=color==='w'?'b':'w',base=deepCopyBoard(board),off=offsets.slice();
+ const variant=(()=>{try{for(const row of base)for(const q of row||[])if(q&&['G','V','M','W','J','A'].includes(q.type))return'guerra';for(const row of base)for(const q of row||[])if(q&&q.type==='I')return'amenaza';}catch(_){ }return'simple';})();
+ const PV2=variant==='guerra'?{P:100,N:280,B:300,R:480,Q:850,K:20000,G:650,V:900,M:430,W:430,J:280,A:470,S:130}:{P:100,N:320,B:330,R:500,Q:900,K:20000};
+ function val(o){const v=buildVisible(base,o);let s=0,me=0,them=0;for(let r=0;r<8;r++)for(let c=0;c<8;c++){const q=v[r][c];if(!q)continue;const x=PV2[q.type]||80;if(q.color===color)me+=x;else them+=x;if(variant==='guerra'&&q.color===color&&['G','V','M','W','J','A','S'].includes(q.type))s+=190;if(variant==='guerra'&&q.color===opp&&['G','V','M','W','J','A','S'].includes(q.type))s-=150}
+  try{s+=(me-them)+(genMoves(base,o,color,epTarget).length-genMoves(base,o,opp,epTarget).length)*3}catch(_){s+=me-them}
+  if(variant==='amenaza')for(let r=0;r<8;r++)for(let c=0;c<8;c++){const q=v[r][c];if(q?.color===color&&(q.type==='I'||q.type==='S'))for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const x=v[r+dr]?.[c+dc];if(x?.color===color&&x.type!=='I'&&x.type!=='S')s+=18000}}
+  if(variant==='guerra')for(let r=0;r<8;r++)for(let c=0;c<8;c++){const q=v[r][c];if(q?.color===color&&q.type==='S'){const d=color==='w'?r:7-r;s+=q.veteran?3000:d<=1?1400:d<=2?500:0}}
+  return s}
+ let opts=[{a:'keep',t:null,s:val(off)}];for(const t of [0,8])try{if(AJ_RULES?.legalShift(row,t,base,off)){const o=off.slice();o[row]=t;opts.push({a:'shift',t,s:val(o)+(variant==='guerra'?180:variant==='amenaza'?150:120)})}}catch(_){ }
+ opts.sort((a,b)=>b.s-a.s);let pick=opts[0];const p=getParamsFor(color);if(opts[1]&&p.noise>.25&&Math.random()<.25)pick=opts[1];await BOT_UI.showFor('',BOT_TIMING.announceShift,()=>{try{pick.a==='shift'?doShiftTo(row,pick.t):keepRow()}catch(_){try{keepRow()}catch(__){}}},Math.max(120,Math.round(BOT_TIMING.announceShift*.1)));
 }
 
   window.addEventListener('aj:turn:change', (e)=>{
@@ -12782,6 +12469,8 @@ function showVeteranBanner(color){
 })();
 </script>
 
+</style>
+
 <style id="aj-zones-panel-exact-10x6-final">
 /* Tamaño definitivo del panel de Brillo y Opacidad: 10.5 casilleros de ancho x 6.3 de alto.
    Usa --square para mantener la misma proporción visual en escritorio y móvil, con centrado idéntico. */
@@ -12805,6 +12494,7 @@ function showVeteranBanner(color){
   box-shadow: 0 18px 60px rgba(0,0,0,.45) !important;
 }
 </style>
+
 <style id="aj-fullscreen-mobile-bottom-controls-up">
 /* Fullscreen móvil: subir apenas los controles inferiores sin mover el tablero ni la barra. */
 @media (max-width:900px), (pointer:coarse){
@@ -12815,6 +12505,332 @@ function showVeteranBanner(color){
   }
 }
 </style>
+<script id="aj-bot-engine-v2">
+/* === AJETREZ BOT ENGINE v2 — anti-loop + adaptive openings + variant-aware play === */
+(function(){
+  'use strict';
+  if(window.__AJ_BOT_V2__) return;
+  window.__AJ_BOT_V2__ = true;
+
+  const OPP = c => c==='w' ? 'b' : 'w';
+  const now = () => (typeof performance!=='undefined' && performance.now) ? performance.now() : Date.now();
+  const PV = {P:100,N:320,B:330,R:500,Q:900,K:20000,G:650,V:900,M:430,W:430,J:280,A:470,S:130};
+
+  const MEM = window.AJ_BOT_MEMORY = window.AJ_BOT_MEMORY || {
+    gameId:null, ply:0, recent:[], positions:Object.create(null), firstMoves:{w:Object.create(null),b:Object.create(null)}, seed:Math.random()*1e9
+  };
+
+  function syncGame(){
+    const gid = String(window.CURRENT_GAME_ID || (typeof CURRENT_GAME_ID!=='undefined' ? CURRENT_GAME_ID : ''));
+    const ply = Number(typeof MOVE_COUNT_IN_GAME!=='undefined' ? MOVE_COUNT_IN_GAME : (window.moveCount||0)) || 0;
+    if(MEM.gameId !== gid || (ply===0 && MEM.ply>0)){
+      MEM.gameId = gid;
+      MEM.ply = 0;
+      MEM.recent = [];
+      MEM.positions = Object.create(null);
+      MEM.seed = Math.random()*1e9;
+    }
+    MEM.ply = ply;
+    return ply;
+  }
+
+  function pieceKey(p){
+    if(!p) return '.';
+    return [p.color,p.type,p.hasMoved?1:0,p.veteran?1:0,
+      Array.isArray(p.freeze)?p.freeze.length:0].join('');
+  }
+  function positionKey(b, offs, nextTurn){
+    let s = nextTurn+'|'+(offs||[]).join(',')+'|';
+    for(let r=0;r<b.length;r++){
+      const row=b[r]||[];
+      for(let c=0;c<row.length;c++) s += pieceKey(row[c]);
+      s += '/';
+    }
+    return s;
+  }
+  function moveKey(m){
+    if(!m) return '';
+    let sp='';
+    try{ sp=JSON.stringify(m.special||null); }catch(_){ sp=String(m.special||''); }
+    return `${m.from.r},${m.from.c}-${m.to.r},${m.to.c}-${sp}`;
+  }
+  function shortMoveKey(m){ return m ? `${m.from.r},${m.from.c}-${m.to.r},${m.to.c}` : ''; }
+  function reverse(a,b){ return !!(a&&b&&a.from.r===b.to.r&&a.from.c===b.to.c&&a.to.r===b.from.r&&a.to.c===b.from.c); }
+
+  function resetMemory(){
+    MEM.gameId = null; MEM.ply=0; MEM.recent=[]; MEM.positions=Object.create(null); MEM.seed=Math.random()*1e9;
+  }
+
+  function registerPosition(nextTurn){
+    try{
+      syncGame();
+      const k=positionKey(board,offsets,nextTurn);
+      MEM.positions[k]=(MEM.positions[k]||0)+1;
+    }catch(_){ }
+  }
+
+  function registerMove(m){
+    try{
+      syncGame();
+      const rec={from:{...m.from},to:{...m.to},piece:m.piece?m.piece.type:'',key:shortMoveKey(m)};
+      MEM.recent.push(rec);
+      if(MEM.recent.length>12) MEM.recent.shift();
+      const ply=syncGame();
+      if(ply<=2 && m.piece){
+        const k=shortMoveKey(m);
+        MEM.firstMoves[m.piece.color][k]=(MEM.firstMoves[m.piece.color][k]||0)+1;
+      }
+      registerPosition(typeof turn!=='undefined'?turn:'w');
+    }catch(_){ }
+  }
+
+  function variantOf(b){
+    try{
+      for(const row of b||[]) for(const p of row||[]) if(p&&['G','V','M','W','J','A'].includes(p.type)) return 'guerra';
+      for(const row of b||[]) for(const p of row||[]) if(p&&p.type==='I') return 'amenaza';
+    }catch(_){ }
+    return 'simple';
+  }
+
+  function legal(color){
+    try{ return (typeof genMoves==='function') ? genMoves(board,offsets,color,epTarget) : []; }
+    catch(_){ return []; }
+  }
+  function sim(m){
+    try{ return applyMove(board,offsets,m.from,m.to,m.special||null); }
+    catch(_){ return {board,offsets,movedPiece:m.piece}; }
+  }
+  function visible(b,o){ try{ return buildVisible(b,o); }catch(_){ return b; } }
+  function isCenter(r,c){ return Math.abs(c-3.5)<=1.5 && Math.abs(r-3.5)<=1.5; }
+
+  function openingScore(m,color,ply,variant){
+    const p=m.piece;
+    if(!p) return 0;
+    let s=0;
+    if(ply<8){
+      if(p.type==='P'){
+        s += ply<2 ? 185 : 105;
+        if(isCenter(m.to.r,m.to.c)) s += 55;
+        const adv = color==='w' ? (m.from.r-m.to.r) : (m.to.r-m.from.r);
+        if(adv>0) s += Math.min(45,adv*18);
+      } else if(p.type==='N') {
+        s -= ply<2 ? 105 : (ply<4 ? 35 : 5);
+        if(ply<4 && !isCenter(m.to.r,m.to.c)) s -= 20;
+      } else if(p.type==='B') {
+        s += ply>=2 ? 25 : 0;
+      } else if(p.type==='Q') {
+        s -= ply<4 ? 45 : 10;
+      } else if(p.type==='R' || p.type==='K') {
+        s -= ply<5 ? 35 : 0;
+      }
+      // Encourage developing a different first pawn on successive games.
+      const k=shortMoveKey(m);
+      const used=MEM.firstMoves[color][k]||0;
+      s -= used*18;
+      // Small per-game variation, not enough to destroy stronger play.
+      const noise=Math.sin((MEM.seed + (m.from.r*97+m.from.c*53+m.to.r*31+m.to.c*17))%100000)*0.5+0.5;
+      s += (noise-0.5)*22;
+    }
+    return s;
+  }
+
+  function variantScore(m,b2,o2,color,variant){
+    let s=0;
+    const p=m.piece || (visible(board,offsets)[m.from.r]||[])[m.from.c];
+    const victim=m.victim;
+    if(m.isCapture) s += (PV[victim?.type]||100) - (PV[p?.type]||100)*0.06;
+    if(m.special?.promotion) s += 800;
+    try{
+      const v=visible(b2,o2);
+      if(variant==='amenaza'){
+        let bestDist=99;
+        for(let r=0;r<8;r++) for(let c=0;c<8;c++){
+          const q=v[r]?.[c]; if(!q||q.color!==color||(q.type!=='I'&&q.type!=='S')) continue;
+          for(let rr=0;rr<8;rr++) for(let cc=0;cc<8;cc++){
+            const x=v[rr]?.[cc]; if(x?.color===color && x.type!=='I' && x.type!=='S'){
+              const d=Math.max(Math.abs(rr-r),Math.abs(cc-c)); bestDist=Math.min(bestDist,d);
+              if(d<=1) s+=15000;
+            }
+          }
+        }
+        if(bestDist<99) s += Math.max(0,8-bestDist)*35;
+      }
+      if(variant==='guerra'){
+        if(['G','V','M','W','J','A','S'].includes(p?.type)) s+=35;
+        if(p?.type==='S'){
+          const adv=color==='w'?(m.from.r-m.to.r):(m.to.r-m.from.r);
+          s+=Math.max(0,adv)*55;
+          if(m.to.r===(color==='w'?0:7)) s+=5000;
+          if(m.special?.veteran || (b2[m.to.r]?.[o2[m.to.r]+m.to.c]?.veteran)) s+=2200;
+        }
+        if(p?.type==='M'||p?.type==='W'){
+          if(m.isCapture && victim?.type!=='K') s+=350;
+          try{ const cm=genMoves(b2,o2,color,epTarget); s+=cm.filter(x=>x.from.r===m.to.r&&x.from.c===m.to.c&&x.isCapture).length*90; }catch(_){ }
+        }
+        if(p?.type==='A'){
+          const adv=color==='w'?(m.from.r-m.to.r):(m.to.r-m.from.r); s+=Math.max(0,adv)*25;
+        }
+        if(p?.type==='J'){
+          for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
+            const q=v[m.to.r+dr]?.[m.to.c+dc]; if(q&&q.color!==color) s += (PV[q.type]||100)>=500 ? 180 : 55;
+          }
+        }
+      }
+      // General central control and mobility.
+      if(isCenter(m.to.r,m.to.c)) s+=16;
+      if(typeof evaluate==='function') s += 0.28*(evaluate(b2,o2,color)||0);
+      try{
+        const my=genMoves(b2,o2,color,epTarget).length, op=genMoves(b2,o2,OPP(color),epTarget).length;
+        s += Math.max(-20,Math.min(20,my-op))*2.2;
+      }catch(_){ }
+    }catch(_){ }
+    return s;
+  }
+
+  function repetitionPenalty(m,b2,o2,color,ply){
+    let s=0;
+    const k=moveKey(m), sk=shortMoveKey(m);
+    for(let i=MEM.recent.length-1,dist=1;i>=0;i--,dist++){
+      const r=MEM.recent[i];
+      if(r.key===sk) s -= Math.max(20,130-dist*8);
+      if(i===MEM.recent.length-1 && reverse(r,m)) s -= 260;
+      if(r.key===sk && dist<=4) s -= 100;
+    }
+    try{
+      const next=positionKey(b2,o2,OPP(color));
+      const count=MEM.positions[next]||0;
+      if(count>=2) s-=14000;
+      else if(count===1) s-=2200;
+      // Discourage 4-ply oscillation even if metadata differs.
+      if(MEM.recent.length>=3){
+        const a=MEM.recent[MEM.recent.length-3], b=MEM.recent[MEM.recent.length-2];
+      }
+    }catch(_){ }
+    return s;
+  }
+
+  function tacticalSafety(m,b2,o2,color){
+    let s=0;
+    try{
+      const oppMoves=genMoves(b2,o2,OPP(color),epTarget);
+      const targetKey=`${m.to.r},${m.to.c}`;
+      let attacked=0;
+      for(const x of oppMoves) if(`${x.to.r},${x.to.c}`===targetKey) attacked++;
+      if(attacked && !m.isCapture) s-=Math.min(90,attacked*25);
+      if(m.isCapture && (PV[m.victim?.type]||100) >= (PV[m.piece?.type]||100)) s+=45;
+    }catch(_){ }
+    return s;
+  }
+
+  function choose(color){
+    const ply=syncGame();
+    try{
+      if(ply===0){
+        const ik=positionKey(board,offsets,typeof turn!=='undefined'?turn:color);
+        if(!MEM.positions[ik]) MEM.positions[ik]=1;
+      }
+    }catch(_){ }
+    const all=legal(color); if(!all.length) return null;
+    const variant=variantOf(board);
+    const params=(typeof getParamsFor==='function') ? getParamsFor(color) : {depth:1,timeMs:120,noise:0};
+    const deadline=now()+(params.timeMs||120);
+    const scored=[];
+
+    for(const m of all){
+      if(now()>deadline && scored.length>3) break;
+      const st=sim(m), b2=st.board||board, o2=st.offsets||offsets;
+      let s=0;
+      s += openingScore(m,color,ply,variant);
+      s += variantScore(m,b2,o2,color,variant);
+      s += repetitionPenalty(m,b2,o2,color,ply);
+      s += tacticalSafety(m,b2,o2,color);
+
+      // Strong anti-loop rule: once an alternative exists, never voluntarily
+      // reverse the immediately previous move unless it is tactically necessary.
+      const last=MEM.recent[MEM.recent.length-1];
+      if(last && reverse(last,m)) s-=700;
+
+      // Search only the best-looking candidates; keeps browser load controlled.
+      scored.push({m,s});
+    }
+    scored.sort((a,b)=>b.s-a.s);
+    if(!scored.length) return all[0];
+
+    // Search top candidates at higher difficulties.
+    const depth=Math.max(0,Math.min(3,Number(params.depth)||0));
+    const beam=Math.min(scored.length, depth>=2?10:depth===1?7:5);
+    if(depth>0 && typeof search==='function'){
+      for(let i=0;i<beam && now()<deadline;i++){
+        const x=scored[i];
+        try{
+          const st=sim(x.m);
+          x.s += 0.48*search(st.board,st.offsets,OPP(color),depth-1,-1e9,1e9,deadline);
+        }catch(_){ }
+      }
+      scored.sort((a,b)=>b.s-a.s);
+    }
+
+    // Difficulty-controlled choice: weak bots explore the top 3; strong bots
+    // remain close to the principal variation. Opening diversity is retained.
+    let pool;
+    const noise=Number(params.noise)||0;
+    if(ply<8){
+      const top=Math.min(scored.length, Math.max(3, depth>=2?5:7));
+      pool=scored.slice(0,top);
+    } else {
+      const top=Math.min(scored.length, Math.max(2, depth>=2?3:5));
+      pool=scored.slice(0,top);
+    }
+    if(noise<=0.01) return pool[0].m;
+
+    const temperature=35 + noise*80;
+    let total=0;
+    for(const x of pool) total += Math.exp((x.s-pool[0].s)/temperature);
+    let r=Math.random()*total;
+    for(const x of pool){ r-=Math.exp((x.s-pool[0].s)/temperature); if(r<=0) return x.m; }
+    return pool[0].m;
+  }
+
+  // Reset memory with the real game lifecycle.
+  try{
+    const origRestart=window.restartGame;
+    if(typeof origRestart==='function'){
+      window.restartGame=function(){ resetMemory(); return origRestart.apply(this,arguments); };
+    }
+  }catch(_){ }
+  document.addEventListener('click',function(e){
+    const id=e?.target?.id;
+    if(id==='btnStartGame'||id==='btnRestartBR') resetMemory();
+  },true);
+
+  // Track every executed move (human or bot), so loops are detected from the
+  // real game rather than only from bot decisions.
+  try{
+    const origPlay=window.playMove;
+    if(typeof origPlay==='function'){
+      window.playMove=function(from,to,special,capturesKing){
+        let piece=null;
+        try{ piece=buildVisible(board,offsets)[from.r]?.[from.c]||null; }catch(_){ }
+        const m={from:{...from},to:{...to},special:special||null,piece};
+        const out=origPlay.apply(this,arguments);
+        registerMove(m);
+        return out;
+      };
+    }
+  }catch(_){ }
+
+  // Final authoritative selector. Existing opening-book wrappers remain as
+  // compatibility layers, but this engine is the last decision layer.
+  const oldPick=window.pickMove;
+  window.pickMove=function(color){
+    try{ return choose(color) || (typeof oldPick==='function'?oldPick.call(this,color):null); }
+    catch(e){ return typeof oldPick==='function'?oldPick.call(this,color):null; }
+  };
+
+  console.log('[AJ] Bot Engine v2 activo: anti-loop + aperturas adaptativas + variantes.');
+})();
+
+</script>
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
@@ -13557,6 +13573,7 @@ function showVeteranBanner(color){
   }
 }
 </style>
+
 <style id="aj-mobile-menu-panel-10-percent-final">
 /* Ajetrez — menú principal móvil: reducir 10% respecto al tamaño móvil actual.
    El escritorio no se modifica. Se conserva la posición superior existente. */
@@ -13583,6 +13600,7 @@ function showVeteranBanner(color){
   }
 }
 </style>
+
 <script id="aj-bot-special-ai-war">
 (function(){
 'use strict';
@@ -13606,7 +13624,7 @@ function adjacent(r,c,q){return Math.max(Math.abs(r-q.r),Math.abs(c-q.c))<=1;}
 function countFreeze(b,c){
   let n=0, high=0;
   for(const row of b)for(const p of row||[]){
-    if(!p||p.color!==opp(c)||!['K','Q','G'].includes(p.type)||!p.freeze||!p.freeze.length)continue;
+    if(!p||p.color!==opp(c)||!p.freeze||!p.freeze.length)continue;
     n++; if((vals[p.type]||0)>=400)high++;
   }
   return n+high*2;
