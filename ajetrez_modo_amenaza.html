@@ -2984,11 +2984,6 @@ body[data-theme="noche"] .regv2-btn{
 
 
 <div class="tab" id="tab-mas" style="display:none"><h3>Más funciones</h3><p>Acá vamos a agregar: estilos claros/oscuros, selector de temas, perfiles, estadísticas detalladas, etc.</p></div></div></div></div></div><div style="height:var(--toolbar-gap)"></div><div aria-label="Barra inferior" class="bar" id="bottomBar">
-<div aria-label="Botones de donación" id="donateBox">
-<span class="label">Colabora</span>
-
-
-</div>
 <button aria-controls="megaPanel" aria-expanded="false" class="btn" id="btnMegaMenu" type="button">Menú</button><div class="right-ctrls" id="rightControls"><button class="btn small" id="btnRestartBR" type="button">Reiniciar</button><button class="btn small" id="btnFSBR" type="button">Pantalla completa</button></div></div></div><script>
 // --- Audio FX setup ---
 (function(){
@@ -12951,6 +12946,46 @@ function showVeteranBanner(color){
 #bottomBar .donation-buttons, #bottomBar .donations, #bottomBar .imgbtn{margin-left:2px !important; margin-right:2px !important;}
 #fsRoot:fullscreen #bottomBar, #fsRoot:-webkit-full-screen #bottomBar{position:absolute !important; left:0 !important; right:0 !important; bottom:0 !important; width:100% !important;}
 #fsRoot:fullscreen #bottomBar #btnPaypal, #fsRoot:fullscreen #bottomBar #btnMercadoPago, #fsRoot:-webkit-full-screen #bottomBar #btnPaypal, #fsRoot:-webkit-full-screen #bottomBar #btnMercadoPago{transform:scale(.90) !important; transform-origin:center bottom !important;}
+</style>
+
+<!-- AJETREZ: AJUSTE FINAL — CONTROLES SUPERIORES 2mm MAS ABAJO, UNIFICADO WEB/MOVIL/FULLSCREEN -->
+<style id="aj-final-upper-controls-down-2mm-unified">
+  /* Pantalla completa: queda anclado al mismo borde del tablero. */
+  #topBar #rightControls{
+    top:calc(100% - 6px + 2mm) !important;
+    transform:translateY(-100%) !important;
+  }
+  /* Reloj + Reiniciar + Pausa: mismo desplazamiento vertical. */
+  #topBar #timeIndicator{
+    margin-top:2mm !important;
+  }
+  /* Reiniciar permanece dentro del reloj y acompaña exactamente su posición. */
+  #topBar #timeIndicator #btnRestartBR{
+    position:static !important;
+    transform:none !important;
+  }
+  /* La misma referencia cuando fsRoot está en fullscreen. */
+  #fsRoot:fullscreen #topBar #rightControls{
+    top:calc(100% - 6px + 2mm) !important;
+    transform:translateY(-100%) !important;
+  }
+  #fsRoot:fullscreen #topBar #timeIndicator{
+    margin-top:2mm !important;
+  }
+  @media (max-width:900px), (pointer:coarse){
+    #topBar #rightControls{
+      top:calc(100% - 6px + 2mm) !important;
+    }
+    #topBar #timeIndicator{
+      margin-top:2mm !important;
+    }
+    #fsRoot:fullscreen #topBar #rightControls{
+      top:calc(100% - 6px + 2mm) !important;
+    }
+    #fsRoot:fullscreen #topBar #timeIndicator{
+      margin-top:2mm !important;
+    }
+  }
 </style>
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
