@@ -3064,6 +3064,29 @@ body[data-theme="noche"] .regv2-btn{
   bottom:calc(var(--square) * 0.5) !important;
 }
 </style>
+
+<style id="aj-final-frame-half-square-content-down-2mm">
+/* Ajuste visual final solicitado: reducir la altura de la base gris ~medio casillero
+   y bajar 2 mm todo el contenido que se encuentra sobre ella. No altera la lógica. */
+.frame::before{
+  bottom: calc(8mm + (var(--square) * 0.5)) !important;
+}
+
+/* El contenido completo del juego baja 2 mm, manteniendo intacta la base gris. */
+.frame > .shell{
+  transform: translateY(2mm) !important;
+}
+
+#fsRoot:fullscreen::before,
+#fsRoot:-webkit-full-screen::before{
+  bottom: calc(3mm + (var(--square) * 0.5)) !important;
+}
+
+#fsRoot:fullscreen > .shell,
+#fsRoot:-webkit-full-screen > .shell{
+  transform: translateY(2mm) !important;
+}
+</style>
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
