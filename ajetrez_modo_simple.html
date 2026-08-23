@@ -2784,64 +2784,100 @@ body[data-theme="noche"] .regv2-btn{
 
 
 
-<!-- AJETREZ: Correccion definitiva — bloque Colabora al lado derecho -->
-<style id="aj-donate-right-final">
-  /* Independiza Colabora del grid de la barra inferior. */
-  #bottomBar #donateBox{
-    position:absolute !important;
-    left:auto !important;
-    right:8px !important;
-    top:50% !important;
-    bottom:auto !important;
-    transform:translateY(-50%) scale(0.9) !important;
-    transform-origin:right center !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:flex-end !important;
-    gap:8px !important;
-    grid-column:auto !important;
-    grid-row:auto !important;
-    justify-self:auto !important;
-    align-self:center !important;
-    margin:0 !important;
-    z-index:20 !important;
-  }
-  #bottomBar #donateBox .label,
-  #bottomBar #donateBox .imgbtn{
-    position:static !important;
-    left:auto !important; right:auto !important;
-    top:auto !important; bottom:auto !important;
-    transform:none !important;
-    margin:0 !important;
-  }
-  #bottomBar #donateBox .label{ margin-right:-8px !important; }
-  @media (max-width:900px), (pointer:coarse){
-    #bottomBar #donateBox{
-      left:auto !important; right:6px !important;
-      top:50% !important; bottom:auto !important;
-      transform:translateY(-50%) scale(0.9) !important;
-      transform-origin:right center !important;
-      gap:6px !important;
-    }
-  }
-</style>
+<!-- AJETREZ: Alineación final de controles con los límites del tablero -->
+<style id="aj-final-controls-board-alignment">
+/* Barra superior: reloj + Pausa alineados con el borde derecho real del tablero.
+   El conjunto se centra verticalmente dentro de la barra para evitar que quede
+   pegado al borde superior en diferentes tamaños de pantalla. */
+#topBar{ position:relative !important; }
+#topBar #timeIndicator{
+  position:absolute !important;
+  right:0 !important;
+  left:auto !important;
+  top:50% !important;
+  bottom:auto !important;
+  transform:translateY(-50%) !important;
+  margin:0 !important;
+}
+#topBar #timeIndicator #pauseBtn{
+  position:static !important;
+  transform:none !important;
+  margin:0 !important;
+}
 
-<style id="aj-donate-final-left">
-/* Colabora: posición final a la izquierda, independiente de la grilla */
+/* Barra inferior: Menú + Reiniciar quedan juntos en el centro y
+   Pantalla completa se alinea con el borde derecho del tablero. */
+#bottomBar{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto auto minmax(0,1fr) !important;
+  align-items:center !important;
+  column-gap:8px !important;
+  position:relative !important;
+  overflow:visible !important;
+}
 #bottomBar #donateBox{
-  position:absolute !important; left:8px !important; right:auto !important;
-  top:50% !important; bottom:auto !important;
-  grid-column:auto !important; justify-self:auto !important; align-self:center !important;
-  transform:translateY(-50%) scale(.9) !important;
-  transform-origin:left center !important; margin:0 !important;
-  display:flex !important; align-items:center !important; gap:14px !important; z-index:13 !important;
+  grid-column:1 !important;
+  justify-self:start !important;
+  align-self:center !important;
+  position:static !important;
+  transform:none !important;
+  margin:0 !important;
 }
-#bottomBar #donateBox .label, #bottomBar #donateBox .imgbtn{ margin:0 !important; }
+#bottomBar #btnMegaMenu{
+  grid-column:2 !important;
+  justify-self:end !important;
+  align-self:center !important;
+  position:static !important;
+  transform:none !important;
+  margin:0 !important;
+}
+#bottomBar #btnRestartBR{
+  grid-column:3 !important;
+  justify-self:start !important;
+  align-self:center !important;
+  position:static !important;
+  transform:none !important;
+  margin:0 !important;
+}
+#bottomBar #rightControls{
+  display:contents !important;
+}
+#bottomBar #btnFSBR{
+  grid-column:4 !important;
+  justify-self:end !important;
+  align-self:center !important;
+  position:static !important;
+  transform:none !important;
+  margin:0 !important;
+}
+
+/* En pantallas pequeñas mantenemos exactamente la misma lógica: los controles
+   siguen anclados a los límites del tablero, sin posiciones fijas de viewport. */
 @media (max-width:900px), (pointer:coarse){
-  #bottomBar #donateBox{left:6px !important; right:auto !important;}
+  #topBar #timeIndicator{ right:0 !important; top:50% !important; transform:translateY(-50%) !important; }
+  #bottomBar #btnFSBR{ justify-self:end !important; }
 }
 </style>
 
+<style id="aj-pause-clock-down-5mm">
+  /* Ajuste final: reloj y pausa 5 mm más abajo */
+  #regv2-clock-btn, #pauseBtn{
+    top: calc(6px + 3mm + 5mm) !important;
+  }
+</style>
+<style id="aj-fullscreen-top-left-final">
+  /* Pantalla completa: esquina superior izquierda, alineada y separada del reloj */
+  #bottomBar #btnFSBR{
+    position: fixed !important;
+    left: 10px !important;
+    right: auto !important;
+    top: 10px !important;
+    bottom: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+    z-index: 2147483647 !important;
+  }
+</style>
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
@@ -13664,99 +13700,3 @@ function showVeteranBanner(color){
     }
   }
 </style>
-
-
-<!-- AJETREZ: OVERRIDE FINAL — Colabora libre al lado derecho -->
-<style id="aj-donate-right-absolute-final">
-#bottomBar #donateBox{
-  position:absolute !important;
-  left:auto !important;
-  right:8px !important;
-  top:50% !important;
-  bottom:auto !important;
-  transform:translateY(-50%) scale(.9) !important;
-  transform-origin:right center !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:flex-end !important;
-  gap:8px !important;
-  grid-column:auto !important;
-  grid-row:auto !important;
-  justify-self:auto !important;
-  align-self:center !important;
-  margin:0 !important;
-  z-index:2147483000 !important;
-}
-#bottomBar #donateBox .label,
-#bottomBar #donateBox .imgbtn{
-  position:static !important;
-  left:auto !important; right:auto !important;
-  top:auto !important; bottom:auto !important;
-  transform:none !important;
-  margin:0 !important;
-}
-#bottomBar #donateBox .label{ margin-right:-8px !important; }
-@media (max-width:900px),(pointer:coarse){
-  #bottomBar #donateBox{
-    left:auto !important; right:6px !important;
-    top:50% !important; bottom:auto !important;
-    transform:translateY(-50%) scale(.9) !important;
-    transform-origin:right center !important;
-    gap:6px !important;
-  }
-}
-</style>
-<!-- AJETREZ: Corrección definitiva — Colaboración a la derecha en WEB y MÓVIL -->
-<style id="aj-donate-right-web-mobile-definitive">
-  /* El bloque de colaboración queda fuera de la grilla visual:
-     su posición horizontal depende exclusivamente de right. */
-  #bottomBar #donateBox{
-    position:absolute !important;
-    left:auto !important;
-    right:8px !important;
-    top:50% !important;
-    bottom:auto !important;
-    width:max-content !important;
-    max-width:none !important;
-    margin:0 !important;
-    padding:0 !important;
-    display:flex !important;
-    flex-direction:row !important;
-    align-items:center !important;
-    justify-content:flex-end !important;
-    gap:8px !important;
-    float:none !important;
-    clear:none !important;
-    grid-column:auto !important;
-    grid-row:auto !important;
-    justify-self:auto !important;
-    align-self:center !important;
-    transform:translateY(-50%) scale(.9) !important;
-    transform-origin:right center !important;
-    z-index:2147483000 !important;
-  }
-  #bottomBar #donateBox .label,
-  #bottomBar #donateBox .imgbtn{
-    position:static !important;
-    left:auto !important; right:auto !important;
-    top:auto !important; bottom:auto !important;
-    margin:0 !important;
-    transform:none !important;
-    float:none !important;
-  }
-  #bottomBar #donateBox .label{ margin-right:-8px !important; }
-
-  /* En móvil conserva la misma lógica, solo con un pequeño margen al borde. */
-  @media (max-width:900px), (pointer:coarse){
-    #bottomBar #donateBox{
-      left:auto !important;
-      right:6px !important;
-      top:50% !important;
-      bottom:auto !important;
-      gap:6px !important;
-      transform:translateY(-50%) scale(.9) !important;
-      transform-origin:right center !important;
-    }
-  }
-</style>
-
