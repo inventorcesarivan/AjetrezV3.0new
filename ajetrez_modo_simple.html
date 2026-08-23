@@ -2796,7 +2796,57 @@ body[data-theme="noche"] .regv2-btn{
 </style>
 
 
-</head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
+
+<style id="aj-return-home-red-style">
+/* Botones para volver al inicio: destacan en rojo en todas las secciones */
+#btnBackFromPersonal,
+#btnBackToMainMenu,
+#regv2-back-menu {
+  background: #C8102E !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+}
+#btnBackFromPersonal:hover,
+#btnBackToMainMenu:hover,
+#regv2-back-menu:hover {
+  background: #A90D26 !important;
+  color: #ffffff !important;
+}
+</style>
+<style id="aj-final-return-red-and-contact-css">
+/* Botones de retorno: siempre rojos, también en Registros. */
+#regv2-panel #regv2-back-menu,
+#regv2-back-menu,
+#btnBackFromPersonal,
+#btnBackFromCollab,
+#btnBackFromContacto,
+#btnBackToMainMenu{
+  background:#C8102E !important;
+  background-image:none !important;
+  color:#fff !important;
+  border-color:#fff !important;
+  font-weight:800 !important;
+}
+#regv2-panel #regv2-back-menu:hover,
+#regv2-back-menu:hover,
+#btnBackFromPersonal:hover,
+#btnBackFromCollab:hover,
+#btnBackFromContacto:hover,
+#btnBackToMainMenu:hover{
+  background:#A90D26 !important;
+  color:#fff !important;
+}
+#ajContactoView{display:none;flex-direction:column;min-height:0;height:100%;background:#f7f1e1;}
+#ajContactoHeader{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #eee;}
+#ajContactoHeader h2{margin:0;font-size:17px;flex:1;}
+#ajContactoHeader .btn{white-space:nowrap;}
+.aj-contact-card{margin:16px auto;padding:22px;max-width:650px;width:calc(100% - 32px);box-sizing:border-box;background:#fff;border:1px solid #ddd;border-radius:14px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.08);}
+.aj-contact-card h2{margin:0 0 10px;}
+.aj-contact-card p{margin:8px 0;}
+.aj-contact-email a{font-size:18px;font-weight:800;color:#C8102E;text-decoration:none;}
+.aj-contact-email a:hover{text-decoration:underline;}
+</style></head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
 <button class="btn small" id="rpFabBtn">▶ Reproducir en tablero</button>
@@ -2830,7 +2880,23 @@ body[data-theme="noche"] .regv2-btn{
 </div></div></div><div aria-label="Ajetrez base limpia" id="board"></div><div aria-label="Decidir desplazamiento de fila" class="shift-ctrl" id="shiftCtrl" role="group"><span class="lbl" id="shiftLbl">Fila</span><span id="chooseWrap"><button aria-label="Mantener" id="btnKeep" type="button">Mantener</button><button aria-label="Desplazar sección" id="btnShift" type="button">Desplazar sección</button></span><span id="confirmWrap" style="display:none"><button aria-label="Confirmar" class="confirm" id="btnConfirm" type="button">Confirmar</button><button aria-label="Volver a elegir" id="btnBack" type="button">Cambiar elección</button></span></div><div id="overlay"><div id="banner">FIN</div></div><div id="panelBackdrop"></div><div aria-labelledby="mpTitle" aria-modal="true" id="megaPanel" role="dialog"><div class="apply-toast" id="applyToast">✔ Cambios guardados
 </div><div class="mp-header"><div id="mpTitle">Panel de Ajetrez
 </div><div class="right"><span class="hint-sm" id="loggedUser"></span><button class="btn secondary" id="btnLogout" type="button">Cerrar sesión</button><button class="btn" id="btnClosePanel" type="button">Cerrar</button></div></div><div id="loginView"><h2>Iniciar sesión</h2><div class="field"><label for="inpUser">Usuario</label><input id="inpUser" placeholder="Tu nombre de usuario" type="text"/></div><div class="field"><label for="inpPass">Contraseña</label><input id="inpPass" placeholder="••••••••" type="password"/></div><button class="btn" id="btnLogin" type="button">Entrar</button><div class="hint-sm">*Login local (almacenado en este navegador). Próximamente: cuentas online.
-</div></div><div id="tabsView"><div class="mp-tabs"><button class="tab-btn active" data-tab="tab-version">Versión de Ajetrez</button><button class="tab-btn" data-tab="tab-modos">Modos de juego</button><button class="tab-btn" data-tab="tab-personalizacion">Personalización</button><button class="tab-btn" data-tab="tab-registros" id="btnRegistrosTab">Registros</button></div><div class="mp-content"><div class="tab" id="tab-personalizacion" style="display:none"><h3>Personalización del juego</h3><div class="row"><div class="field"><label>Estilo de piezas</label><select id="selSprites"><option value="auto">Auto (usar sprites si están disponibles)</option><option value="sprites">Sprites (imágenes)</option><option value="unicode">Unicode (símbolos)</option></select>
+</div></div><div id="tabsView"><div class="mp-tabs"><button class="tab-btn active" data-tab="tab-version">Versión de Ajetrez</button><button class="tab-btn" data-tab="tab-modos">Modos de juego</button><button class="tab-btn" data-tab="tab-tiempo-partida">Tiempo de partida</button><button class="tab-btn" data-tab="tab-personalizacion">Personalización</button><button class="tab-btn" data-tab="tab-registros" id="btnRegistrosTab">Registros</button></div><div class="mp-content"><div class="tab" id="tab-tiempo-partida" style="display:none">
+  <div class="aj-time-card">
+    <h3>⏱ Tiempo de duración de la partida</h3>
+    <p>Elegí cuánto tiempo tendrá disponible la partida. La opción se conservará cuando guardes la configuración.</p>
+    <label for="aj-time-mode"><strong>Duración</strong></label>
+    <select id="aj-time-mode" aria-label="Duración de la partida">
+      <option value="0">Sin límite</option>
+      <option value="300000">5 minutos</option>
+      <option value="600000">10 minutos</option>
+      <option value="900000">15 minutos</option>
+      <option value="1200000">20 minutos</option>
+      <option value="1500000">25 minutos</option>
+      <option value="1800000">30 minutos</option>
+    </select>
+    <div class="hint-sm" style="margin-top:8px;">El tiempo seleccionado se aplicará al iniciar o reiniciar una partida.</div>
+  </div>
+</div><div class="tab" id="tab-personalizacion" style="display:none"><h3>Personalización del juego</h3><div class="row"><div class="field"><label>Estilo de piezas</label><select id="selSprites"><option value="auto">Auto (usar sprites si están disponibles)</option><option value="sprites">Sprites (imágenes)</option><option value="unicode">Unicode (símbolos)</option></select>
 <!-- Controles: Apariencia por zonas -->
 <div class="fieldGroup" id="fg-zonas-appearance">
 <h4>Apariencia de zonas</h4>
@@ -8324,17 +8390,29 @@ function setHelp(mode){
   }
 
   // UI wiring
-  $('#regv2-demo').onclick = ()=> { $('#regv2-input').value='e2e4 e7e5 g1f3 b8c6 f1c4 g8f6'; };
+  $('#regv2-demo').onclick = ()=> {
+    const ta=$('#regv2-input');
+    if(ta) ta.value='e2e4 e7e5 g1f3 b8c6 f1c4 g8f6';
+  };
   $('#regv2-play').onclick = ()=>{
     try{
-      const arr = parseUCI($('#regv2-input').value);
+      const ta=$('#regv2-input');
+      const arr = parseUCI(ta ? ta.value : '');
+      if(!arr.length){ console.warn('[RegV2] No hay movimientos UCI para reproducir.'); return; }
+      /* Reinicio explícito del tablero y del estado de partida. */
       Bot.stop({resetToStart:true});
       Bot.load(arr);
-      const mul = parseFloat($('#regv2-speed').value||'1'); Bot.setSpeed(700/(mul||1));
+      const mul = parseFloat($('#regv2-speed')?.value||'1');
+      Bot.setSpeed(700/(mul||1));
       overlay.style.display='none';
-      if(typeof setBotEnabled==='function'){ try{ setBotEnabled(false); }catch(_){ } }
+      overlay.setAttribute('aria-hidden','true');
+      try{ if(typeof setBotEnabled==='function') setBotEnabled(false); }catch(_){ }
+      /* Asegurar que el tablero vuelva a renderizarse antes del primer movimiento. */
+      try{ if(typeof render==='function') render(); }catch(_){ }
+      /* Usar el Bot ya conectado al motor Ajetrez; su ciclo llama a applyMove
+         y render() en cada jugada, incluyendo cambios de turno. */
       Bot.play();
-    }catch(e){ console.error(e); }
+    }catch(e){ console.error('[RegV2] Error reproduciendo partida:',e); }
   };
   $('#regv2-pause').onclick = ()=> Bot.pause();
   $('#regv2-resume').onclick = ()=> Bot.resume();
@@ -8344,82 +8422,15 @@ function setHelp(mode){
 <!-- === /AJETREZ: Registro de partidas + SystemBot inline === -->
 <script id="regv2-menu-integration">
 (function(){
-  // Create the tab/button element
-  function makeBtn(){
-    var b = document.createElement('button');
-    b.id = 'btn-open-regv2-tab';
-    b.className = 'tab';
-    b.type = 'button';
-    b.textContent = 'Registro de partidas';
-    b.style.fontWeight = '800';
-    b.onclick = function(){
-      var ov = document.getElementById('regv2-overlay');
-      if(ov) ov.style.display = 'flex';
-    };
-    return b;
+  // Legacy Registro de partidas trigger intentionally disabled.
+  // Registros is opened only from the main menu (#btnOpenRegistros).
+  function removeLegacy(){
+    var ids=['btn-open-regv2-tab','regv2-open'];
+    ids.forEach(function(id){ var el=document.getElementById(id); if(el) el.remove(); });
   }
-
-  // Try multiple locations inside the menu
-  function tryInject(){
-    var mp = document.getElementById('megaPanel');
-    if(!mp) return false;
-
-    // 1) Prefer tabs bar
-    var tabs = mp.querySelector('.mp-tabs');
-    if(tabs && !document.getElementById('btn-open-regv2-tab')){
-      tabs.appendChild(makeBtn());
-      hideFloating();
-      return true;
-    }
-
-    // 2) Header right area
-    var headerRight = mp.querySelector('.mp-header .right');
-    if(headerRight && !document.getElementById('btn-open-regv2-tab')){
-      var b = makeBtn();
-      b.className = 'btn'; // fits header buttons
-      headerRight.appendChild(b);
-      hideFloating();
-      return true;
-    }
-
-    // 3) TabsView container (last resort)
-    var tv = mp.querySelector('#tabsView');
-    if(tv && !document.getElementById('btn-open-regv2-tab')){
-      var wrap = document.createElement('div');
-      wrap.style.cssText = 'display:flex;gap:8px;align-items:center;margin:8px 10px;';
-      wrap.appendChild(makeBtn());
-      tv.parentNode.insertBefore(wrap, tv);
-      hideFloating();
-      return true;
-    }
-
-    return false;
-  }
-
-  // Hide the floating open button if we managed to inject inside the menu
-  function hideFloating(){
-    var f = document.getElementById('regv2-open');
-    if(f) f.style.display = 'none';
-  }
-
-  // Attempt immediately
-  var ok = tryInject();
-
-  // Re-try whenever DOM changes (menu may mount later)
-  var obs = new MutationObserver(function(){
-    if(tryInject()){ obs.disconnect(); }
-  });
-  obs.observe(document.documentElement, {childList:true, subtree:true});
-
-  // Also try when user opens the menu from the game button (if exists)
-  var menuBtn = document.getElementById('btnMegaMenu');
-  if(menuBtn){
-    menuBtn.addEventListener('click', function(){
-      setTimeout(tryInject, 50);
-      setTimeout(tryInject, 250);
-      setTimeout(tryInject, 1000);
-    });
-  }
+  removeLegacy();
+  var obs=new MutationObserver(removeLegacy);
+  obs.observe(document.documentElement,{childList:true,subtree:true});
 })();
 </script>
 <!-- AJETREZ: Botón Registro de partidas junto al reloj -->
@@ -9834,75 +9845,16 @@ catch(_){}
 </script>
 <script id="aj-menu-registros-tab-v2-patch">
 (function(){
-  if(window.__AJ_MENU_REG_TAB_V2__) return; window.__AJ_MENU_REG_TAB_V2__=true;
-  function $(s,r){ return (r||document).querySelector(s); }
-  function all(s,r){ return Array.from((r||document).querySelectorAll(s)); }
-
-  // 1) Ocultar/deshabilitar la pestaña antigua que dispara el overlay automáticamente
-  var oldBtn = document.getElementById('btnRegistrosTab');
-  if(oldBtn){ oldBtn.style.display = 'none'; oldBtn.id = 'btnRegistrosTab__disabled'; }
-  var oldTab = document.getElementById('tab-registros');
-  if(oldTab){ oldTab.style.display='none'; oldTab.id = 'tab-registros__disabled'; }
-
-  // 2) Crear/asegurar la pestaña nueva (v2) que NO dispara overlay al clickear la tab
-  function ensureV2(){
-    var panel = $('#megaPanel') || $('#menu-panel');
-    if(!panel) return false;
-    var tabsBar = panel.querySelector('.mp-tabs');
-    var contentHost = panel.querySelector('.mp-content') || panel;
-
-    // Botón de tab v2
-    var v2btn = panel.querySelector('.tab-btn#btnRegistrosTabV2, .tab-btn[data-tab="tab-registros-v2"]');
-    if(!v2btn && tabsBar){
-      v2btn = document.createElement('button');
-      v2btn.className = 'tab-btn';
-      v2btn.id = 'btnRegistrosTabV2';
-      v2btn.setAttribute('data-tab','tab-registros-v2');
-      v2btn.textContent = 'Registros';
-      tabsBar.appendChild(v2btn);
-    }
-
-    // Contenido de tab v2
-    var v2tab = panel.querySelector('#tab-registros-v2');
-    if(!v2tab){
-      v2tab = document.createElement('div');
-      v2tab.className = 'tab';
-      v2tab.id = 'tab-registros-v2';
-      v2tab.style.display = 'none';
-      v2tab.innerHTML = ''
-        + '<h3>Registros de partidas</h3>'
-        + '<p style="margin:-4mm 0 14px 0; line-height:1.4">'
-        + 'Desde esta sección podés abrir el panel de registros del juego y tener acceso a toda la información de las partidas.</p>'
-        + '<button class="btn small" id="regv2-open-from-tab" type="button">Abrir panel de registros</button>';
-      contentHost.appendChild(v2tab);
-    }
-
-    // Botón interno que abre el overlay
-    var openBtn = v2tab.querySelector('#regv2-open-from-tab');
-    if(openBtn && !openBtn.__wired){
-      openBtn.__wired = true;
-      openBtn.addEventListener('click', function(ev){
-        ev.preventDefault(); ev.stopPropagation();
-        var overlay = $('#regv2-overlay');
-        if(overlay){ overlay.style.display = 'flex'; }
-        var mp = $('#megaPanel') || $('#menu-panel');
-        if(mp){ mp.style.display = 'none'; }
-        var menuBtn = $('#btnMegaMenu');
-        if(menuBtn){ menuBtn.setAttribute('aria-expanded','false'); }
-      });
-    }
-
-    return true;
+  /* Esta integración antigua queda desactivada. Registros ahora es una
+     sección principal del menú y no debe aparecer dentro de Configurar partida. */
+  function removeLegacy(){
+    ['btnRegistrosTab','btnRegistrosTabV2','regv2-open-from-tab','tab-registros-v2','tab-registros__disabled','btnRegistrosTab__disabled'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el) el.remove();
+    });
   }
-
-  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
-  ready(function(){
-    if(ensureV2()) return;
-    var tries=0, t=setInterval(function(){
-      tries++;
-      if(ensureV2() || tries>40){ clearInterval(t); }
-    },250);
-  });
+  removeLegacy();
+  new MutationObserver(removeLegacy).observe(document.documentElement,{childList:true,subtree:true});
 })();
 </script>
 <script id="regv2-head-actions-js">
@@ -13999,12 +13951,61 @@ function showVeteranBanner(color){
 <style id="aj-main-menu-v2-style">
   #ajWelcomeView,
   #ajMainMenuView,
-  #ajConfigView{
+  #ajConfigView,
+  #ajPersonalView{
     display:none;
     flex:1;
     min-height:0;
     flex-direction:column;
     overflow:hidden;
+  }
+  #ajPersonalView{ overflow:hidden; }
+  #ajCollabView{
+    display:none; flex:1; min-height:0; flex-direction:column; overflow:auto;
+    padding:22px; box-sizing:border-box;
+  }
+  #ajCollabView .aj-collab-card{
+    width:min(620px,94%); margin:auto; padding:26px 24px; box-sizing:border-box;
+    background:#fff; border:1px solid rgba(0,0,0,.14); border-radius:16px;
+    box-shadow:0 10px 28px rgba(0,0,0,.12); text-align:center;
+  }
+  #ajCollabView h2{margin:0 0 12px;font-size:23px;}
+  #ajCollabView p{margin:9px 0;line-height:1.55;}
+  .aj-donation-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:20px;}
+  .aj-donation-btn{display:inline-flex;align-items:center;justify-content:center;min-width:190px;padding:11px 16px;border-radius:11px;text-decoration:none;font-weight:900;color:#fff !important;border:2px solid rgba(0,0,0,.18);box-sizing:border-box;}
+  .aj-donation-btn.paypal{background:#0070ba;}
+  .aj-donation-btn.mercadopago{background:#009ee3;}
+  .aj-donation-btn:hover{filter:brightness(.92);}
+  #ajCollabHeader{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #eee;}
+  #ajCollabHeader h2{margin:0;font-size:17px;flex:1;}
+  #ajCollabHeader .btn{white-space:nowrap;}
+  #regv2-back-menu{background:#C8102E !important;color:#fff !important;border-color:#fff !important;}
+  #regv2-back-menu:hover{background:#a80d25 !important;color:#fff !important;}
+  #ajPersonalHeader{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    border-bottom:1px solid #eee;
+  }
+  #ajPersonalHeader h2{ margin:0; font-size:17px; flex:1; }
+  #ajPersonalContent{
+    flex:1;
+    min-height:0;
+    overflow:auto;
+    padding:14px;
+  }
+  #ajPersonalContent #tab-personalizacion{
+    display:block !important;
+  }
+  #ajMainMenuView .aj-main-menu-option .desc{
+    text-align:right;
+  }
+  #ajConfigView .mp-tabs .tab-btn[data-tab="tab-personalizacion"],
+  #ajConfigView .mp-tabs .tab-btn[data-tab="tab-registros"],
+  #ajConfigView .mp-tabs .tab-btn[data-tab="tab-registros-v2"]{
+    display:none !important;
   }
 
   #ajWelcomeView{
@@ -14065,6 +14066,7 @@ function showVeteranBanner(color){
   }
   .aj-main-menu-option:hover{ background:#ededed; }
   .aj-main-menu-option .desc{ font-weight:600; opacity:.68; font-size:12px; }
+  .aj-main-menu-note{ margin-top:12px; font-size:11px; line-height:1.35; opacity:.6; text-align:center; }
 
   #ajConfigView{
     overflow:hidden;
@@ -14090,6 +14092,56 @@ function showVeteranBanner(color){
   }
   #ajConfigView .mp-content{
     min-height:0;
+  }
+  #ajConfigSaveBar{
+    flex:0 0 auto;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    border-top:1px solid #eee;
+    background:rgba(255,255,255,.96);
+  }
+  #ajConfigSaveStatus{
+    margin-right:auto;
+    font-size:12px;
+    font-weight:700;
+    opacity:.72;
+  }
+  #ajConfigSave{
+    min-width:170px;
+    font-weight:800;
+  }
+  #tab-tiempo-partida{
+    padding:14px;
+  }
+  #tab-tiempo-partida .aj-time-card{
+    max-width:520px;
+    margin:0 auto;
+    padding:18px;
+    border:1px solid rgba(0,0,0,.12);
+    border-radius:12px;
+    background:rgba(255,255,255,.72);
+    box-shadow:0 4px 14px rgba(0,0,0,.06);
+  }
+  #tab-tiempo-partida .aj-time-card h3{ margin:0 0 8px; }
+  #tab-tiempo-partida .aj-time-card p{ margin:6px 0 14px; }
+  #tab-tiempo-partida #aj-time-mode{
+    width:100%;
+    box-sizing:border-box;
+    padding:9px 10px;
+    border:1px solid rgba(0,0,0,.28);
+    border-radius:8px;
+    background:#fff;
+    color:#111;
+    font-weight:700;
+    cursor:pointer;
+  }
+  @media (max-width:600px){
+    #ajConfigSaveBar{ padding:8px 9px; }
+    #ajConfigSave{ min-width:145px; font-size:12px; }
+    #ajConfigSaveStatus{ font-size:11px; }
   }
 
   @media (max-width:600px){
@@ -14138,24 +14190,124 @@ function showVeteranBanner(color){
         <p class="aj-main-menu-subtitle">Selecciona una sección.</p>
         <button class="aj-main-menu-option" id="btnOpenConfigPartida" type="button">
           <span>⚙ Configurar partida</span>
-          <span class="desc">Versión, modo, personalización y registros</span>
+          <span class="desc">Versión, modo y duración de la partida</span>
+        </button>
+        <button class="aj-main-menu-option" id="btnOpenReglasAjetrez" type="button">
+          <span>📜 Reglas de Ajetrez</span>
+          <span class="desc">Consulta las reglas de cada versión</span>
+        </button>
+        <button class="aj-main-menu-option" id="btnOpenPersonalizacion" type="button">
+          <span>🎨 Personalización</span>
+          <span class="desc">Apariencia y estilo del juego</span>
+        </button>
+        <button class="aj-main-menu-option" id="btnOpenRegistros" type="button">
+          <span>📚 Registros</span>
+          <span class="desc">Historial y partidas guardadas</span>
+        </button>
+        <button class="aj-main-menu-option" id="btnOpenColabora" type="button">
+          <span>🤝 Colabora con el proyecto</span>
+          <span class="desc">Ayúdanos a mantener Ajetrez gratuito y mejorarlo</span>
+        </button>
+        <button class="aj-main-menu-option" id="btnOpenContacto" type="button">
+          <span>✉️ Contacto</span>
+          <span class="desc">Ponte en contacto con nosotros</span>
         </button>
       </div>`;
 
-    /* Configuración: reutiliza íntegramente las cuatro pestañas existentes */
+    /* Sección principal: Reglas de Ajetrez. Se crea aquí para que siempre exista en el menú principal. */
+    const rulesView = document.createElement('div');
+    rulesView.id = 'ajRulesView';
+    rulesView.innerHTML = `
+      <div id="ajRulesHeader"><button class="btn secondary" id="btnBackFromRules" type="button">← Volver al inicio</button><h2>📜 Reglas de Ajetrez</h2></div>
+      <div id="ajRulesContent"><div class="aj-rules-card"><h3>Reglas de Ajetrez</h3><p class="aj-rules-intro">Selecciona una versión para consultar sus reglas.</p><div class="aj-rules-version-btns">
+        <button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Simple</button>
+        <button class="aj-rules-version-btn" data-aj-rules-version="3_0_amenaza" type="button">Versión 3.0 — Modo Amenaza</button>
+        <button class="aj-rules-version-btn" data-aj-rules-version="3_0_guerra" type="button">Versión 3.0 — Modo Guerra</button>
+      </div></div></div>`;
+
+    /* Vista independiente de Personalización. Reutiliza el contenido existente. */
+    const personal = document.createElement('div');
+    personal.id = 'ajPersonalView';
+    const personalHeader = document.createElement('div');
+    personalHeader.id = 'ajPersonalHeader';
+    personalHeader.innerHTML = `
+      <button class="btn secondary" id="btnBackFromPersonal" type="button">← Volver al inicio</button>
+      <h2>🎨 Personalización</h2>`;
+    const personalContent = document.createElement('div');
+    personalContent.id = 'ajPersonalContent';
+    personal.appendChild(personalHeader);
+    personal.appendChild(personalContent);
+
+    /* Sección principal: Colabora con el proyecto. */
+    const collab = document.createElement('div');
+    collab.id = 'ajCollabView';
+    const collabHeader = document.createElement('div');
+    collabHeader.id = 'ajCollabHeader';
+    collabHeader.innerHTML = `
+      <button class="btn secondary" id="btnBackFromCollab" type="button">← Volver al inicio</button>
+      <h2>🤝 Colabora con el proyecto</h2>`;
+    const collabContent = document.createElement('div');
+    collabContent.className = 'aj-collab-card';
+    collabContent.innerHTML = `
+      <h2>Ayúdanos a seguir creciendo</h2>
+      <p>Ajetrez busca mantenerse como un juego gratuito para todos. Para poder mantenerlo, seguir mejorándolo y desarrollar nuevas funciones, necesitamos el apoyo de nuestra comunidad.</p>
+      <p>Si te gusta Ajetrez y quieres colaborar con el proyecto, puedes hacerlo mediante una donación. Cada aporte ayuda a que podamos seguir trabajando en el juego.</p>
+      <div class="aj-donation-actions">
+        <a class="aj-donation-btn paypal" href="https://www.paypal.com/ncp/payment/PTRWET3UWGEY8" target="_blank" rel="noopener noreferrer">Donar con PayPal</a>
+        <a class="aj-donation-btn mercadopago" href="https://link.mercadopago.com.ar/ajetrez" target="_blank" rel="noopener noreferrer">Donar con Mercado Pago</a>
+      </div>`;
+    collab.appendChild(collabHeader);
+    collab.appendChild(collabContent);
+
+    /* Sección principal: Contacto. */
+    const contact = document.createElement('div');
+    contact.id = 'ajContactoView';
+    const contactHeader = document.createElement('div');
+    contactHeader.id = 'ajContactoHeader';
+    contactHeader.innerHTML = `
+      <button class="btn secondary" id="btnBackFromContacto" type="button">← Volver al inicio</button>
+      <h2>✉️ Contacto</h2>`;
+    const contactContent = document.createElement('div');
+    contactContent.className = 'aj-contact-card';
+    contactContent.innerHTML = `
+      <h2>Contacto</h2>
+      <p>Para consultas, sugerencias o comentarios, puedes escribirnos a:</p>
+      <p class="aj-contact-email"><a href="mailto:inventorcesarivan@gmail.com">inventorcesarivan@gmail.com</a></p>`;
+    contact.appendChild(contactHeader);
+    contact.appendChild(contactContent);
+
+    /* Configuración: ahora contiene sólo lo que prepara una partida. */
     const config = document.createElement('div');
     config.id = 'ajConfigView';
     const configHeader = document.createElement('div');
     configHeader.id = 'ajConfigHeader';
     configHeader.innerHTML = `
-      <button class="btn secondary" id="btnBackToMainMenu" type="button">← Menú</button>
+      <button class="btn secondary" id="btnBackToMainMenu" type="button">← Volver al inicio</button>
       <h2>⚙ Configurar partida</h2>`;
     config.appendChild(configHeader);
     config.appendChild(tabsView);
 
+    const saveBar = document.createElement('div');
+    saveBar.id = 'ajConfigSaveBar';
+    saveBar.innerHTML = `
+      <span id="ajConfigSaveStatus">Los cambios quedan aplicados al guardar.</span>
+      <button class="btn" id="ajConfigSave" type="button">Guardar selección</button>`;
+    config.appendChild(saveBar);
+
+    /* Sacar Personalización de Configurar partida y convertirla en sección principal. */
+    const personalTab = qs('#tab-personalizacion', panel);
+    if(personalTab){
+      personalTab.style.display='block';
+      personalContent.appendChild(personalTab);
+    }
+
     loginView.insertAdjacentElement('afterend', welcome);
     welcome.insertAdjacentElement('afterend', mainMenu);
     mainMenu.insertAdjacentElement('afterend', config);
+    config.insertAdjacentElement('afterend', rulesView);
+    rulesView.insertAdjacentElement('afterend', personal);
+    personal.insertAdjacentElement('afterend', collab);
+    collab.insertAdjacentElement('afterend', contact);
 
     return true;
   }
@@ -14166,15 +14318,27 @@ function showVeteranBanner(color){
     const welcome = qs('#ajWelcomeView',panel);
     const main = qs('#ajMainMenuView',panel);
     const config = qs('#ajConfigView',panel);
-    if(!panel || !login || !welcome || !main || !config) return;
+    const personal = qs('#ajPersonalView',panel);
+    const rules = qs('#ajRulesView',panel);
+    const collab = qs('#ajCollabView',panel);
+    const contact = qs('#ajContactoView',panel);
+    if(!panel || !login || !welcome || !main || !config || !personal || !rules || !collab || !contact) return;
     welcome.style.display = 'none';
     main.style.display = 'none';
     config.style.display = 'none';
+    personal.style.display = 'none';
+    rules.style.display = 'none';
+    collab.style.display = 'none';
+    contact.style.display = 'none';
     if(view==='none') return;
     login.style.display = 'none';
     if(view==='welcome') welcome.style.display='flex';
     if(view==='main') main.style.display='flex';
     if(view==='config') config.style.display='flex';
+    if(view==='personal') personal.style.display='flex';
+    if(view==='rules') rules.style.display='flex';
+    if(view==='collab') collab.style.display='flex';
+    if(view==='contact') contact.style.display='flex';
   }
 
   function openFirstConfigTab(){
@@ -14191,6 +14355,58 @@ function showVeteranBanner(color){
     const id=active.getAttribute('data-tab');
     tabs.forEach(t=>t.style.display=t.id===id?'block':'none');
     if(id==='tab-registros' && window.renderLogs){ try{window.renderLogs();}catch(_){} }
+    if(id==='tab-tiempo-partida'){
+      const sel=document.getElementById('aj-time-mode');
+      if(sel && window.__AJ_TIMER_API__ && window.__AJ_TIMER_API__.getDuration){
+        try{ sel.value=String(window.__AJ_TIMER_API__.getDuration()); }catch(_){}
+      }
+    }
+  }
+
+  function saveConfigSelection(){
+    const panel=qs('#megaPanel');
+    if(!panel) return;
+    const data={};
+    try{
+      const selV=qs('#selVersion',panel);
+      if(selV) data.version=selV.value;
+      data.mode=window.GAME_MODE || null;
+      const sprite=qs('#selSprites',panel);
+      if(sprite) data.spriteMode=sprite.value;
+      const time=qs('#aj-time-mode',panel);
+      if(time){
+        const v=parseInt(time.value,10);
+        if(window.__AJ_TIMER_API__ && window.__AJ_TIMER_API__.setDuration) window.__AJ_TIMER_API__.setDuration(v);
+        data.durationMs=v;
+      }else if(window.__AJ_TIMER_API__ && window.__AJ_TIMER_API__.getDuration){
+        data.durationMs=window.__AJ_TIMER_API__.getDuration();
+      }
+      const theme=document.body.getAttribute('data-theme');
+      if(theme) data.theme=theme;
+      const zoneKey='aj.zoneAppearance.v1';
+      try{ data.zoneAppearance=JSON.parse(localStorage.getItem(zoneKey)||'null'); }catch(_){}
+      try{
+        data.botDifficultyWhite=localStorage.getItem('ajetrez.bot.difficulty.white');
+        data.botDifficultyBlack=localStorage.getItem('ajetrez.bot.difficulty.black');
+        data.botDifficulty=localStorage.getItem('ajetrez.bot.difficulty');
+      }catch(_){}
+      data.savedAt=new Date().toISOString();
+      localStorage.setItem('aj_config_saved_v1',JSON.stringify(data));
+      if(data.version) localStorage.setItem('ajetrez.version.selected',data.version);
+    }catch(_){}
+
+    const status=qs('#ajConfigSaveStatus',panel);
+    if(status){ status.textContent='✔ Selección guardada'; status.style.opacity='1'; }
+    setTimeout(closeMegaPanel,350);
+  }
+
+  function closeMegaPanel(){
+    const panel=qs('#megaPanel');
+    const backdrop=qs('#panelBackdrop');
+    if(panel) panel.style.display='none';
+    if(backdrop) backdrop.style.display='none';
+    const btn=qs('#btnMegaMenu');
+    if(btn) btn.setAttribute('aria-expanded','false');
   }
 
   function showWelcomeAfterLogin(){
@@ -14215,6 +14431,47 @@ function showVeteranBanner(color){
     openFirstConfigTab();
   }
 
+  function showPersonal(){
+    buildMenu();
+    const title=qs('#mpTitle');
+    if(title) title.textContent='Personalización';
+    showOnly('personal');
+    const tab=qs('#tab-personalizacion');
+    if(tab) tab.style.display='block';
+  }
+
+  function showCollab(){
+    buildMenu();
+    const title=qs('#mpTitle');
+    if(title) title.textContent='Colabora con el proyecto';
+    showOnly('collab');
+  }
+
+  function showContacto(){
+    buildMenu();
+    const title=qs('#mpTitle');
+    if(title) title.textContent='Contacto';
+    showOnly('contact');
+  }
+
+  function openRecordsFromMain(){
+    const panel=qs('#megaPanel');
+    if(!panel) return;
+    try{
+      const overlay=qs('#regv2-overlay');
+      if(overlay){
+        overlay.style.display='flex';
+        panel.style.display='none';
+        const menuBtn=qs('#btnMegaMenu');
+        if(menuBtn) menuBtn.setAttribute('aria-expanded','false');
+        return;
+      }
+    }catch(_){}
+    /* Compatibilidad con el sistema anterior de registros. */
+    const btn=qs('#btnRegistrosTab');
+    if(btn){ btn.click(); }
+  }
+
   function refreshNewMenu(){
     buildMenu();
     let u=null;
@@ -14236,8 +14493,24 @@ function showVeteranBanner(color){
     if(t){ e.preventDefault(); e.stopPropagation(); showMainMenu(); return; }
     const m=e.target && e.target.closest ? e.target.closest('#btnOpenConfigPartida') : null;
     if(m){ e.preventDefault(); e.stopPropagation(); showConfig(); return; }
+    const pbtn=e.target && e.target.closest ? e.target.closest('#btnOpenPersonalizacion') : null;
+    if(pbtn){ e.preventDefault(); e.stopPropagation(); showPersonal(); return; }
+    const rbtn=e.target && e.target.closest ? e.target.closest('#btnOpenRegistros') : null;
+    if(rbtn){ e.preventDefault(); e.stopPropagation(); openReg(); return; }
+    const cbtn=e.target && e.target.closest ? e.target.closest('#btnOpenColabora') : null;
+    if(cbtn){ e.preventDefault(); e.stopPropagation(); showCollab(); return; }
+    const contactBtn=e.target && e.target.closest ? e.target.closest('#btnOpenContacto') : null;
+    if(contactBtn){ e.preventDefault(); e.stopPropagation(); showContacto(); return; }
     const back=e.target && e.target.closest ? e.target.closest('#btnBackToMainMenu') : null;
     if(back){ e.preventDefault(); e.stopPropagation(); showMainMenu(); return; }
+    const backPersonal=e.target && e.target.closest ? e.target.closest('#btnBackFromPersonal') : null;
+    if(backPersonal){ e.preventDefault(); e.stopPropagation(); showMainMenu(); return; }
+    const backCollab=e.target && e.target.closest ? e.target.closest('#btnBackFromCollab') : null;
+    if(backCollab){ e.preventDefault(); e.stopPropagation(); showMainMenu(); return; }
+    const backContacto=e.target && e.target.closest ? e.target.closest('#btnBackFromContacto') : null;
+    if(backContacto){ e.preventDefault(); e.stopPropagation(); showMainMenu(); return; }
+    const save=e.target && e.target.closest ? e.target.closest('#ajConfigSave') : null;
+    if(save){ e.preventDefault(); e.stopPropagation(); saveConfigSelection(); return; }
   },true);
 
   /* Captura del login: conserva el login actual y cambia el destino a bienvenida. */
@@ -14281,6 +14554,137 @@ function showVeteranBanner(color){
   }
 })();
 </script>
+
+<style id="aj-rules-red-back">
+  #btnBackFromRules{ background:#C8102E !important; color:#fff !important; border-color:#fff !important; }
+  #btnBackFromRules:hover{ background:#a80d25 !important; color:#fff !important; }
+</style>
+<style id="aj-main-rules-section-style">
+  #ajRulesView{display:none;flex:1;min-height:0;flex-direction:column;overflow:hidden;background:#fff;color:#111;}
+  #ajRulesHeader{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #eee;}
+  #ajRulesHeader h2{margin:0;font-size:17px;flex:1;}
+  #ajRulesHeader .btn{white-space:nowrap;}
+  #ajRulesContent{flex:1;min-height:0;overflow:auto;padding:20px;}
+  #ajRulesContent .aj-rules-card{width:min(720px,100%);margin:0 auto;}
+  #ajRulesContent h3{text-align:center;margin:0 0 8px;}
+  #ajRulesContent .aj-rules-intro{text-align:center;opacity:.72;margin:0 0 18px;}
+  .aj-rules-version-btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+  .aj-rules-version-btn{border:1px solid rgba(0,0,0,.14);border-radius:14px;background:#f7f7f7;padding:16px 12px;cursor:pointer;font-weight:900;font-size:14px;min-height:58px;}
+  .aj-rules-version-btn:hover{background:#ededed;}
+  #ajMainRulesModalBackdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.48);z-index:2147483646;padding:18px;box-sizing:border-box;}
+  #ajMainRulesModal{width:min(820px,96vw);max-height:88vh;background:#fff;color:#111;border:2px solid #111;border-radius:16px;box-shadow:0 16px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;}
+  #ajMainRulesModalHeader{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#111;color:#fff;flex:0 0 auto;}
+  #ajMainRulesModalTitle{margin:0;font-size:17px;flex:1;}
+  #ajMainRulesModalClose{border:2px solid #fff;border-radius:10px;background:#C8102E;color:#fff;font-weight:900;padding:6px 10px;cursor:pointer;}
+  #ajMainRulesModalClose:hover{background:#a80d25;}
+  #ajMainRulesModalBody{overflow:auto;padding:18px 20px;line-height:1.45;}
+  #ajMainRulesModalBody h4,#ajMainRulesModalBody h5{margin-top:14px;}
+  #ajMainRulesModalBody p{margin:8px 0;}
+  #ajMainRulesModalBody ul{padding-left:22px;}
+  @media (max-width:600px){
+    #ajRulesContent{padding:14px;}
+    .aj-rules-version-btns{grid-template-columns:1fr;}
+    #ajMainRulesModalBackdrop{padding:10px;}
+    #ajMainRulesModal{max-height:92vh;}
+    #ajMainRulesModalBody{padding:14px;}
+  }
+</style>
+
+<script id="aj-main-rules-section-script">
+(function(){
+  if(window.__AJ_MAIN_RULES_SECTION__) return;
+  window.__AJ_MAIN_RULES_SECTION__=true;
+  function q(s,r){return (r||document).querySelector(s);}
+  function qa(s,r){return Array.from((r||document).querySelectorAll(s));}
+
+  function ensure(){
+    var panel=q('#megaPanel'), main=q('#ajMainMenuView');
+    if(!panel || !main) return false;
+    if(!q('#btnOpenReglasAjetrez',main)){
+      var ref=q('#btnOpenPersonalizacion',main);
+      var b=document.createElement('button');
+      b.className='aj-main-menu-option'; b.id='btnOpenReglasAjetrez'; b.type='button';
+      b.innerHTML='<span>📜 Reglas de Ajetrez</span><span class="desc">Consulta las reglas de cada versión</span>' ;
+      if(ref) main.insertBefore(b,ref); else main.appendChild(b);
+    }
+    if(!q('#ajRulesView',panel)){
+      var view=document.createElement('div'); view.id='ajRulesView';
+      view.innerHTML=''+
+        '<div id="ajRulesHeader"><button class="btn secondary" id="btnBackFromRules" type="button">← Volver al inicio</button><h2>📜 Reglas de Ajetrez</h2></div>'+
+        '<div id="ajRulesContent"><div class="aj-rules-card"><h3>Reglas de Ajetrez</h3><p class="aj-rules-intro">Selecciona una versión para consultar sus reglas.</p><div class="aj-rules-version-btns">'+
+        '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Simple</button>'+
+        '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_amenaza" type="button">Versión 3.0 — Modo Amenaza</button>'+
+        '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_guerra" type="button">Versión 3.0 — Modo Guerra</button>'+
+        '</div></div></div>' ;
+      var contact=q('#ajContactoView',panel), collab=q('#ajCollabView',panel), personal=q('#ajPersonalView',panel);
+      var anchor=contact||collab||personal;
+      if(anchor) anchor.insertAdjacentElement('beforebegin',view); else panel.appendChild(view);
+    }
+    if(!q('#ajMainRulesModalBackdrop')){
+      var bd=document.createElement('div'); bd.id='ajMainRulesModalBackdrop'; bd.setAttribute('aria-hidden','true');
+      bd.innerHTML='<div id="ajMainRulesModal" role="dialog" aria-modal="true" aria-labelledby="ajMainRulesModalTitle"><div id="ajMainRulesModalHeader"><h3 id="ajMainRulesModalTitle">Reglas de Ajetrez</h3><button id="ajMainRulesModalClose" type="button">Cerrar</button></div><div id="ajMainRulesModalBody"></div></div>';
+      document.body.appendChild(bd);
+    }
+    return true;
+  }
+
+  function hideMainViews(){
+    ['#ajWelcomeView','#ajMainMenuView','#ajConfigView','#ajPersonalView','#ajCollabView','#ajContactoView','#ajRulesView'].forEach(function(sel){var el=q(sel);if(el)el.style.display='none';});
+  }
+  function showRulesView(){
+    ensure(); hideMainViews();
+    var login=q('#loginView'); if(login) login.style.display='none';
+    var v=q('#ajRulesView'); if(v) v.style.display='flex';
+    var title=q('#mpTitle'); if(title) title.textContent='Reglas de Ajetrez';
+  }
+  function showMain(){
+    ensure(); hideMainViews();
+    var login=q('#loginView'); if(login) login.style.display='none';
+    var v=q('#ajMainMenuView'); if(v) v.style.display='flex';
+    var title=q('#mpTitle'); if(title) title.textContent='Menú principal';
+  }
+  function openModal(ver){
+    ensure();
+    var src=q('#versionRulesPreview .version-preview[data-version="'+ver+'"]');
+    var body=q('#ajMainRulesModalBody'), bd=q('#ajMainRulesModalBackdrop'), title=q('#ajMainRulesModalTitle');
+    if(!src || !body || !bd) return;
+    body.innerHTML=src.innerHTML;
+    var labels={
+      '3_0_simple':'Versión 3.0 — Modo Simple',
+      '3_0_amenaza':'Versión 3.0 — Modo Amenaza',
+      '3_0_guerra':'Versión 3.0 — Modo Guerra'
+    };
+    if(title) title.textContent='Reglas — '+(labels[ver]||'Ajetrez');
+    bd.style.display='flex'; bd.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function closeModal(){
+    var bd=q('#ajMainRulesModalBackdrop'); if(bd){bd.style.display='none';bd.setAttribute('aria-hidden','true');}
+    document.body.style.overflow='';
+  }
+  function wire(){
+    ensure();
+    document.addEventListener('click',function(e){
+      var open=e.target&&e.target.closest?e.target.closest('#btnOpenReglasAjetrez'):null;
+      if(open){e.preventDefault();e.stopImmediatePropagation();showRulesView();return;}
+      var back=e.target&&e.target.closest?e.target.closest('#btnBackFromRules'):null;
+      if(back){e.preventDefault();e.stopImmediatePropagation();closeModal();showMain();return;}
+      var vb=e.target&&e.target.closest?e.target.closest('[data-aj-rules-version]'):null;
+      if(vb){e.preventDefault();e.stopImmediatePropagation();openModal(vb.getAttribute('data-aj-rules-version'));return;}
+      var close=e.target&&e.target.closest?e.target.closest('#ajMainRulesModalClose'):null;
+      if(close){e.preventDefault();e.stopImmediatePropagation();closeModal();return;}
+      var bd=e.target&&e.target.closest?e.target.closest('#ajMainRulesModalBackdrop'):null;
+      if(bd && e.target===bd){closeModal();return;}
+    },true);
+    document.addEventListener('keydown',function(e){if(e.key==='Escape' && q('#ajMainRulesModalBackdrop') && getComputedStyle(q('#ajMainRulesModalBackdrop')).display!=='none')closeModal();},true);
+  }
+  function ready(){ensure();wire();}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ready,{once:true}); else ready();
+  var mo=new MutationObserver(function(){ensure();});
+  mo.observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+
 <!-- /AJETREZ: NUEVA ARQUITECTURA DEL MENÚ PRINCIPAL / CONFIGURAR PARTIDA -->
 
 <!-- AJETREZ: REPARACIÓN FLUJO BIENVENIDA DESPUÉS DEL LOGIN -->
@@ -14366,4 +14770,404 @@ function showVeteranBanner(color){
 </script>
 <!-- /AJETREZ: REPARACIÓN FLUJO BIENVENIDA DESPUÉS DEL LOGIN -->
 
+<!-- AJETREZ: FIX FINAL - Personalización independiente + Registros robustos -->
+<style id="aj-hide-obsolete-registro-trigger">
+  /* El botón antiguo "Registro de partidas" ya no forma parte del menú.
+     El acceso oficial es Menú principal → Registros. */
+  #btn-open-regv2-tab,
+  #regv2-open{ display:none !important; }
+  #ajConfigView .mp-tabs #btnRegistrosTab,
+  #ajConfigView .mp-tabs #btnRegistrosTabV2,
+  #ajConfigView .mp-tabs .tab-btn[data-tab="tab-registros"],
+  #ajConfigView .mp-tabs .tab-btn[data-tab="tab-registros-v2"]{ display:none !important; }
+</style>
+<style id="aj-final-menu-sections-fix">
+  /* Personalización es ahora una vista principal independiente. */
+  #megaPanel #ajPersonalView{
+    display:none;
+    flex:1 1 auto !important;
+    min-height:0 !important;
+    flex-direction:column !important;
+    overflow:hidden !important;
+    color:#111 !important;
+    background:#fff !important;
+  }
+  #megaPanel #ajPersonalView #ajPersonalContent{
+    display:block !important;
+    flex:1 1 auto !important;
+    min-height:0 !important;
+    overflow:auto !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    background:#fff !important;
+  }
+  #megaPanel #ajPersonalView #tab-personalizacion{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    height:auto !important;
+    min-height:100% !important;
+    overflow:visible !important;
+    color:#111 !important;
+    background:#fff !important;
+  }
 
+  /* El registro es un modal real: sus controles deben recibir los clics. */
+  #regv2-overlay{
+    pointer-events:auto !important;
+  }
+  #regv2-panel,
+  #regv2-panel *{
+    pointer-events:auto !important;
+  }
+  #regv2-panel .regv2-head-actions{
+    display:flex !important;
+    align-items:center !important;
+    gap:7px !important;
+    flex-wrap:wrap !important;
+  }
+  #regv2-back-menu{
+    background:#111 !important;
+    color:#fff !important;
+    border:2px solid #fff !important;
+    border-radius:10px !important;
+    padding:6px 10px !important;
+    font-weight:800 !important;
+    cursor:pointer !important;
+  }
+  #regv2-close,#regv2-exit,#regv2-back-menu{
+    position:relative !important;
+    z-index:2147483647 !important;
+  }
+</style>
+<script id="aj-final-menu-sections-fix-script">
+(function(){
+  if(window.__AJ_FINAL_MENU_SECTIONS_FIX__) return;
+  window.__AJ_FINAL_MENU_SECTIONS_FIX__=true;
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function showMainMenu(){
+    var menuBtn=$('#btnMegaMenu');
+    if(menuBtn){
+      try{ menuBtn.click(); }catch(_){ }
+    }
+    setTimeout(function(){
+      var panel=$('#megaPanel');
+      if(panel){ panel.style.display='flex'; }
+      var backdrop=$('#panelBackdrop');
+      if(backdrop){ backdrop.style.display='flex'; }
+      /* La nueva arquitectura toma el control al detectar el menú abierto. */
+      var welcome=$('#ajWelcomeView'), main=$('#ajMainMenuView'), config=$('#ajConfigView'), personal=$('#ajPersonalView');
+      var login=$('#loginView');
+      if(login) login.style.display='none';
+      if(welcome) welcome.style.display='none';
+      if(config) config.style.display='none';
+      if(personal) personal.style.display='none';
+      if(main) main.style.display='flex';
+      var title=$('#mpTitle');
+      if(title) title.textContent='Menú principal';
+    },30);
+  }
+
+  function showMainMenuAfterRecords(){
+    var mega=$('#megaPanel'), bd=$('#panelBackdrop');
+    var main=$('#ajMainMenuView'), login=$('#loginView'), welcome=$('#ajWelcomeView'), config=$('#ajConfigView'), personal=$('#ajPersonalView');
+    if(mega){ mega.style.setProperty('display','flex','important'); mega.setAttribute('aria-hidden','false'); }
+    if(bd){ bd.style.setProperty('display','flex','important'); }
+    if(login) login.style.display='none';
+    if(welcome) welcome.style.display='none';
+    if(config) config.style.display='none';
+    if(personal) personal.style.display='none';
+    if(main) main.style.setProperty('display','flex','important');
+    var title=$('#mpTitle');
+    if(title) title.textContent='Menú principal';
+    var menuBtn=$('#btnMegaMenu');
+    if(menuBtn) menuBtn.setAttribute('aria-expanded','true');
+  }
+
+  function closeReg(){
+    var ov=$('#regv2-overlay');
+    if(ov){
+      ov.style.setProperty('display','none','important');
+      ov.setAttribute('aria-hidden','true');
+      ov.classList.remove('open','active');
+    }
+    var rp=$('#regv2-panel');
+    if(rp){
+      rp.style.setProperty('display','none','important');
+      rp.setAttribute('aria-hidden','true');
+    }
+    /* Compatibilidad: cerrar cualquier variante vieja que hubiera quedado visible. */
+    ['rgBackdrop','regPanel','replayPanel'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el) el.style.setProperty('display','none','important');
+    });
+    /* Importante: el cierre no deja el megaPanel en un estado muerto.
+       Volvemos explícitamente al menú principal para que Registros pueda
+       abrirse otra vez inmediatamente. */
+    showMainMenuAfterRecords();
+  }
+
+  function openReg(){
+    var ov=$('#regv2-overlay');
+    var rp=$('#regv2-panel');
+    if(!ov || !rp){
+      /* Fallback al registro antiguo si por alguna razón el v2 todavía no existe. */
+      var old=$('#regPanel'); var oldBd=$('#rgBackdrop');
+      if(old) old.style.setProperty('display','block','important');
+      if(oldBd) oldBd.style.setProperty('display','block','important');
+      var mega0=$('#megaPanel'); if(mega0) mega0.style.display='none';
+      return;
+    }
+    /* Limpiar estados heredados antes de abrir. */
+    ['rgBackdrop','regPanel','replayPanel'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el) el.style.setProperty('display','none','important');
+    });
+    var mega=$('#megaPanel'), bd=$('#panelBackdrop');
+    if(mega) mega.style.setProperty('display','none','important');
+    if(bd) bd.style.setProperty('display','none','important');
+    ov.style.setProperty('display','flex','important');
+    ov.setAttribute('aria-hidden','false');
+    ov.classList.add('open','active');
+    rp.style.setProperty('display','flex','important');
+    rp.style.setProperty('visibility','visible','important');
+    rp.style.setProperty('opacity','1','important');
+    rp.setAttribute('aria-hidden','false');
+    var menuBtn=$('#btnMegaMenu');
+    if(menuBtn) menuBtn.setAttribute('aria-expanded','false');
+    /* El contenido del registro debe seguir siendo interactivo al reabrir. */
+    rp.querySelectorAll('button,select,textarea,input').forEach(function(el){ el.style.pointerEvents='auto'; });
+  }
+
+  function ensureBackButton(){
+    var panel=$('#regv2-panel');
+    if(!panel) return false;
+    var actions=panel.querySelector('.regv2-head-actions');
+    if(!actions) return false;
+    if(!$('#regv2-back-menu',actions)){
+      var b=document.createElement('button');
+      b.type='button';
+      b.id='regv2-back-menu';
+      b.className='regv2-btn small';
+      b.textContent='← Volver al inicio';
+      actions.insertBefore(b, actions.firstChild);
+    }
+    return true;
+  }
+
+  function ensurePersonal(){
+    var pv=$('#ajPersonalView'), pc=$('#ajPersonalContent'), tab=$('#tab-personalizacion');
+    if(!pv || !pc || !tab) return false;
+    if(tab.parentNode!==pc) pc.appendChild(tab);
+    tab.style.setProperty('display','block','important');
+    tab.style.setProperty('visibility','visible','important');
+    tab.style.setProperty('opacity','1','important');
+    return true;
+  }
+
+  function installObservers(){
+    ensureBackButton(); ensurePersonal();
+    var tab=$('#tab-personalizacion');
+    if(tab && !tab.__ajFinalPersonalObserver){
+      tab.__ajFinalPersonalObserver=true;
+      var mo=new MutationObserver(function(){
+        if($('#ajPersonalView') && $('#ajPersonalView').style.display!=='none'){
+          if(tab.style.display!=='block') tab.style.setProperty('display','block','important');
+          if(tab.style.visibility!=='visible') tab.style.setProperty('visibility','visible','important');
+          if(tab.style.opacity!=='1') tab.style.setProperty('opacity','1','important');
+        }
+      });
+      mo.observe(tab,{attributes:true,attributeFilter:['style','class']});
+    }
+  }
+
+  document.addEventListener('click',function(e){
+    var t=e.target && e.target.closest ? e.target.closest('#regv2-close,#regv2-exit') : null;
+    if(t){
+      e.preventDefault(); e.stopImmediatePropagation();
+      closeReg();
+      return;
+    }
+    var back=e.target && e.target.closest ? e.target.closest('#regv2-back-menu') : null;
+    if(back){
+      e.preventDefault(); e.stopImmediatePropagation();
+      closeReg();
+      showMainMenu();
+      return;
+    }
+  },true);
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && $('#regv2-overlay') && getComputedStyle($('#regv2-overlay')).display!=='none'){
+      e.preventDefault();
+      closeReg();
+    }
+  },true);
+
+  function ready(){
+    installObservers();
+    var tries=0;
+    var timer=setInterval(function(){
+      tries++;
+      installObservers();
+      if(tries>40) clearInterval(timer);
+    },250);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ready,{once:true});
+  else ready();
+})();
+</script>
+<!-- /AJETREZ: FIX FINAL -->
+<!-- AJETREZ: REGISTROS V2 - REAPERTURA Y REPRODUCCION ROBUSTA -->
+<script id="aj-regv2-reopen-replay-final">
+(function(){
+  if(window.__AJ_REGV2_REOPEN_REPLAY_FINAL__) return;
+  window.__AJ_REGV2_REOPEN_REPLAY_FINAL__=true;
+
+  function q(s,r){ return (r||document).querySelector(s); }
+  function qa(s,r){ return Array.from((r||document).querySelectorAll(s)); }
+
+  function showMainMenu(){
+    var mega=q('#megaPanel'), bd=q('#panelBackdrop');
+    var login=q('#loginView'), welcome=q('#ajWelcomeView'), main=q('#ajMainMenuView'), config=q('#ajConfigView'), personal=q('#ajPersonalView');
+    if(mega) mega.style.setProperty('display','flex','important');
+    if(bd) bd.style.setProperty('display','flex','important');
+    if(login) login.style.display='none';
+    if(welcome) welcome.style.display='none';
+    if(config) config.style.display='none';
+    if(personal) personal.style.display='none';
+    if(main) main.style.setProperty('display','flex','important');
+    var title=q('#mpTitle'); if(title) title.textContent='Menú principal';
+    var mb=q('#btnMegaMenu'); if(mb) mb.setAttribute('aria-expanded','true');
+  }
+
+  function hideRecordsOnly(){
+    ['#regv2-overlay','#regv2-panel'].forEach(function(sel){
+      var el=q(sel); if(el){ el.style.setProperty('display','none','important'); el.classList.remove('open','active'); el.setAttribute('aria-hidden','true'); }
+    });
+    ['#rgBackdrop','#regPanel','#replayPanel'].forEach(function(sel){ var el=q(sel); if(el) el.style.setProperty('display','none','important'); });
+  }
+
+  function openRecords(){
+    var ov=q('#regv2-overlay'), panel=q('#regv2-panel');
+    if(!ov || !panel){
+      console.warn('[Ajetrez] Panel Registros v2 no encontrado.');
+      return false;
+    }
+    /* Cerrar restos de implementaciones antiguas antes de abrir. */
+    ['#rgBackdrop','#regPanel','#replayPanel'].forEach(function(sel){ var el=q(sel); if(el) el.style.setProperty('display','none','important'); });
+    var mega=q('#megaPanel'), bd=q('#panelBackdrop');
+    if(mega) mega.style.setProperty('display','none','important');
+    if(bd) bd.style.setProperty('display','none','important');
+    ov.style.setProperty('display','flex','important');
+    ov.setAttribute('aria-hidden','false');
+    ov.classList.add('open','active');
+    panel.style.setProperty('display','flex','important');
+    panel.style.setProperty('visibility','visible','important');
+    panel.style.setProperty('opacity','1','important');
+    panel.setAttribute('aria-hidden','false');
+    panel.style.pointerEvents='auto';
+    qa('button,select,textarea,input',panel).forEach(function(el){ el.style.pointerEvents='auto'; });
+    var mb=q('#btnMegaMenu'); if(mb) mb.setAttribute('aria-expanded','false');
+    return true;
+  }
+
+  function closeRecords(){
+    hideRecordsOnly();
+    /* Siempre volver al menú principal: así el botón Registros queda disponible
+       inmediatamente para una nueva apertura. */
+    showMainMenu();
+  }
+
+  /* Reemplazo limpio del recorrido Cargar demo -> Reproducir en tablero.
+     No depende del Bot de demostración acumulado en versiones anteriores. */
+  var replay={timer:null, index:0, script:[], speed:700, playing:false};
+  function clearReplayTimer(){ if(replay.timer){ clearTimeout(replay.timer); replay.timer=null; } }
+  function rc(s){ return {r:8-parseInt(s.slice(1),10), c:s.charCodeAt(0)-97}; }
+  function parseMoves(txt){
+    return String(txt||'').trim().replace(/\s+/g,' ').split(' ').filter(function(tk){
+      return /^[a-h][1-8][a-h][1-8][qrbn]?$/i.test(tk);
+    }).map(function(tk){
+      return {from:tk.slice(0,2).toLowerCase(),to:tk.slice(2,4).toLowerCase(),promotion:tk.length===5?tk[4].toUpperCase():null};
+    });
+  }
+  function stopReplay(reset){
+    clearReplayTimer(); replay.playing=false;
+    try{ if(window.__RegV2Bot && window.__RegV2Bot.stop) window.__RegV2Bot.stop({resetToStart:!!reset}); }catch(_){ }
+    if(reset){ try{ if(typeof restartGame==='function') restartGame(); }catch(_){ } }
+    var mask=q('#regv2-board-mask'); if(mask) mask.style.display='none';
+  }
+  function stepReplay(){
+    if(!replay.playing) return;
+    if(replay.index>=replay.script.length){ replay.playing=false; var mask=q('#regv2-board-mask'); if(mask) mask.style.display='none'; return; }
+    var m=replay.script[replay.index++];
+    try{
+      var res=applyMove(board,offsets,rc(m.from),rc(m.to),m.promotion?{promotion:m.promotion}:null);
+      if(res && !res.illegal && res.board) board=res.board;
+      if(typeof turn!=='undefined') turn=(turn==='w'?'b':'w');
+      if(typeof render==='function') render();
+      try{ if(typeof emitTurnChange==='function') emitTurnChange(); }catch(_){ }
+      try{ if(typeof evaluateStatus==='function') evaluateStatus(turn); }catch(_){ }
+    }catch(err){ console.error('[Ajetrez] Error en reproducción:',err); }
+    replay.timer=setTimeout(stepReplay,replay.speed);
+  }
+  function startReplay(){
+    var ta=q('#regv2-input');
+    var arr=parseMoves(ta ? ta.value : '');
+    if(!arr.length){ alert('No hay movimientos válidos para reproducir.'); return; }
+    stopReplay(true);
+    replay.script=arr; replay.index=0;
+    var sel=q('#regv2-speed'); var mul=parseFloat(sel ? sel.value : '1') || 1;
+    replay.speed=Math.max(80,700/mul); replay.playing=true;
+    var start=q('#btnStartGame'); if(start) start.style.display='none';
+    var mask=q('#regv2-board-mask'); if(mask) mask.style.display='block';
+    var ov=q('#regv2-overlay'); if(ov) ov.style.setProperty('display','none','important');
+    if(typeof render==='function') render();
+    stepReplay();
+  }
+  function pauseReplay(){ replay.playing=false; clearReplayTimer(); }
+  function resumeReplay(){ if(replay.index<replay.script.length){ replay.playing=true; stepReplay(); } }
+
+  window.__AJ_REGV2_START_REPLAY__=startReplay;
+  window.__AJ_REGV2_PAUSE_REPLAY__=pauseReplay;
+  window.__AJ_REGV2_RESUME_REPLAY__=resumeReplay;
+  window.__AJ_REGV2_STOP_REPLAY__=function(){ stopReplay(false); };
+
+  document.addEventListener('click',function(e){
+    var target=e.target && e.target.closest ? e.target.closest('#btnOpenRegistros') : null;
+    if(target){ e.preventDefault(); e.stopImmediatePropagation(); openRecords(); return; }
+    target=e.target && e.target.closest ? e.target.closest('#regv2-close,#regv2-exit') : null;
+    if(target){ e.preventDefault(); e.stopImmediatePropagation(); closeRecords(); return; }
+    target=e.target && e.target.closest ? e.target.closest('#regv2-back-menu') : null;
+    if(target){ e.preventDefault(); e.stopImmediatePropagation(); closeRecords(); return; }
+    target=e.target && e.target.closest ? e.target.closest('#regv2-demo') : null;
+    if(target){ var ta=q('#regv2-input'); if(ta) ta.value='e2e4 e7e5 g1f3 b8c6 f1c4 g8f6'; return; }
+    target=e.target && e.target.closest ? e.target.closest('#regv2-play') : null;
+    if(target){ e.preventDefault(); e.stopImmediatePropagation(); startReplay(); return; }
+    target=e.target && e.target.closest ? e.target.closest('#regv2-pause') : null;
+    if(target){ e.preventDefault(); e.stopImmediatePropagation(); pauseReplay(); return; }
+    target=e.target && e.target.closest ? e.target.closest('#regv2-resume') : null;
+    if(target){ e.preventDefault(); e.stopImmediatePropagation(); resumeReplay(); return; }
+    target=e.target && e.target.closest ? e.target.closest('#regv2-stop') : null;
+    if(target){ e.preventDefault(); e.stopImmediatePropagation(); stopReplay(false); return; }
+  },true);
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && q('#regv2-overlay') && getComputedStyle(q('#regv2-overlay')).display!=='none'){
+      e.preventDefault(); closeRecords();
+    }
+  },true);
+})();
+</script>
+
+
+<style id="aj-final-registros-cleanup">
+  /* Registros ya no pertenece a Configurar partida. */
+  #ajConfigView .mp-tabs #btnRegistrosTab,
+  #ajConfigView .mp-tabs #btnRegistrosTabV2,
+  #ajConfigView .mp-tabs .tab-btn[data-tab="tab-registros"],
+  #ajConfigView .mp-tabs .tab-btn[data-tab="tab-registros-v2"],
+  #btn-open-regv2-tab,
+  #regv2-open{ display:none !important; }
+</style>
