@@ -15424,3 +15424,20 @@ function showVeteranBanner(color){
   #btn-open-regv2-tab,
   #regv2-open{ display:none !important; }
 </style>
+
+<!-- AJETREZ: Posición final del panel de menú móvil — justo sobre el botón Menú -->
+<style id="aj-mobile-menu-panel-above-menu-final">
+@media (max-width:900px), (pointer:coarse){
+  #megaPanel{
+    top:auto !important;
+    bottom:calc(var(--toolbar-h) - 12px) !important;
+    transform:translateX(-50%) !important;
+  }
+}
+@media (max-width:480px){
+  #megaPanel{
+    top:auto !important;
+    bottom:calc(var(--toolbar-h) - 12px) !important;
+  }
+}
+</style>
