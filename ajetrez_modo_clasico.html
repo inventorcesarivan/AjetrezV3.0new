@@ -127,6 +127,29 @@
     display:flex; align-items:center; justify-content:space-between;
     padding:10px 12px; background:#111; color:#fff; font-weight:800;
   }
+  /* === Pasos de configuración de la partida === */
+  .mp-tabs .config-step{
+    position:relative;
+    margin-top:22px;
+  }
+  .mp-tabs .config-step::before{
+    content:attr(data-step);
+    position:absolute;
+    left:50%;
+    top:-23px;
+    transform:translateX(-50%);
+    font-size:16px;
+    line-height:18px;
+    font-weight:900;
+    color:#111;
+    opacity:.85;
+    pointer-events:none;
+    white-space:nowrap;
+  }
+  .mp-tabs .config-step.step-1::before{ content:"1º"; }
+  .mp-tabs .config-step.step-2::before{ content:"2º"; }
+  .mp-tabs .config-step.step-3::before{ content:"3º"; }
+
   .mp-tabs{
     display:flex; gap:8px; padding:8px 12px; flex-wrap:wrap; border-bottom:1px solid #eee;
   }
@@ -3196,7 +3219,7 @@ body[data-theme="noche"] .regv2-btn{
 </div></div></div><div aria-label="Ajetrez base limpia" id="board"></div><div aria-label="Decidir desplazamiento de fila" class="shift-ctrl" id="shiftCtrl" role="group"><span class="lbl" id="shiftLbl">Fila</span><span id="chooseWrap"><button aria-label="Mantener" id="btnKeep" type="button">Mantener</button><button aria-label="Desplazar sección" id="btnShift" type="button">Desplazar sección</button></span><span id="confirmWrap" style="display:none"><button aria-label="Confirmar" class="confirm" id="btnConfirm" type="button">Confirmar</button><button aria-label="Volver a elegir" id="btnBack" type="button">Cambiar elección</button></span></div><div id="overlay"><div id="banner">FIN</div></div><div id="panelBackdrop"></div><div aria-labelledby="mpTitle" aria-modal="true" id="megaPanel" role="dialog"><div class="apply-toast" id="applyToast">✔ Cambios guardados
 </div><div class="mp-header"><div id="mpTitle">Panel de Ajetrez
 </div><button class="btn secondary" id="ajHeaderBackBtn" type="button" style="display:none">← Volver al inicio</button><div class="right"><span class="hint-sm" id="loggedUser"></span><button class="btn secondary" id="btnLogout" type="button">Cerrar sesión</button><button class="btn" id="btnClosePanel" type="button">Cerrar</button></div></div><div id="loginView"><h2>Iniciar sesión</h2><div class="field"><label for="inpUser">Usuario</label><input id="inpUser" placeholder="Tu nombre de usuario" type="text"/></div><div class="field"><label for="inpPass">Contraseña</label><input id="inpPass" placeholder="••••••••" type="password"/></div><button class="btn" id="btnLogin" type="button">Entrar</button><div class="hint-sm">*Login local (almacenado en este navegador). Próximamente: cuentas online.
-</div></div><div id="tabsView"><div class="mp-tabs"><button class="tab-btn active" data-tab="tab-version">Versión de Ajetrez</button><button class="tab-btn" data-tab="tab-modos">Modos de juego</button><button class="tab-btn" data-tab="tab-tiempo-partida">Tiempo de partida</button><button class="tab-btn" data-tab="tab-personalizacion">Personalización</button><button class="tab-btn" data-tab="tab-registros" id="btnRegistrosTab">Registros</button></div><div class="mp-content"><div class="tab" id="tab-tiempo-partida" style="display:none">
+</div></div><div id="tabsView"><div class="mp-tabs"><button class="tab-btn active config-step step-1" data-tab="tab-version" data-step="1º">Versión de juego</button><button class="tab-btn config-step step-2" data-tab="tab-modos" data-step="2º">Tipo de partida</button><button class="tab-btn config-step step-3" data-tab="tab-tiempo-partida" data-step="3º">Duración de la partida</button><button class="tab-btn" data-tab="tab-personalizacion">Personalización</button><button class="tab-btn" data-tab="tab-registros" id="btnRegistrosTab">Registros</button></div><div class="mp-content"><div class="tab" id="tab-tiempo-partida" style="display:none">
   <div class="aj-time-card">
     <h3>⏱ Tiempo de duración de la partida</h3>
     <p>Elegí cuánto tiempo tendrá disponible la partida. La opción se conservará cuando guardes la configuración.</p>
