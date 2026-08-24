@@ -3024,6 +3024,130 @@ body[data-theme="noche"] .regv2-btn{
 }
 </style>
 
+<style id="aj-header-back-navigation-final">
+/* Navegación de secciones: un único título en la cabecera negra y el botón de retorno junto a él. */
+#megaPanel .mp-header{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+#megaPanel .mp-header #mpTitle{
+  flex:0 1 auto !important;
+  margin:0 !important;
+}
+#megaPanel .mp-header #ajHeaderBackBtn{
+  flex:0 0 auto !important;
+  white-space:nowrap !important;
+  margin:0 !important;
+}
+/* Los encabezados internos ya no muestran el título duplicado. */
+#megaPanel .aj-section-local-header,
+#megaPanel #ajRulesHeader,
+#megaPanel #ajPersonalHeader,
+#megaPanel #ajCollabHeader,
+#megaPanel #ajContactoHeader,
+#megaPanel #ajConfigHeader{
+  display:none !important;
+}
+@media (max-width:600px){
+  #megaPanel .mp-header{ gap:6px !important; }
+  #megaPanel .mp-header #ajHeaderBackBtn{
+    padding:5px 8px !important;
+    font-size:11px !important;
+  }
+}
+</style>
+
+<style id="aj-header-back-left-red-title-center-final">
+/* Cabecera de secciones: volver siempre a la izquierda, título centrado. */
+#megaPanel .mp-header{
+  position:relative !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  min-height:40px !important;
+  gap:8px !important;
+}
+#megaPanel .mp-header #mpTitle{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  transform:translate(-50%,-50%) !important;
+  width:max-content !important;
+  max-width:52% !important;
+  margin:0 !important;
+  text-align:center !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+#megaPanel .mp-header #ajHeaderBackBtn{
+  position:absolute !important;
+  left:10px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  display:none;
+  margin:0 !important;
+  background:#b91c1c !important;
+  color:#fff !important;
+  border:1.5px solid rgba(255,255,255,.75) !important;
+  box-shadow:0 2px 8px rgba(0,0,0,.18) !important;
+  z-index:3 !important;
+}
+#megaPanel .mp-header #ajHeaderBackBtn:hover,
+#megaPanel .mp-header #ajHeaderBackBtn:focus-visible{
+  background:#b91c1c !important;
+  color:#fff !important;
+}
+#megaPanel .mp-header .right{
+  margin-left:auto !important;
+  position:relative !important;
+  z-index:2 !important;
+}
+@media (max-width:600px){
+  #megaPanel .mp-header{ min-height:38px !important; }
+  #megaPanel .mp-header #ajHeaderBackBtn{
+    left:6px !important;
+    padding:5px 8px !important;
+    font-size:11px !important;
+  }
+  #megaPanel .mp-header #mpTitle{
+    max-width:38% !important;
+    font-size:13px !important;
+  }
+}
+</style>
+
+<style id="aj-version-scenarios-style">
+  /* Descripción breve del escenario de cada versión */
+  #versionScenarioPreview{
+    margin: 10px 0 12px;
+    padding: 9px 11px;
+    border: 1px solid #e6e0cf;
+    border-radius: 10px;
+    background: #faf8f0;
+    color: #222;
+    line-height: 1.35;
+    font-size: 13px;
+  }
+  #versionScenarioPreview .version-scenario{ display:none; }
+  #versionScenarioPreview .version-scenario.active{ display:block; }
+  #versionScenarioPreview .scenario-title{
+    margin: 0 0 5px;
+    font-size: 14px;
+    font-weight: 900;
+  }
+  #versionScenarioPreview .scenario-text{ margin:0; }
+  @media (max-width: 900px), (pointer: coarse){
+    #versionScenarioPreview{
+      margin-top: 8px;
+      margin-bottom: 10px;
+      padding: 8px 9px;
+      font-size: 12px;
+    }
+    #versionScenarioPreview .scenario-title{ font-size: 13px; }
+  }
+</style>
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
@@ -3057,7 +3181,7 @@ body[data-theme="noche"] .regv2-btn{
 </div><button id="btnStartGame" type="button">Comenzar partida</button><div class="hint">Pulsa para iniciar. Bloquea el juego en todos los modos hasta empezar.
 </div></div></div><div aria-label="Ajetrez base limpia" id="board"></div><div aria-label="Decidir desplazamiento de fila" class="shift-ctrl" id="shiftCtrl" role="group"><span class="lbl" id="shiftLbl">Fila</span><span id="chooseWrap"><button aria-label="Mantener" id="btnKeep" type="button">Mantener</button><button aria-label="Desplazar sección" id="btnShift" type="button">Desplazar sección</button></span><span id="confirmWrap" style="display:none"><button aria-label="Confirmar" class="confirm" id="btnConfirm" type="button">Confirmar</button><button aria-label="Volver a elegir" id="btnBack" type="button">Cambiar elección</button></span></div><div id="overlay"><div id="banner">FIN</div></div><div id="panelBackdrop"></div><div aria-labelledby="mpTitle" aria-modal="true" id="megaPanel" role="dialog"><div class="apply-toast" id="applyToast">✔ Cambios guardados
 </div><div class="mp-header"><div id="mpTitle">Panel de Ajetrez
-</div><div class="right"><span class="hint-sm" id="loggedUser"></span><button class="btn secondary" id="btnLogout" type="button">Cerrar sesión</button><button class="btn" id="btnClosePanel" type="button">Cerrar</button></div></div><div id="loginView"><h2>Iniciar sesión</h2><div class="field"><label for="inpUser">Usuario</label><input id="inpUser" placeholder="Tu nombre de usuario" type="text"/></div><div class="field"><label for="inpPass">Contraseña</label><input id="inpPass" placeholder="••••••••" type="password"/></div><button class="btn" id="btnLogin" type="button">Entrar</button><div class="hint-sm">*Login local (almacenado en este navegador). Próximamente: cuentas online.
+</div><button class="btn secondary" id="ajHeaderBackBtn" type="button" style="display:none">← Volver al inicio</button><div class="right"><span class="hint-sm" id="loggedUser"></span><button class="btn secondary" id="btnLogout" type="button">Cerrar sesión</button><button class="btn" id="btnClosePanel" type="button">Cerrar</button></div></div><div id="loginView"><h2>Iniciar sesión</h2><div class="field"><label for="inpUser">Usuario</label><input id="inpUser" placeholder="Tu nombre de usuario" type="text"/></div><div class="field"><label for="inpPass">Contraseña</label><input id="inpPass" placeholder="••••••••" type="password"/></div><button class="btn" id="btnLogin" type="button">Entrar</button><div class="hint-sm">*Login local (almacenado en este navegador). Próximamente: cuentas online.
 </div></div><div id="tabsView"><div class="mp-tabs"><button class="tab-btn active" data-tab="tab-version">Versión de Ajetrez</button><button class="tab-btn" data-tab="tab-modos">Modos de juego</button><button class="tab-btn" data-tab="tab-tiempo-partida">Tiempo de partida</button><button class="tab-btn" data-tab="tab-personalizacion">Personalización</button><button class="tab-btn" data-tab="tab-registros" id="btnRegistrosTab">Registros</button></div><div class="mp-content"><div class="tab" id="tab-tiempo-partida" style="display:none">
   <div class="aj-time-card">
     <h3>⏱ Tiempo de duración de la partida</h3>
@@ -3106,7 +3230,26 @@ body[data-theme="noche"] .regv2-btn{
 <button class="btn small" id="btnZonasReset" type="button">Restablecer</button>
 </div>
 </div>
-</div><div class="field"><label>Estilo visual</label><div aria-label="Elegir estilo visual" class="row" id="themePicker" role="group"><button class="btn theme" data-theme="dia" title="Tonos claros, suaves" type="button">Día</button><button class="btn theme" data-theme="noche" title="Tonos oscuros, suaves" type="button">Noche</button><button class="btn theme" data-theme="madera" title="Tonos madera, suaves" type="button">Madera</button><button class="btn theme" data-theme="arena" title="Arena suave" type="button">Arena</button><button class="btn theme" data-theme="pizarra" title="Pizarra / gris" type="button">Pizarra</button><button class="btn theme" data-theme="oliva" title="Verde oliva suave" type="button">Oliva</button></div><span class="hint-sm">Los estilos son suaves para no distraer durante la partida.</span></div></div></div><div class="tab" id="tab-version" style="display:block"><h3>Versión de Ajetrez</h3><p>Versión actual del juego: <strong id="verActual">2.5 (Estable)</strong></p><div class="field"><label>Seleccionar versión</label><select id="selVersion"><option selected="" value="3_0_simple">Versión 3.0 (Modo Clásico)</option><option value="3_0_alianza">Versión 3.0 (Modo Alianza)</option><option value="3_0_amenaza">Versión 3.0 (Modo Amenaza)</option><option value="3_0_guerra">Versión 3.0 (Modo Guerra)</option></select></div><button class="btn" id="btnVersionRules" type="button">Reglas de la versión</button><div id="versionRulesPreview">
+</div><div class="field"><label>Estilo visual</label><div aria-label="Elegir estilo visual" class="row" id="themePicker" role="group"><button class="btn theme" data-theme="dia" title="Tonos claros, suaves" type="button">Día</button><button class="btn theme" data-theme="noche" title="Tonos oscuros, suaves" type="button">Noche</button><button class="btn theme" data-theme="madera" title="Tonos madera, suaves" type="button">Madera</button><button class="btn theme" data-theme="arena" title="Arena suave" type="button">Arena</button><button class="btn theme" data-theme="pizarra" title="Pizarra / gris" type="button">Pizarra</button><button class="btn theme" data-theme="oliva" title="Verde oliva suave" type="button">Oliva</button></div><span class="hint-sm">Los estilos son suaves para no distraer durante la partida.</span></div></div></div><div class="tab" id="tab-version" style="display:block"><div class="field"><label>Seleccionar versión</label><select id="selVersion"><option selected="" value="3_0_simple">Versión 3.0 (Modo Clásico)</option><option value="3_0_alianza">Versión 3.0 (Modo Alianza)</option><option value="3_0_amenaza">Versión 3.0 (Modo Amenaza)</option><option value="3_0_guerra">Versión 3.0 (Modo Guerra)</option></select></div>
+<div id="versionScenarioPreview" aria-live="polite">
+  <div class="version-scenario" data-version="3_0_simple">
+    <h4 class="scenario-title">Modo clásico</h4>
+    <p class="scenario-text">Disfruta de jugar como si fuera un ajedrez clásico, con la posibilidad de quitar piezas del tablero central o ingresar nuevamente piezas que, en alguno de los turnos, fueron desplazadas para volver a utilizarlas.</p>
+  </div>
+  <div class="version-scenario" data-version="3_0_alianza">
+    <h4 class="scenario-title">Modo alianza</h4>
+    <p class="scenario-text">Imagina que tu reino hace alianza con otro para combatir a un enemigo que también ha formado una alianza. En esta versión tendrás el poder completo de <strong>dos reinos</strong> y deberás utilizar todo tu ingenio para dirigirlos.</p>
+  </div>
+  <div class="version-scenario" data-version="3_0_amenaza">
+    <h4 class="scenario-title">Modo Amenaza</h4>
+    <p class="scenario-text">Tu enemigo amenaza la estabilidad de tu reino al tomar como cautivos a tu príncipe y princesa. Tú has hecho lo mismo para no quedar en desventaja. Ahora solo queda saber <strong>quién liberará primero a sus cautivos o cuál de los reyes caerá primero</strong>, defendiendo su reino y su descendencia.</p>
+  </div>
+  <div class="version-scenario" data-version="3_0_guerra">
+    <h4 class="scenario-title">Modo guerra</h4>
+    <p class="scenario-text">Los conflictos y luchas entre reinos han llegado al punto máximo. Una guerra total y sin tregua es inevitable. Desplegarás todas tus armas, guerreros y súbditos para defender tu reino, utilizando todas tus habilidades.</p>
+  </div>
+</div>
+<button class="btn" id="btnVersionRules" type="button">Reglas de la versión</button><div id="versionRulesPreview">
 <div class="version-preview" data-version="3_0_simple">
 <h4>Ajetrez 3.0 — Modo Clásico</h4>
 <h5>1) Objetivo y tablero</h5>
@@ -12074,8 +12217,18 @@ catch(_){}
     if(!href) return;
     if(hasGameInProgress() && !confirm('Hay una partida en curso. ¿Cambiar de versión igualmente?')){ if(ev) ev.preventDefault(); return; }
     try{ var ov = document.getElementById('overlaySoon'); if(ov) ov.remove(); }catch(_){}
+    // Recordar que el usuario quiere volver directamente a la sección de versiones
+    // después de cargar la nueva versión. sessionStorage dura solo durante esta
+    // navegación y no afecta aperturas normales del menú.
+    try{ sessionStorage.setItem('aj_auto_open_version_config','1'); }catch(_){}
     if(document.fullscreenElement){ try{ document.exitFullscreen(); }catch(_){ } }
-    location.href = href + location.search;
+    try{
+      var next = new URL(href, location.href);
+      var current = new URLSearchParams(location.search);
+      current.forEach(function(val,key){ next.searchParams.set(key,val); });
+      next.searchParams.set('ajAutoVersionConfig','1');
+      location.href = next.href;
+    }catch(_){ location.href = href + location.search + (location.search ? '&' : '?') + 'ajAutoVersionConfig=1'; }
   }
   document.addEventListener('DOMContentLoaded', function(){
     var sel = document.getElementById('selVersion');
@@ -12309,6 +12462,91 @@ function showVeteranBanner(color){
     apply();
   }
   document.addEventListener('DOMContentLoaded', setup);
+})();
+</script>
+<script id="aj-auto-open-version-config-v3">
+(function(){
+  'use strict';
+  var FLAG='aj_auto_open_version_config';
+  var PARAM='ajAutoVersionConfig';
+  var running=false, done=false, attempts=0, timer=null;
+
+  function hasFlag(){
+    try{ if(sessionStorage.getItem(FLAG)==='1') return true; }catch(_){ }
+    try{ return new URLSearchParams(location.search).get(PARAM)==='1'; }catch(_){ return false; }
+  }
+  function clearFlag(){
+    try{ sessionStorage.removeItem(FLAG); }catch(_){ }
+    try{
+      var u=new URL(location.href); u.searchParams.delete(PARAM);
+      history.replaceState(history.state,'',u.href);
+    }catch(_){ }
+  }
+  function stop(){ if(timer){clearInterval(timer);timer=null;} running=false; }
+  function visible(el){
+    if(!el) return false;
+    var cs=getComputedStyle(el);
+    return cs.display!=='none' && cs.visibility!=='hidden';
+  }
+  function activateVersionTab(){
+    var tab=document.querySelector('#ajConfigView .mp-tabs .tab-btn[data-tab="tab-version"]') ||
+            document.querySelector('.mp-tabs .tab-btn[data-tab="tab-version"]');
+    if(!tab) return false;
+    try{ tab.click(); }catch(_){ return false; }
+    var tabs=document.getElementById('tabsView');
+    if(tabs) tabs.scrollTop=0;
+    var content=document.getElementById('tab-version');
+    if(content) content.scrollTop=0;
+    return true;
+  }
+  function attempt(){
+    if(done || !hasFlag()){ stop(); return; }
+    attempts++;
+    var menu=document.getElementById('btnMegaMenu');
+    if(!menu){ if(attempts>200) stop(); return; }
+
+    /* Paso 1: abrir el panel exactamente mediante el botón real. */
+    var panel=document.getElementById('megaPanel');
+    if(!visible(panel) || menu.getAttribute('aria-expanded')!=='true'){
+      try{ menu.click(); }catch(_){ }
+      return;
+    }
+
+    /* Paso 2: esperar a que la arquitectura dinámica haya construido Configurar partida. */
+    var config=document.getElementById('btnOpenConfigPartida');
+    if(!config){ if(attempts>200) stop(); return; }
+
+    /* Paso 3: entrar en Configurar partida una sola vez. */
+    if(!document.getElementById('ajConfigView') || !visible(document.getElementById('ajConfigView'))){
+      try{ config.click(); }catch(_){ }
+      return;
+    }
+
+    /* Paso 4: seleccionar Versión de Ajetrez cuando la pestaña ya existe. */
+    if(activateVersionTab()){
+      done=true;
+      clearFlag();
+      stop();
+    }else if(attempts>200){
+      stop();
+    }
+  }
+  function start(){
+    if(running || done || !hasFlag()) return;
+    running=true;
+    attempts=0;
+    /* Arranque escalonado: primero dejamos terminar login/menu/buildMenu. */
+    setTimeout(function(){
+      if(!hasFlag()){ stop(); return; }
+      attempt();
+      timer=setInterval(attempt,150);
+    },500);
+  }
+  function boot(){ start(); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true});
+  else boot();
+  window.addEventListener('load',function(){ if(hasFlag()) start(); },{once:true});
+  window.addEventListener('pageshow',function(){ if(hasFlag()) start(); },{once:true});
 })();
 </script>
 <!-- === AJETREZ: Reglas codificables + evaluador mejorado + ganchos de bot (solo lógica, sin tocar estilos) === -->
@@ -13411,6 +13649,76 @@ function showVeteranBanner(color){
     }
   }
 </style>
+
+<script id="aj-header-back-navigation-final-js">
+(function(){
+  if(window.__AJ_HEADER_BACK_NAV_FINAL__) return;
+  window.__AJ_HEADER_BACK_NAV_FINAL__ = true;
+  function q(s,r){ return (r||document).querySelector(s); }
+  function sync(){
+    var panel=q('#megaPanel'); if(!panel) return;
+    var header=q('.mp-header',panel), host=q('#ajHeaderBackBtn',panel), title=q('#mpTitle',panel);
+    if(!header || !host) return;
+    var views=['#ajConfigView','#ajPersonalView','#ajCollabView','#ajContactoView','#ajRulesView'];
+    var show=false;
+    for(var i=0;i<views.length;i++){
+      var v=q(views[i],panel);
+      if(v && getComputedStyle(v).display!=='none'){ show=true; break; }
+    }
+    host.style.display=show ? 'inline-flex' : 'none';
+    host.setAttribute('aria-label', show ? 'Volver al inicio' : '');
+    if(title) title.style.flex='0 1 auto';
+  }
+  function later(){ setTimeout(sync,0); setTimeout(sync,100); setTimeout(sync,300); }
+  document.addEventListener('click',function(e){
+    var t=e.target && e.target.closest ? e.target.closest('#ajHeaderBackBtn') : null;
+    if(!t) return;
+    e.preventDefault(); e.stopPropagation();
+    if(typeof window.showMainMenu==='function') window.showMainMenu();
+    else {
+      var panel=q('#megaPanel');
+      if(panel){
+        ['#ajWelcomeView','#ajMainMenuView','#ajConfigView','#ajPersonalView','#ajCollabView','#ajContactoView','#ajRulesView'].forEach(function(s){var x=q(s,panel);if(x)x.style.display='none';});
+        var main=q('#ajMainMenuView',panel); if(main) main.style.display='flex';
+        var title=q('#mpTitle',panel); if(title) title.textContent='Menú principal';
+      }
+    }
+    later();
+  },true);
+  var obs=new MutationObserver(function(){ sync(); });
+  function init(){
+    var p=q('#megaPanel');
+    if(!p){ setTimeout(init,250); return; }
+    obs.observe(p,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class']});
+    later();
+  }
+  init();
+  window.addEventListener('resize',later);
+  document.addEventListener('fullscreenchange',later);
+  document.addEventListener('webkitfullscreenchange',later);
+})();
+</script>
+
+<script id="aj-version-scenarios-js">
+(function(){
+  function initVersionScenarios(){
+    var sel = document.getElementById('selVersion');
+    var box = document.getElementById('versionScenarioPreview');
+    if(!sel || !box) return;
+    var items = box.querySelectorAll('.version-scenario');
+    function update(){
+      var value = sel.value || '3_0_simple';
+      items.forEach(function(item){
+        item.classList.toggle('active', item.getAttribute('data-version') === value);
+      });
+    }
+    sel.addEventListener('change', update);
+    update();
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initVersionScenarios);
+  else initVersionScenarios();
+})();
+</script>
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
@@ -15096,7 +15404,7 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
     const rulesView = document.createElement('div');
     rulesView.id = 'ajRulesView';
     rulesView.innerHTML = `
-      <div id="ajRulesHeader"><button class="btn secondary" id="btnBackFromRules" type="button">← Volver al inicio</button><h2>📜 Reglas de Ajetrez</h2></div>
+      <div id="ajRulesHeader" class="aj-section-local-header"><h2>📜 Reglas de Ajetrez</h2></div>
       <div id="ajRulesContent"><div class="aj-rules-card"><h3>Reglas de Ajetrez</h3><p class="aj-rules-intro">Selecciona una versión para consultar sus reglas.</p><div class="aj-rules-version-btns">
         <button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Clásico</button>
         <button class="aj-rules-version-btn" data-aj-rules-version="3_0_alianza" type="button">Versión 3.0 — Modo Alianza</button>
@@ -15110,7 +15418,6 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
     const personalHeader = document.createElement('div');
     personalHeader.id = 'ajPersonalHeader';
     personalHeader.innerHTML = `
-      <button class="btn secondary" id="btnBackFromPersonal" type="button">← Volver al inicio</button>
       <h2>🎨 Personalización</h2>`;
     const personalContent = document.createElement('div');
     personalContent.id = 'ajPersonalContent';
@@ -15123,7 +15430,6 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
     const collabHeader = document.createElement('div');
     collabHeader.id = 'ajCollabHeader';
     collabHeader.innerHTML = `
-      <button class="btn secondary" id="btnBackFromCollab" type="button">← Volver al inicio</button>
       <h2>🤝 Colabora con el proyecto</h2>`;
     const collabContent = document.createElement('div');
     collabContent.className = 'aj-collab-card';
@@ -15144,7 +15450,6 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
     const contactHeader = document.createElement('div');
     contactHeader.id = 'ajContactoHeader';
     contactHeader.innerHTML = `
-      <button class="btn secondary" id="btnBackFromContacto" type="button">← Volver al inicio</button>
       <h2>✉️ Contacto</h2>`;
     const contactContent = document.createElement('div');
     contactContent.className = 'aj-contact-card';
@@ -15161,7 +15466,6 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
     const configHeader = document.createElement('div');
     configHeader.id = 'ajConfigHeader';
     configHeader.innerHTML = `
-      <button class="btn secondary" id="btnBackToMainMenu" type="button">← Volver al inicio</button>
       <h2>⚙ Configurar partida</h2>`;
     config.appendChild(configHeader);
     config.appendChild(tabsView);
@@ -15489,7 +15793,7 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
     if(!q('#ajRulesView',panel)){
       var view=document.createElement('div'); view.id='ajRulesView';
       view.innerHTML=''+
-        '<div id="ajRulesHeader"><button class="btn secondary" id="btnBackFromRules" type="button">← Volver al inicio</button><h2>📜 Reglas de Ajetrez</h2></div>'+
+        '<div id="ajRulesHeader" class="aj-section-local-header"><h2>📜 Reglas de Ajetrez</h2></div>'+
         '<div id="ajRulesContent"><div class="aj-rules-card"><h3>Reglas de Ajetrez</h3><p class="aj-rules-intro">Selecciona una versión para consultar sus reglas.</p><div class="aj-rules-version-btns">'+
         '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_simple" type="button">Versión 3.0 — Modo Clásico</button>'+
         '<button class="aj-rules-version-btn" data-aj-rules-version="3_0_amenaza" type="button">Versión 3.0 — Modo Amenaza</button>'+
