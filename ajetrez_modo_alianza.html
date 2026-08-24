@@ -2953,121 +2953,172 @@ body[data-theme="noche"] .regv2-btn{
 <button class="btn small" id="btnZonasReset" type="button">Restablecer</button>
 </div>
 </div>
-</div><div class="field"><label>Estilo visual</label><div aria-label="Elegir estilo visual" class="row" id="themePicker" role="group"><button class="btn theme" data-theme="dia" title="Tonos claros, suaves" type="button">Día</button><button class="btn theme" data-theme="noche" title="Tonos oscuros, suaves" type="button">Noche</button><button class="btn theme" data-theme="madera" title="Tonos madera, suaves" type="button">Madera</button><button class="btn theme" data-theme="arena" title="Arena suave" type="button">Arena</button><button class="btn theme" data-theme="pizarra" title="Pizarra / gris" type="button">Pizarra</button><button class="btn theme" data-theme="oliva" title="Verde oliva suave" type="button">Oliva</button></div><span class="hint-sm">Los estilos son suaves para no distraer durante la partida.</span></div></div></div><div class="tab" id="tab-version" style="display:block"><h3>Versión de Ajetrez</h3><p>Versión actual del juego: <strong id="verActual">3.0 (Estable)</strong></p><div class="field"><label>Seleccionar versión</label><select id="selVersion"><option value="3_0_simple">Versión 3.0 (Modo Clásico)</option><option selected="" value="3_0_alianza">Versión 3.0 (Modo Alianza)</option><option value="3_0_amenaza">Versión 3.0 (Modo Amenaza)</option><option value="3_0_guerra">Versión 3.0 (Modo Guerra)</option></select></div><button class="btn" id="btnVersionRules" type="button">Reglas de la versión</button><div id="versionRulesPreview"><div class="version-preview" data-version="3_0_simple"><h4>Ajetrez Version 3.0 (Modo clásico) — Reglas Básicas del juego</h4><div><p>En este modo, sólo el recuadro central del tablero es jugable. Las partes sobrantes (aunque contengan piezas) no participan hasta que sean ingresadas mediante el desplazamiento de secciones.</p><h5>Distribución de las piezas</h5><p>Por color, el tablero contiene:</p><ul><li>2 reyes</li><li>2 reinas</li><li>4 alfiles, 4 caballos, 4 torres</li><li>16 peones</li></ul><p>Las piezas son distribuidas en el recuadro central de la misma manera que en el ajedrez clásico. En los laterales, (si bien ocupan las mismas posiciones entre ellas). Las piezas se colocan desplazadas, 2 secciones hacia abajo en negras y 2 hacia arriba en blancas.</p><ul><li>Ajetrez respeta todas las reglas del clásico ajedrez, por lo tanto, se debe jugar de la misma manera y respetando las reglas generales del ajedrez clásico.</li><li>A su vez, añade nuevas reglas, que dependen del modo de juego que se utilice.</li><li>En este modo de juego (Modo clásico). Luego de capturar, se puede elegir entre desplazar o mantener la sección del tablero donde ahora se ubica la pieza que realizó la captura.</li><li>Si decide desplazar. Se desplaza (hacia el lado opuesto al que se encuentra y solo una vez).</li><li>Luego de la elección de mantener, o desplazar la sección, queda cedido el turno al contrincante.</li><li>El desplazamiento de la sección, puede sacar, o introducir piezas del área jugable.</li></ul><h5>Función del desplazamiento de las secciones</h5><ul><li>Escapar de una captura.</li><li>Alterar las posibles estrategias del oponente.</li><li>Sacar piezas rivales del área jugable.</li><li>Ingresar piezas propias al área jugable.</li><li>También ingresar piezas del oponente para luego intentar capturarlas.</li></ul><p>Importante: Si una pieza sale del recuadro central, esto no significa que queda fuera de juego definitivamente; podría reingresar tras nuevos desplazamientos.</p><h5>⚠️ Imposibilidad de desplazamiento de secciones</h5><ul><li>En jaque/mate no hay desplazamientos de las secciones (aun cuando se haya capturado una pieza del oponente que se encuentre en la sección donde está el rey).</li><li>No se pueden desplazar secciones cuando esa acción implica que el recuadro central jugable quede sin piezas disponibles de alguno de los dos participantes.</li></ul></div></div><div class="version-preview" data-version="3_0_alianza"><h4>Ajetrez Version 3.0 (Modo Alianza) — Reglas Básicas del juego</h4><div><p>En este modo, sólo el recuadro central del tablero es jugable. Las partes sobrantes (aunque contengan piezas) no participan hasta que sean ingresadas mediante el desplazamiento de secciones.</p><h5>Distribución de las piezas</h5><p>Por color, el tablero contiene:</p><ul><li>2 reyes</li><li>2 reinas</li><li>4 alfiles, 4 caballos, 4 torres</li><li>16 peones</li></ul><p>Las piezas son distribuidas en el recuadro central de la misma manera que en el ajedrez clásico. En los laterales, (si bien ocupan las mismas posiciones entre ellas). Las piezas se colocan desplazadas, 2 secciones hacia abajo en negras y 2 hacia arriba en blancas.</p><ul><li>Ajetrez respeta todas las reglas del clásico ajedrez, por lo tanto, se debe jugar de la misma manera y respetando las reglas generales del ajedrez clásico.</li><li>A su vez, añade nuevas reglas, que dependen del modo de juego que se utilice.</li><li>En este modo de juego (Modo Alianza). Luego de capturar, se puede elegir entre desplazar o mantener la sección del tablero donde ahora se ubica la pieza que realizó la captura.</li><li>Si decide desplazar. Se desplaza (hacia el lado opuesto al que se encuentra y solo una vez).</li><li>Luego de la elección de mantener, o desplazar la sección, queda cedido el turno al contrincante.</li><li>El desplazamiento de la sección, puede sacar, o introducir piezas del área jugable.</li></ul><h5>Función del desplazamiento de las secciones</h5><ul><li>Escapar de una captura.</li><li>Alterar las posibles estrategias del oponente.</li><li>Sacar piezas rivales del área jugable.</li><li>Ingresar piezas propias al área jugable.</li><li>También ingresar piezas del oponente para luego intentar capturarlas.</li></ul><p>Importante: Si una pieza sale del recuadro central, esto no significa que queda fuera de juego definitivamente; podría reingresar tras nuevos desplazamientos.</p><h5>⚠️ Imposibilidad de desplazamiento de secciones</h5><ul><li>En jaque/mate no hay desplazamientos de las secciones (aun cuando se haya capturado una pieza del oponente que se encuentre en la sección donde está el rey).</li><li>No se pueden desplazar secciones cuando esa acción implica que el recuadro central jugable quede sin piezas disponibles de alguno de los dos participantes.</li></ul></div></div><div class="version-preview" data-version="3_0_amenaza">
-<h4>Ajetrez — Modo Amenaza (Reglas generales)</h4>
-<h5>1) Tablero y secciones</h5>
+</div><div class="field"><label>Estilo visual</label><div aria-label="Elegir estilo visual" class="row" id="themePicker" role="group"><button class="btn theme" data-theme="dia" title="Tonos claros, suaves" type="button">Día</button><button class="btn theme" data-theme="noche" title="Tonos oscuros, suaves" type="button">Noche</button><button class="btn theme" data-theme="madera" title="Tonos madera, suaves" type="button">Madera</button><button class="btn theme" data-theme="arena" title="Arena suave" type="button">Arena</button><button class="btn theme" data-theme="pizarra" title="Pizarra / gris" type="button">Pizarra</button><button class="btn theme" data-theme="oliva" title="Verde oliva suave" type="button">Oliva</button></div><span class="hint-sm">Los estilos son suaves para no distraer durante la partida.</span></div></div></div><div class="tab" id="tab-version" style="display:block"><h3>Versión de Ajetrez</h3><p>Versión actual del juego: <strong id="verActual">3.0 (Estable)</strong></p><div class="field"><label>Seleccionar versión</label><select id="selVersion"><option value="3_0_simple">Versión 3.0 (Modo Clásico)</option><option selected="" value="3_0_alianza">Versión 3.0 (Modo Alianza)</option><option value="3_0_amenaza">Versión 3.0 (Modo Amenaza)</option><option value="3_0_guerra">Versión 3.0 (Modo Guerra)</option></select></div><button class="btn" id="btnVersionRules" type="button">Reglas de la versión</button><div id="versionRulesPreview">
+<div class="version-preview" data-version="3_0_simple">
+<h4>Ajetrez 3.0 — Modo Clásico</h4>
+<h5>1) Objetivo y tablero</h5>
 <ul>
-<li>El tablero está formado por 8 secciones horizontales (16×8) que pueden desplazarse; el recuadro central 8×8 es el área jugable.</li>
-<li>Las piezas ubicadas en los laterales no participan hasta que ingresan al 8×8 mediante el desplazamiento de una sección.</li>
-<li>El juego mantiene las reglas básicas del ajedrez clásico y las reglas de desplazamiento propias de Ajetrez.</li>
-<li>Después de una captura se puede mantener la sección o desplazarla hacia el lado opuesto, según las reglas del juego.</li>
-<li>El desplazamiento no puede realizarse cuando el jugador está en jaque ni cuando deja el área jugable sin piezas disponibles de alguno de los dos participantes.</li>
+<li>Se juega sobre el recuadro central de 8×8.</li>
+<li>Las zonas laterales forman parte de la estructura móvil de Ajetrez, pero en este modo comienzan <strong>sin piezas</strong> y no contienen piezas para ingresar al juego.</li>
+<li>La partida se juega entre blancas y negras y mantiene las reglas del ajedrez clásico.</li>
 </ul>
-<h5>2) Príncipe y Princesa</h5>
+<h5>2) Distribución inicial</h5>
 <ul>
-<li>Cada bando posee un <strong>Príncipe</strong> y una <strong>Princesa</strong>, ubicados inicialmente en territorio enemigo.</li>
-<li>Estas piezas permanecen inmóviles: no pueden realizar movimientos propios.</li>
-<li>El Príncipe y la Princesa no pueden ser capturados ni ocupados por una pieza rival.</li>
-<li>Su función es representar piezas especiales que deben ser liberadas mediante el avance de las piezas propias.</li>
+<li>Cada bando comienza con <strong>1 rey, 1 dama, 2 torres, 2 caballos, 2 alfiles y 8 peones</strong>, colocados en el 8×8 como en el ajedrez clásico.</li>
+<li>No hay piezas adicionales en los laterales.</li>
 </ul>
-<h5>3) Condición de Liberación</h5>
+<h5>3) Reglas de ajedrez</h5>
 <ul>
-<li>Un jugador logra la <strong>Liberación</strong> cuando una de sus piezas queda ubicada en una casilla adyacente a su propio Príncipe o Princesa.</li>
-<li>Se consideran adyacentes las ocho casillas que rodean directamente a la pieza especial (horizontal, vertical o diagonal).</li>
-<li>La liberación puede producirse después de una jugada normal o después de desplazar una sección del tablero.</li>
-<li>Cuando se cumple esta condición, la partida termina inmediatamente y gana el jugador que realizó la liberación.</li>
+<li>Se mantienen los movimientos y capturas clásicos.</li>
+<li>Se mantienen <strong>jaque, jaque mate, tablas, enroque, captura al paso y promoción de peones</strong>.</li>
+<li>Un rey no puede ser capturado; la partida termina por jaque mate o por tablas según las reglas correspondientes.</li>
 </ul>
-<h5>4) Jaque mate y final de la partida</h5>
+<h5>4) Desplazamiento de las secciones</h5>
 <ul>
-<li>El jaque y el jaque mate continúan funcionando como en el ajedrez clásico.</li>
-<li>Por lo tanto, la partida puede finalizar por <strong>Jaque Mate</strong> o por <strong>Liberación</strong>.</li>
+<li>Después de una captura, el jugador puede <strong>mantener</strong> la sección o <strong>desplazarla una sola vez hacia el lado opuesto</strong>.</li>
+<li>El desplazamiento puede sacar piezas del área central; en este modo no puede introducir nuevas piezas laterales porque las zonas laterales comienzan vacías.</li>
+<li>El turno pasa al rival después de elegir mantener o desplazar.</li>
+<li>No se permite desplazar una sección si el jugador que decide está en jaque.</li>
+<li>Tampoco se permite si el desplazamiento deja el 8×8 sin piezas de alguno de los dos bandos o deja a cualquiera de los dos jugadores sin su rey dentro del área jugable.</li>
+</ul>
+<h5>5) Final de la partida</h5>
+<ul>
+<li>Gana quien consiga jaque mate.</li>
+<li>Si no existe una jugada legal y el jugador no está en jaque, la partida es tablas.</li>
+</ul>
+</div>
+
+<div class="version-preview" data-version="3_0_alianza">
+<h4>Ajetrez 3.0 — Modo Alianza</h4>
+<h5>1) Objetivo y tablero</h5>
+<ul>
+<li>Es la versión de Ajetrez que conserva la estructura completa de <strong>8 secciones horizontales y 16×8</strong>, con un 8×8 central jugable y piezas ubicadas en los laterales.</li>
+<li>Solo el recuadro central es jugable en cada momento. Las piezas laterales entran o salen del área jugable mediante el desplazamiento de las secciones.</li>
+<li>El objetivo y las reglas de las piezas son las del ajedrez clásico.</li>
+</ul>
+<h5>2) Distribución inicial</h5>
+<ul>
+<li>Cada bando dispone de <strong>2 reyes, 2 damas, 4 torres, 4 caballos, 4 alfiles y 16 peones</strong>.</li>
+<li>La posición central sigue la disposición clásica; las piezas adicionales están distribuidas en las zonas laterales según la estructura de Ajetrez.</li>
+</ul>
+<h5>3) Reglas de ajedrez</h5>
+<ul>
+<li>Se mantienen los movimientos y capturas clásicos.</li>
+<li>Se mantienen <strong>jaque, jaque mate, tablas, enroque, captura al paso y promoción</strong>.</li>
+<li>Las piezas que salen temporalmente del 8×8 no quedan eliminadas: pueden volver a ingresar mediante futuros desplazamientos.</li>
+</ul>
+<h5>4) Desplazamiento de las secciones</h5>
+<ul>
+<li>Después de una captura, el jugador puede elegir entre <strong>mantener</strong> la sección o <strong>desplazarla una vez hacia el lado opuesto</strong>.</li>
+<li>El desplazamiento puede sacar o introducir piezas del área jugable y permite modificar el campo de juego.</li>
+<li>No se permite desplazar cuando el jugador que decide está en jaque.</li>
+<li>No se puede realizar un desplazamiento que deje el 8×8 sin piezas de uno de los bandos ni uno que deje a cualquiera de los dos jugadores sin su rey dentro del área jugable.</li>
+<li>Una vez tomada la decisión, termina el turno y juega el rival.</li>
+</ul>
+<h5>5) Final de la partida</h5>
+<ul>
+<li>Gana quien consiga jaque mate.</li>
 <li>Si no existen jugadas legales y el jugador no está en jaque, se producen tablas.</li>
 </ul>
-<p><strong>Objetivo del Modo Amenaza:</strong> proteger y alcanzar las piezas especiales de tu bando mientras utilizás el movimiento de las secciones del tablero para modificar el campo de juego y crear nuevas oportunidades.</p>
-</div><div class="version-preview" data-version="3_0_guerra">
-<h4>Ajetrez — Modo Guerra (Reglas generales)</h4>
-<h5>1) Tablero y secciones</h5>
+</div>
+
+<div class="version-preview" data-version="3_0_amenaza">
+<h4>Ajetrez 3.0 — Modo Amenaza</h4>
+<h5>1) Objetivo</h5>
 <ul>
-<li>El tablero está formado por 8 secciones horizontales (16×8) que pueden desplazarse; el recuadro central 8×8 es el único jugable al inicio.</li>
-<li>Las piezas ubicadas en los laterales no participan hasta que ingresan al 8×8 mediante un desplazamiento de secciones (según las reglas estándar del proyecto Ajetrez).</li>
-<li>El turno alterna blancas / negras de forma normal. Jaque y jaque mate se aplican como en ajedrez clásico (salvo lo indicado para piezas especiales).</li>
+<li>La partida puede terminar por <strong>jaque mate</strong> o por <strong>Liberación</strong>.</li>
+<li>Se consigue la Liberación cuando una pieza propia termina una jugada en una casilla adyacente a tu <strong>Príncipe (I)</strong> o <strong>Princesa (S)</strong>.</li>
+<li>Se consideran adyacentes las 8 casillas que rodean directamente a I/S. Si una misma jugada produce mate y Liberación, prevalece la Liberación.</li>
 </ul>
-<h5>2) Disposición inicial (qué cambia en los laterales)</h5>
-<p>En los laterales (no en el 8×8 central) se reemplazan las piezas clásicas por piezas “de guerra”:</p>
+<h5>2) Distribución inicial</h5>
 <ul>
-<li>Rey (K) → <strong>General (G)</strong></li>
-<li>Dama (Q) → <strong>Verdugo (V)</strong> <em>(se mantienen sus reglas vigentes; no se modificaron en esta pasada)</em></li>
-<li>Alfiles (B) → <strong>Mago (M)</strong> y <strong>Maga (W)</strong></li>
-<li>Caballos (N) → <strong>Bufones (J)</strong></li>
-<li>Torres (R) → <strong>Arqueros (A)</strong></li>
-<li>Peones (P) de los laterales → <strong>Guerreros con espada (S)</strong></li>
+<li>El 8×8 central conserva la estructura clásica de cada bando: <strong>1 rey, 1 dama, 2 torres, 2 caballos, 2 alfiles y 8 peones</strong>.</li>
+<li>En los laterales no se colocan reyes ni damas propios: sus posiciones especiales son ocupadas por un <strong>Príncipe y una Princesa del bando contrario</strong>, que quedan como rehenes en territorio enemigo.</li>
+<li>Cada lateral de rehenes contiene además <strong>6 Guerreros (T)</strong>; los otros dos lugares de esa fila corresponden al Príncipe y la Princesa.</li>
 </ul>
-<p><strong>Importante:</strong> los peones del 8×8 central permanecen normales (P) con sus reglas clásicas.</p>
-<h5>3) Piezas especiales y sus reglas</h5>
-<p><strong>General (G)</strong></p>
+<h5>3) Príncipe y Princesa</h5>
 <ul>
-<li><strong>Alcance máximo:</strong> hasta 3 casilleros por movimiento (ajuste actual).</li>
-<li><strong>Direcciones:</strong> ortogonales y diagonales (como “dama corta”).</li>
-<li><strong>Notas:</strong> conserva la lógica de salto corto si estaba activa en tu build (no modificada aquí).</li>
+<li>I y S son <strong>inmóviles</strong>: no realizan movimientos propios.</li>
+<li>No pueden ser capturados ni ocupados por una pieza rival.</li>
+<li>No atacan. Su casilla permanece bloqueada y solo sirve como objetivo de la Liberación.</li>
 </ul>
-<p><strong>Mago (M) / Maga (W)</strong></p>
+<h5>4) Guerrero (T)</h5>
 <ul>
-<li><strong>Movimiento:</strong> exactamente 2 casilleros en cualquiera de las 8 direcciones.</li>
-<li><strong>No saltan:</strong> la casilla intermedia debe estar vacía.</li>
-<li><strong>Transformación al capturar:</strong> si capturan una pieza que no sea el Rey, se transforman en esa pieza (y no pueden volver a M/W en toda la partida).</li>
+<li>Antes de convertirse en veterano puede avanzar <strong>1 o 2 casilleros hacia adelante</strong>, siempre que el recorrido esté libre.</li>
+<li>Puede capturar <strong>1 casillero hacia adelante o en diagonal hacia adelante</strong>.</li>
+<li>No tiene doble paso de peón ni captura al paso.</li>
+<li>Al llegar a la última fila rival <strong>no promociona</strong>: se convierte en <strong>Veterano</strong>.</li>
+<li>El Veterano puede mover y capturar 1 o 2 casilleros hacia adelante, hacia atrás o en diagonal. No se desplaza lateralmente y no puede saltar piezas. Se muestra un aviso cuando adquiere este estado.</li>
 </ul>
-<p><strong>Bufón (J)</strong></p>
+<h5>5) Desplazamiento de las secciones</h5>
 <ul>
-<li><strong>Movimiento:</strong> patrón de caballo, pero no puede capturar (solo aterriza en casillas vacías).</li>
-<li><strong>“Entretener” (stun) 2 turnos:</strong> al finalizar su movimiento, todas las piezas rivales adyacentes (8 direcciones) quedan sin poder moverse durante 2 turnos del rival.</li>
-<li><strong>Levantar el efecto:</strong> si el Bufón es capturado, se anula el efecto que provenía de la casilla de ese Bufón.</li>
+<li>Después de una captura se puede mantener la sección o desplazarla una vez hacia el lado opuesto.</li>
+<li>El desplazamiento puede modificar la posición de las piezas y también puede producir una Liberación.</li>
+<li>No se puede desplazar si el jugador que decide está en jaque.</li>
+<li>No se puede desplazar si el 8×8 queda sin piezas de uno de los bandos o si alguno de los dos reyes queda fuera del área jugable.</li>
 </ul>
-<p><strong>Arquero (A)</strong></p>
+<h5>6) Reglas clásicas restantes</h5>
 <ul>
-<li><strong>Direcciones:</strong> solo hacia adelante y diagonales hacia adelante (según color).</li>
-<li><strong>Distancias:</strong> exactamente 2 o 4 casilleros (no 1 ni 3).</li>
-<li><strong>Salto:</strong> puede saltar piezas intermedias sin capturarlas (como el caballo).</li>
-<li><strong>Captura:</strong> solo en las casillas de destino de 2 o 4 pasos.</li>
+<li>Las piezas clásicas del 8×8 mantienen sus movimientos, capturas, jaque, jaque mate, tablas, enroque, captura al paso y promoción.</li>
+<li>Los Guerreros y las piezas I/S siguen las reglas especiales indicadas arriba.</li>
 </ul>
-<p><strong>Guerrero con espada (S) — solo laterales</strong></p>
+</div>
+
+<div class="version-preview" data-version="3_0_guerra">
+<h4>Ajetrez 3.0 — Modo Guerra</h4>
+<h5>1) Objetivo y estructura</h5>
 <ul>
-<li><strong>Antes de “veterano”:</strong>
+<li>El tablero mantiene la estructura de <strong>8 secciones horizontales y 16×8</strong>, con un 8×8 central jugable.</li>
+<li>Las piezas laterales ingresan al área jugable mediante el desplazamiento de las secciones.</li>
+<li>El objetivo general continúa siendo el jaque mate, salvo las reglas especiales de las piezas de Guerra.</li>
+</ul>
+<h5>2) Cambio fundamental: no existen peones</h5>
 <ul>
-<li><strong>Mover:</strong> 1 casillero hacia adelante o en diagonal hacia adelante (también si está vacío).</li>
-<li><strong>Capturar:</strong> 1 casillero hacia adelante y diagonales hacia adelante.</li>
-<li><strong>Sin doble paso y sin captura al paso.</strong></li>
+<li>Los <strong>peones desaparecen por completo</strong> en este modo.</li>
+<li>Los <strong>8 Guerreros con espada (S) de cada bando</strong> ocupan la segunda fila del área central, en las posiciones donde normalmente comenzarían los peones.</li>
+<li>Las piezas especiales de Guerra se distribuyen en las zonas laterales.</li>
 </ul>
-</li>
-<li><strong>Al llegar a la última fila rival:</strong> no promociona; se vuelve “veterano” y, desde ese momento, puede mover y capturar 1 casillero en cualquiera de las 8 direcciones (también hacia atrás).
-      <ul>
-<li><em>Aviso en pantalla:</em> al adquirir el estado veterano aparece un cartel informando sus nuevas habilidades.</li>
-</ul>
-</li>
-</ul>
-<h5>4) Piezas clásicas (8×8 central)</h5>
+<h5>3) Piezas de Guerra</h5>
 <ul>
-<li>En el recuadro central el juego se rige por las reglas clásicas: peones con doble paso inicial, captura al paso, promoción, enroques, etc.</li>
-<li>Las piezas que ingresan desde los laterales lo hacen con sus reglas especiales (o clásicas, si corresponde).</li>
+<li><strong>General (G):</strong> sustituye a los Reyes de las formaciones laterales. Puede mover hasta 3 casilleros en cualquiera de las 8 direcciones, siguiendo la regla especial de recorrido de esta pieza.</li>
+<li><strong>Verdugo (V):</strong> sustituye a las Damas de las formaciones laterales. Se mueve exactamente 2 casilleros en dirección ortogonal (horizontal o vertical).</li>
+<li><strong>Mago (M) y Maga (W):</strong> se mueven exactamente 2 casilleros en cualquiera de las 8 direcciones y no pueden saltar la casilla intermedia. Si capturan una pieza que no sea un Rey, se transforman permanentemente en la pieza capturada.</li>
+<li><strong>Bufón (J):</strong> se mueve exactamente 2 casilleros en cualquiera de las 8 direcciones, saltando la casilla intermedia, pero <strong>no puede capturar</strong>. Al terminar su movimiento puede inmovilizar piezas rivales adyacentes durante 2 turnos del rival.</li>
+<li><strong>Arquero (A):</strong> solo se mueve hacia adelante o en diagonal hacia adelante, exactamente 2 o 4 casilleros. Puede saltar piezas intermedias y solo captura en las casillas de destino.</li>
 </ul>
-<h5>5) Interacciones y consideraciones</h5>
+<h5>4) Guerrero con espada (S)</h5>
 <ul>
-<li><strong>Congelamiento por Bufón:</strong> una pieza “entretenida” no puede moverse hasta que se cumplan sus 2 turnos o se capture al Bufón que generó ese efecto.</li>
-<li><strong>Transformaciones de M/W:</strong> al transformarse por captura, pierden para siempre su condición de Mago/Maga.</li>
-<li><strong>Secciones:</strong> el ingreso de laterales al 8×8 se realiza con las normas de desplazamiento ya establecidas en Ajetrez para evitar jugadas ilegales o estados imposibles.</li>
+<li>El Guerrero sustituye a todos los peones del juego.</li>
+<li>Antes de ser Veterano puede avanzar <strong>1 o 2 casilleros hacia adelante</strong> si el recorrido está libre.</li>
+<li>Puede capturar 1 casillero hacia adelante o en diagonal hacia adelante.</li>
+<li>Al llegar a la última fila rival <strong>no promociona</strong>: se convierte en <strong>Veterano</strong>.</li>
+<li>El Veterano puede mover y capturar 1 o 2 casilleros hacia adelante, hacia atrás o en diagonal. No puede desplazarse lateralmente ni saltar piezas.</li>
 </ul>
-<hr/>
-<h5>6) Resumen rápido</h5>
+<h5>5) Bufón e inmovilización</h5>
 <ul>
-<li>Solo el 8×8 central es jugable; los laterales entran con desplazamientos.</li>
-<li>En los laterales hay piezas de guerra (G, V, M/W, J, A, S).</li>
-<li>Peones del centro: clásicos. Peones laterales: Guerreros (S).</li>
-<li>Cartel cuando un S se vuelve veterano.</li>
-<li>Bufón no captura pero inmoviliza rivales adyacentes 2 turnos.</li>
-<li>Mago/Maga mueven 2 y se transforman al capturar (salvo Rey).</li>
-<li>Arquero avanza/capta solo adelante/diagonales adelante a 2 o 4 y salta intermedias.</li>
-<li>General: máx. 3 casilleros por movimiento.</li>
+<li>El efecto del Bufón afecta a las piezas rivales adyacentes en las 8 direcciones.</li>
+<li>La pieza afectada queda inmovilizada durante 2 oportunidades de movimiento del bando rival.</li>
+<li>Si se captura el Bufón que generó el efecto, se elimina ese efecto de inmovilización.</li>
 </ul>
-</div></div><div class="tab" id="tab-info" style="display:none"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3mm;"><h3 style="margin:0;"></h3><button class="btn small danger" id="btnClearLogs" style="margin-left:12px;">Borrar historial</button></div><div class="hint-sm">Se guarda <strong>localmente</strong> en este navegador.
+<h5>6) Piezas clásicas del centro</h5>
+<ul>
+<li>Las formaciones centrales conservan <strong>Reyes, Damas, Torres, Caballos y Alfiles</strong> con sus reglas clásicas.</li>
+<li>El Guerrero reemplaza al peón, por lo que en Modo Guerra <strong>no existen doble paso de peón, captura al paso ni promoción de peones</strong>.</li>
+<li>El enroque continúa disponible para los Reyes y Torres centrales cuando se cumplen sus condiciones normales.</li>
+</ul>
+<h5>7) Desplazamiento de las secciones</h5>
+<ul>
+<li>Después de una captura se puede mantener la sección o desplazarla una vez hacia el lado opuesto.</li>
+<li>El desplazamiento puede sacar piezas del 8×8 o introducir nuevas piezas de Guerra desde los laterales.</li>
+<li>No se puede desplazar si el jugador que decide está en jaque.</li>
+<li>No se puede desplazar si el 8×8 queda sin piezas de uno de los bandos o si alguno de los dos Reyes queda fuera del área jugable.</li>
+</ul>
+<h5>8) Final de la partida</h5>
+<ul>
+<li>La partida termina por jaque mate o tablas según las reglas aplicables al ajedrez, respetando las piezas especiales de este modo.</li>
+</ul>
+</div>
+</div><div class="tab" id="tab-info" style="display:none"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3mm;"><h3 style="margin:0;"></h3><button class="btn small danger" id="btnClearLogs" style="margin-left:12px;">Borrar historial</button></div><div class="hint-sm">Se guarda <strong>localmente</strong> en este navegador.
 </div><div class="row"><div class="field"><label>Total jugadas</label><div class="pill" id="statTotal">0
 </div></div><div class="field"><label>Victorias Blancas</label><div class="pill" id="statW">0
 </div></div><div class="field"><label>Victorias Negras</label><div class="pill" id="statB">0
