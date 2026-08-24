@@ -15425,19 +15425,42 @@ function showVeteranBanner(color){
   #regv2-open{ display:none !important; }
 </style>
 
-<!-- AJETREZ: Posición final del panel de menú móvil — justo sobre el botón Menú -->
-<style id="aj-mobile-menu-panel-above-menu-final">
-@media (max-width:900px), (pointer:coarse){
+<!-- AJETREZ: Centrado universal del panel principal respecto del tablero de 8 secciones -->
+<style id="aj-menu-panel-centered-board-final">
+  /*
+   * El panel se posiciona respecto de #boardWrap, que es exactamente
+   * el contenedor de las 8 secciones horizontales del juego.
+   * Esto evita offsets diferentes entre escritorio, móvil y fullscreen.
+   */
   #megaPanel{
-    top:auto !important;
-    bottom:calc(var(--toolbar-h) - 12px) !important;
-    transform:translateX(-50%) !important;
+    left:50% !important;
+    right:auto !important;
+    top:50% !important;
+    bottom:auto !important;
+    transform:translate(-50%, -50%) !important;
+    transform-origin:center center !important;
   }
-}
-@media (max-width:480px){
-  #megaPanel{
-    top:auto !important;
-    bottom:calc(var(--toolbar-h) - 12px) !important;
+
+  @media (max-width:900px), (pointer:coarse){
+    #megaPanel{
+      left:50% !important;
+      right:auto !important;
+      top:50% !important;
+      bottom:auto !important;
+      transform:translate(-50%, -50%) !important;
+      transform-origin:center center !important;
+    }
   }
-}
+
+  /* En pantallas muy pequeñas mantenemos el mismo punto de referencia. */
+  @media (max-width:480px){
+    #megaPanel{
+      left:50% !important;
+      right:auto !important;
+      top:50% !important;
+      bottom:auto !important;
+      transform:translate(-50%, -50%) !important;
+    }
+  }
 </style>
+
