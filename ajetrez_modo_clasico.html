@@ -2871,6 +2871,35 @@ body[data-theme="noche"] .regv2-btn{
   #loginView .hint-sm { margin-top: 0 !important; }
 }
 </style>
+
+<style id="aj-mobile-welcome-scroll-and-mainmenu-position">
+  /* Bienvenida: permitir desplazamiento vertical cuando el contenido supera la altura disponible. */
+  #megaPanel #ajWelcomeView {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: auto;
+    box-sizing: border-box !important;
+  }
+  #megaPanel #ajWelcomeView .aj-welcome-card {
+    flex: 0 0 auto !important;
+  }
+
+  /* En móvil, el menú principal se eleva aproximadamente medio casillero.
+     Solo se aplica mientras está visible la vista principal. */
+  @media (max-width: 900px), (pointer: coarse) {
+    #megaPanel:has(#ajMainMenuView[style*="display: flex"]) {
+      top: calc(var(--square) * -1.725) !important;
+    }
+
+    #megaPanel #ajWelcomeView {
+      justify-content: flex-start !important;
+      padding-top: 18px !important;
+      padding-bottom: 24px !important;
+    }
+  }
+</style>
+
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
