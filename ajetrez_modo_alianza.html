@@ -2893,6 +2893,147 @@ body[data-theme="noche"] .regv2-btn{
   }
 }
 </style>
+
+<style id="aj-final-menu-scroll-and-clock-width-20260824">
+/* ================================================================
+   AJETREZ — AJUSTE FINAL: SCROLL DE TODAS LAS VISTAS DEL MENÚ
+   La vista de bienvenida después del login debe poder desplazarse
+   cuando su contenido supera el espacio disponible. Las demás vistas
+   independientes del panel reciben el mismo comportamiento.
+   ================================================================ */
+#megaPanel{
+  min-height:0 !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+}
+
+/* Vistas independientes del menú */
+#megaPanel #ajWelcomeView,
+#megaPanel #ajMainMenuView,
+#megaPanel #ajPersonalView,
+#megaPanel #ajRulesView,
+#megaPanel #ajCollabView,
+#megaPanel #ajContactoView{
+  min-height:0 !important;
+  max-height:100% !important;
+  box-sizing:border-box !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+}
+
+/* Bienvenida: no forzar el contenido al centro cuando necesita scroll. */
+#megaPanel #ajWelcomeView{
+  justify-content:flex-start !important;
+  align-items:center !important;
+  padding-top:18px !important;
+  padding-bottom:22px !important;
+}
+#megaPanel #ajWelcomeView .aj-welcome-card{
+  flex:0 0 auto !important;
+  margin:0 auto 18px !important;
+  box-sizing:border-box !important;
+}
+
+/* Menú principal: el contenido interno también conserva un tamaño
+   flexible para que el scroll pertenezca a la vista y no al panel. */
+#megaPanel #ajMainMenuView{
+  flex:1 1 auto !important;
+}
+#megaPanel #ajMainMenuView .aj-main-menu-inner{
+  flex:0 0 auto !important;
+}
+
+/* Configuración: pestañas fijas y contenido desplazable. */
+#megaPanel #ajConfigView{
+  min-height:0 !important;
+  flex:1 1 auto !important;
+  overflow:hidden !important;
+}
+#megaPanel #ajConfigView #tabsView{
+  min-height:0 !important;
+  flex:1 1 auto !important;
+  overflow:hidden !important;
+}
+#megaPanel #ajConfigView .mp-content{
+  min-height:0 !important;
+  flex:1 1 auto !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+}
+
+/* Personalización: su contenido ya tiene un scroll propio; lo hacemos
+   explícito y resistente a las reglas antiguas. */
+#megaPanel #ajPersonalView #ajPersonalContent{
+  min-height:0 !important;
+  flex:1 1 auto !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+}
+
+/* Reglas: mantener cabecera fija y desplazar solo el contenido. */
+#megaPanel #ajRulesView{
+  overflow:hidden !important;
+}
+#megaPanel #ajRulesView #ajRulesContent{
+  min-height:0 !important;
+  flex:1 1 auto !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+}
+
+/* Contacto: contenido desplazable si la altura disponible es pequeña. */
+#megaPanel #ajContactoView{
+  overflow-y:auto !important;
+}
+
+/* El modal de reglas también debe poder desplazarse si su contenido crece. */
+#ajMainRulesModal{
+  min-height:0 !important;
+}
+#ajMainRulesModalBody{
+  min-height:0 !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+}
+
+/* Login: conservar el comportamiento de scroll incluso fuera de móvil. */
+#megaPanel #loginView{
+  min-height:0 !important;
+  flex:1 1 auto !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+}
+
+/* ================================================================
+   Reloj + Reiniciar + Pausa — pequeño ajuste de ancho en móvil.
+   No cambia su posición ni su altura.
+   ================================================================ */
+@media (max-width:900px), (pointer:coarse){
+  #topBar #timeIndicator{
+    gap:4px !important;
+    padding-left:8px !important;
+    padding-right:6px !important;
+  }
+  #topBar #timeIndicator #btnRestartBR{
+    margin-left:4px !important;
+  }
+  #topBar #timeIndicator #pauseBtn{
+    margin-left:3px !important;
+  }
+}
+</style>
+
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
