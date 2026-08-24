@@ -15941,3 +15941,120 @@ console.log('[AJ] IA especial Modo Amenaza activa: prioridad a Liberación + des
   }
 </style>
 
+
+<!-- AJETREZ: Posicionamiento robusto del panel respecto al centro real de las 8 secciones -->
+<style id="aj-menu-board-center-hardfix">
+  /* El panel ya no se ancla a top/left del documento ni al botón Menú.
+     El JS calcula su centro a partir del rectángulo real de #boardWrap. */
+  #megaPanel{
+    position:fixed !important;
+    right:auto !important;
+    bottom:auto !important;
+    transform:translate(-50%, -50%) !important;
+    transform-origin:center center !important;
+    margin:0 !important;
+  }
+  #panelBackdrop{
+    position:fixed !important;
+    inset:0 !important;
+  }
+</style>
+<script id="aj-menu-board-center-hardfix-js">
+(function(){
+  'use strict';
+  if(window.__AJ_MENU_BOARD_CENTER_HARDFIX__) return;
+  window.__AJ_MENU_BOARD_CENTER_HARDFIX__=true;
+
+  function place(){
+    var panel=document.getElementById('megaPanel');
+    var board=document.getElementById('boardWrap');
+    if(!panel || !board) return;
+
+    /* Aunque el panel esté oculto, no hace falta calcular nada. */
+    var ps=getComputedStyle(panel);
+    if(ps.display==='none' || ps.visibility==='hidden') return;
+
+    var r=board.getBoundingClientRect();
+    if(!isFinite(r.left) || !isFinite(r.top) || r.width<=0 || r.height<=0) return;
+
+    var cx=r.left + r.width/2;
+    var cy=r.top + r.height/2;
+
+    panel.style.setProperty('position','fixed','important');
+    panel.style.setProperty('left',cx+'px','important');
+    panel.style.setProperty('top',cy+'px','important');
+    panel.style.setProperty('right','auto','important');
+    panel.style.setProperty('bottom','auto','important');
+    panel.style.setProperty('transform','translate(-50%, -50%)','important');
+    panel.style.setProperty('transform-origin','center center','important');
+
+    var bd=document.getElementById('panelBackdrop');
+    if(bd){
+      bd.style.setProperty('position','fixed','important');
+      bd.style.setProperty('left','0','important');
+      bd.style.setProperty('top','0','important');
+      bd.style.setProperty('right','0','important');
+      bd.style.setProperty('bottom','0','important');
+    }
+  }
+
+  function schedule(){
+    requestAnimationFrame(function(){
+      place();
+      /* fullscreen y cambios de layout pueden terminar un frame después. */
+      setTimeout(place,40);
+      setTimeout(place,160);
+      setTimeout(place,400);
+    });
+  }
+
+  function install(){
+    var board=document.getElementById('boardWrap');
+    var panel=document.getElementById('megaPanel');
+    if(board && window.ResizeObserver){
+      if(!board.__ajCenterRO){
+        var ro=new ResizeObserver(function(){ schedule(); });
+        ro.observe(board);
+        board.__ajCenterRO=ro;
+      }
+    }
+    if(panel && window.ResizeObserver){
+      if(!panel.__ajCenterRO){
+        var pro=new ResizeObserver(function(){
+          var cs=getComputedStyle(panel);
+          if(cs.display!=='none') schedule();
+        });
+        pro.observe(panel);
+        panel.__ajCenterRO=pro;
+      }
+    }
+    schedule();
+  }
+
+  document.addEventListener('fullscreenchange',function(){
+    /* Esperar a que el navegador termine de aplicar el nuevo viewport. */
+    setTimeout(install,0);
+    setTimeout(install,100);
+    setTimeout(install,300);
+  });
+  window.addEventListener('resize',schedule,{passive:true});
+  window.addEventListener('orientationchange',function(){ setTimeout(install,120); },{passive:true});
+
+  /* El panel puede abrirse desde distintos puntos del código. Capturamos
+     el botón principal y reposicionamos después de que cada vista termine. */
+  document.addEventListener('click',function(e){
+    var t=e.target && e.target.closest ? e.target.closest('#btnMegaMenu') : null;
+    if(t) schedule();
+    var close=e.target && e.target.closest ? e.target.closest('#btnClosePanel') : null;
+    if(close) setTimeout(install,80);
+  },true);
+
+  function ready(){
+    install();
+    setTimeout(install,250);
+    setTimeout(install,800);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ready,{once:true});
+  else ready();
+})();
+</script>
