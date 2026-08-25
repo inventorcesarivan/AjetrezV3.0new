@@ -3175,6 +3175,110 @@ body[data-theme="noche"] .regv2-btn{
   .aj-frozen-mark{position:absolute;right:2px;top:2px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;line-height:1;background:rgba(255,255,255,.96);border:1.5px solid #333;box-shadow:0 1px 4px rgba(0,0,0,.40);z-index:8;pointer-events:none;}
 </style>
 <style id="aj-bufon-square-anchor">.sq{position:relative;}</style>
+
+<style id="aj-piece-card-styles">
+  /* === Ajetrez: carta informativa de pieza al mantener presionada === */
+  #ajPieceCard {
+    position: fixed;
+    z-index: 2147483646;
+    width: min(218px, 44vw);
+    box-sizing: border-box;
+    padding: 10px 11px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.42);
+    background: linear-gradient(145deg, rgba(20,20,22,.97), rgba(47,39,31,.97));
+    color: #f4eee5;
+    box-shadow: 0 14px 42px rgba(0,0,0,.48), 0 0 0 1px rgba(0,0,0,.25);
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    opacity: 0;
+    transform: translateY(7px) scale(.94);
+    transform-origin: center center;
+    transition: opacity .13s ease, transform .16s ease;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  #ajPieceCard.aj-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  /* La ficha se muestra en el lateral libre del tablero según el color. */
+  #ajPieceCard.aj-side-left { transform-origin: right center; }
+  #ajPieceCard.aj-side-right { transform-origin: left center; }
+  #ajPieceCard .ajpc-name {
+    text-align: center;
+    font-weight: 900;
+    font-size: 15px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  #ajPieceCard .ajpc-art {
+    width: 76px;
+    height: 76px;
+    margin: 1px auto 7px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, rgba(255,255,255,.16), rgba(255,255,255,.025) 68%);
+    border: 1px solid rgba(255,255,255,.18);
+    overflow: hidden;
+  }
+  #ajPieceCard .ajpc-art img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    display: block;
+  }
+  #ajPieceCard .ajpc-glyph {
+    font-size: 48px;
+    line-height: 1;
+  }
+  #ajPieceCard .ajpc-line {
+    height: 1px;
+    margin: 4px 5px 8px;
+    background: rgba(255,255,255,.18);
+  }
+  #ajPieceCard .ajpc-desc {
+    font-size: 11.5px;
+    line-height: 1.38;
+    text-align: center;
+    color: rgba(255,255,255,.88);
+  }
+  #ajPieceCard .ajpc-state {
+    margin-top: 7px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 800;
+    color: #e8c77a;
+    letter-spacing: .03em;
+  }
+  .sq.aj-piece-press-active {
+    z-index: 50 !important;
+  }
+  .sq.aj-piece-press-active .aj-piece-visual {
+    transform: scale(1.30) !important;
+    filter: drop-shadow(0 7px 9px rgba(0,0,0,.42));
+    transition: transform .16s ease, filter .16s ease;
+    position: relative;
+    z-index: 60;
+  }
+  /* Fallback para las estructuras que usan un contenedor alrededor de la pieza. */
+  .sq.aj-piece-press-active .aj-piece-wrap {
+    transform: scale(1.30) !important;
+    filter: drop-shadow(0 7px 9px rgba(0,0,0,.42));
+    transition: transform .16s ease, filter .16s ease;
+    position: relative;
+    z-index: 60;
+  }
+  @media (max-width: 600px) {
+    #ajPieceCard { width: min(196px, 55vw); }
+    #ajPieceCard .ajpc-art { width: 68px; height: 68px; }
+    #ajPieceCard .ajpc-art img { width: 63px; height: 63px; }
+  }
+</style>
+
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
@@ -3225,7 +3329,14 @@ body[data-theme="noche"] .regv2-btn{
     </select>
     <div class="hint-sm" style="margin-top:8px;">El tiempo seleccionado se aplicará al iniciar o reiniciar una partida.</div>
   </div>
-</div><div class="tab" id="tab-personalizacion" style="display:none"><h3>Personalización del juego</h3><div class="row"><div class="field"><label>Estilo de piezas</label><select id="selSprites"><option value="auto">Auto (usar sprites si están disponibles)</option><option value="sprites">Sprites (imágenes)</option><option value="unicode">Unicode (símbolos)</option></select>
+</div><div class="tab" id="tab-personalizacion" style="display:none"><h3>Personalización del juego</h3>
+<div class="field" id="aj-piece-card-setting">
+  <label style="display:flex;align-items:center;gap:9px;cursor:pointer;">
+    <input id="ajPieceCardEnabled" type="checkbox" checked>
+    <span>Mostrar ficha de la pieza al mantenerla presionada</span>
+  </label>
+  <small>Amplía la pieza y muestra su nombre y una descripción mientras mantienes presionado el dedo o el botón del mouse.</small>
+</div><div class="row"><div class="field"><label>Estilo de piezas</label><select id="selSprites"><option value="auto">Auto (usar sprites si están disponibles)</option><option value="sprites">Sprites (imágenes)</option><option value="unicode">Unicode (símbolos)</option></select>
 <!-- Controles: Apariencia por zonas -->
 <div class="fieldGroup" id="fg-zonas-appearance">
 <h4>Apariencia de zonas</h4>
@@ -4769,6 +4880,7 @@ function pickMove(color){
  const variant=(()=>{try{for(const row of board)for(const q of row||[])if(q&&['G','V','M','W','J','A'].includes(q.type))return 'guerra';for(const row of board)for(const q of row||[])if(q&&q.type==='I')return 'amenaza';}catch(_){ }return 'simple';})();
  const PV2=variant==='guerra'?{P:100,N:280,B:300,R:480,Q:850,K:20000,G:650,V:900,M:430,W:430,J:280,A:470,S:130}:{P:100,N:320,B:330,R:500,Q:900,K:20000};
  function score(m){const p=m.piece||buildVisible(board,offsets)[m.from.r]?.[m.from.c];if(!p)return-1e9;const st=applyMove(board,offsets,m.from,m.to,m.special||null),b2=st.board||board,o2=st.offsets||offsets,v=buildVisible(b2,o2);let s=m.isCapture?(PV2[m.victim?.type]||100):0;s+=(7-(Math.abs(m.to.r-3.5)+Math.abs(m.to.c-3.5)))*5;
+  if(m.special&&m.special.promotion){ const pv={Q:900,R:500,B:330,N:320}; s+=(pv[String(m.special.promotion).toUpperCase()]||0); }
   if(variant==='amenaza'){
    for(let r=0;r<8;r++)for(let c=0;c<8;c++){const q=v[r][c];if(!q||q.color!==color)continue;if(q.type==='I'||q.type==='S'){for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;const rr=r+dr,cc=c+dc;if(rr>=0&&rr<8&&cc>=0&&cc<8){const x=v[rr][cc];if(x&&x.color===color&&x.type!=='I'&&x.type!=='S')s+=15000;}}}else{const d=Math.abs(m.to.r-r)+Math.abs(m.to.c-c);s+=Math.max(0,7-d)*20;}}}
   if(variant==='guerra'){
@@ -4803,6 +4915,14 @@ async function scheduleBotMove(){
     await BOT_UI.showFor(msg, BOT_TIMING.announceMove, ()=>{
       try{
         if(!window.GAME_STARTED || window.__AJ_TIME_EXPIRED__ || gameOver) return;
+        try{
+          window.__AJ_BOT_UI_STATE__ = {
+            side: __sideAtSchedule,
+            promotion: (mv.special && mv.special.promotion) ? String(mv.special.promotion).toUpperCase() : null,
+            session: (window.__GAME_SESSION__|0),
+            ts: Date.now()
+          };
+        }catch(_){}
         playMove(mv.from, mv.to, mv.special, false);
         if(window.BOT_STATE){
           const enc = `${mv.from.r},${mv.from.c}->${mv.to.r},${mv.to.c}`;
@@ -12489,6 +12609,7 @@ function showPromotionDialog(color, onChoose){
     const order = ['Q','R','B','N'];
     order.forEach(function(t){
       const btn = document.createElement('button');
+      btn.dataset.promotion = t;
       const img = document.createElement('img');
       let url = null;
       try{ url = PIECE_SPRITES[color] && PIECE_SPRITES[color][t]; }catch(_){}
@@ -12509,6 +12630,7 @@ function showPromotionDialog(color, onChoose){
     });
     function close(){ overlay.style.display='none'; onChoose && onChoose(null); }
     overlay.style.display='flex';
+    try{ if(window.__AJ_BOT_AUTO_PROMOTION__) window.__AJ_BOT_AUTO_PROMOTION__(color); }catch(_){}
     overlay.addEventListener('click', function(ev){ if(ev.target===overlay) close(); }, {once:true});
     document.addEventListener('keydown', function esc(e){ if(e.key==='Escape'){ close(); document.removeEventListener('keydown', esc); } });
   }catch(e){ console.error(e); onChoose && onChoose('Q'); }
@@ -12540,9 +12662,120 @@ function showVeteranBanner(color){
     card.appendChild(ok);
     cont.appendChild(card);
     overlay.style.display='flex';
+    try{ if(window.__AJ_BOT_AUTO_DISMISS__) window.__AJ_BOT_AUTO_DISMISS__(color); }catch(_){}
   }catch(_){ /* ignore */ }
 }
 
+
+
+/* === AJETREZ BOT UI ACTIONS: decisiones obligatorias en pantalla === */
+(function(){
+  if(window.__AJ_BOT_UI_ACTIONS__) return;
+  window.__AJ_BOT_UI_ACTIONS__ = true;
+
+  function botControls(color){
+    try{
+      if(window.GAME_MODE === 'bot-vs-bot') return color === 'w' || color === 'b';
+      if(window.GAME_MODE === 'bot') return color === 'b';
+    }catch(_){}
+    return false;
+  }
+
+  function pendingBotState(){
+    try{
+      const s = window.__AJ_BOT_UI_STATE__;
+      if(!s) return null;
+      if(s.session != null && s.session !== (window.__GAME_SESSION__|0)) return null;
+      if(Date.now() - (s.ts||0) > 15000) return null;
+      return s;
+    }catch(_){ return null; }
+  }
+
+  function preferredPromotion(color, buttons){
+    const valid = buttons.filter(b => b && b.dataset && /^[QRBN]$/.test(b.dataset.promotion||''));
+    if(!valid.length) return null;
+
+    const st = pendingBotState();
+    if(st && botControls(color) && st.side === color && /^[QRBN]$/.test(st.promotion||'')){
+      const wanted = valid.find(b => b.dataset.promotion === st.promotion);
+      if(wanted) return wanted;
+    }
+
+    /* Respaldo: si por alguna razón no quedó registrada la elección del movimiento,
+       la dama es la opción por defecto. */
+    return valid.find(b => b.dataset.promotion === 'Q') || valid[0];
+  }
+
+  window.__AJ_BOT_AUTO_PROMOTION__ = function(color){
+    try{
+      if(!botControls(color)) return false;
+      const overlay = document.getElementById('promoOverlay');
+      const cont = document.getElementById('promoChoices');
+      if(!overlay || !cont || overlay.style.display !== 'flex') return false;
+
+      const buttons = Array.from(cont.querySelectorAll('button'));
+      const chosen = preferredPromotion(color, buttons);
+      if(!chosen) return false;
+
+      setTimeout(function(){
+        try{
+          if(overlay.style.display !== 'flex') return;
+          chosen.click();
+        }catch(_){}
+      }, 350);
+      return true;
+    }catch(_){ return false; }
+  };
+
+  window.__AJ_BOT_AUTO_DISMISS__ = function(color){
+    try{
+      if(!botControls(color)) return false;
+      const overlay = document.getElementById('promoOverlay');
+      const cont = document.getElementById('promoChoices');
+      if(!overlay || !cont || overlay.style.display !== 'flex') return false;
+
+      const buttons = Array.from(cont.querySelectorAll('button'));
+      const ok = buttons.find(b => {
+        const t = String(b.textContent||'').trim().toLowerCase();
+        return t === 'entendido' || t === 'ok' || t === 'continuar' || t === 'aceptar';
+      });
+      if(!ok) return false;
+
+      setTimeout(function(){
+        try{
+          if(overlay.style.display !== 'flex') return;
+          ok.click();
+        }catch(_){}
+      }, 350);
+      return true;
+    }catch(_){ return false; }
+  };
+
+  /* Respaldo para cualquier futuro botón de decisión que aparezca dentro
+     del mismo overlay de promoción. */
+  const boot = function(){
+    try{
+      const overlay = document.getElementById('promoOverlay');
+      if(!overlay || !window.MutationObserver) return;
+      const observer = new MutationObserver(function(){
+        try{
+          if(overlay.style.display !== 'flex') return;
+          const st = pendingBotState();
+          if(!st || !botControls(st.side)) return;
+          const buttons = overlay.querySelectorAll('#promoChoices button');
+          if(!buttons.length) return;
+          const hasPromo = Array.from(buttons).some(b => /^[QRBN]$/.test(b.dataset.promotion||''));
+          if(hasPromo) window.__AJ_BOT_AUTO_PROMOTION__(st.side);
+          else window.__AJ_BOT_AUTO_DISMISS__(st.side);
+        }catch(_){}
+      });
+      observer.observe(overlay,{subtree:true,childList:true,attributes:true,attributeFilter:['style']});
+      window.__AJ_BOT_UI_OBSERVER__ = observer;
+    }catch(_){}
+  };
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',boot,{once:true});
+  else boot();
+})();
 </script>
 <!-- === Reglas unificadas + estilo consistente === -->
 <style id="rules-block-style">
@@ -14027,6 +14260,258 @@ function showVeteranBanner(color){
   }
 }
 </style>
+
+
+<script id="aj-piece-card-js">
+(function(){
+  'use strict';
+
+  const STORE_KEY = 'aj.pieceCard.enabled.v1';
+  let enabled = true;
+  let active = null;
+  let hideTimer = null;
+
+  const $ = id => document.getElementById(id);
+
+  const glyphs = {
+    P:{w:'♙',b:'♟'}, R:{w:'♖',b:'♜'}, N:{w:'♘',b:'♞'},
+    B:{w:'♗',b:'♝'}, Q:{w:'♕',b:'♛'}, K:{w:'♔',b:'♚'},
+    G:{w:'⚔',b:'⚔'}, V:{w:'☠',b:'☠'}, M:{w:'✦',b:'✦'},
+    W:{w:'✧',b:'✧'}, J:{w:'🃏',b:'🃏'}, A:{w:'➶',b:'➶'},
+    S:{w:'⚔',b:'⚔'}, T:{w:'⚔',b:'⚔'}, I:{w:'♔',b:'♔'}
+  };
+
+  const standardDescriptions = {
+    P:'Avanza hacia adelante y captura en diagonal. Puede avanzar dos casillas desde su posición inicial cuando las reglas lo permiten.',
+    R:'Se mueve en línea recta, horizontal o verticalmente, tantas casillas como estén libres.',
+    N:'Se mueve en forma de L y puede saltar las piezas intermedias.',
+    B:'Se mueve en diagonal, tantas casillas como estén libres.',
+    Q:'Se mueve en cualquier dirección, horizontal, vertical o diagonal, tantas casillas como estén libres.',
+    K:'Se mueve una casilla en cualquier dirección. No puede quedar en jaque.'
+  };
+
+  function variantHint(){
+    try{
+      const spr = (typeof PIECE_SPRITES !== 'undefined') ? PIECE_SPRITES : null;
+      if(spr && spr.w && (spr.w.S || spr.w.M || spr.w.J || spr.w.A)) return 'guerra';
+      if(spr && spr.w && spr.w.T) return 'amenaza';
+    }catch(_){ }
+    return 'simple';
+  }
+
+  function infoFor(p){
+    if(!p) return {name:'Pieza', desc:''};
+    const v = variantHint();
+    if(v==='amenaza' && p.type==='G') return {name:'Príncipe', desc:'Pieza especial del Modo Amenaza. Su liberación forma parte del objetivo de la partida.'};
+    if(v==='amenaza' && (p.type==='V' || p.type==='S')) return {name:'Princesa', desc:'Pieza especial del Modo Amenaza. Su liberación forma parte del objetivo de la partida.'};
+    if((p.type==='T' || p.type==='S') && p.veteran){
+      return {name:'Veterano', desc:'Puede mover y capturar 1 o 2 casilleros hacia adelante, hacia atrás o en diagonal. No puede desplazarse lateralmente ni saltar piezas.', state:'⭐ Estado: Veterano'};
+    }
+    if(p.type==='T' || p.type==='S') return {name:'Guerrero', desc:'Antes de convertirse en Veterano puede avanzar 1 o 2 casilleros hacia adelante si el recorrido está libre.'};
+    if(v==='guerra'){
+      const special = {
+        G:['General','Puede mover hasta 3 casilleros en cualquiera de las 8 direcciones, siguiendo las reglas especiales de esta pieza.'],
+        V:['Verdugo','Se mueve exactamente 2 casilleros en dirección ortogonal, horizontal o vertical.'],
+        M:['Mago','Se mueve exactamente 2 casilleros en cualquiera de las 8 direcciones sin saltar la casilla intermedia. Si captura una pieza que no sea un Rey, se transforma en la pieza capturada.'],
+        W:['Maga','Se mueve exactamente 2 casilleros en cualquiera de las 8 direcciones sin saltar la casilla intermedia. Si captura una pieza que no sea un Rey, se transforma en la pieza capturada.'],
+        J:['Bufón','Se mueve exactamente 2 casilleros en cualquiera de las 8 direcciones, saltando la casilla intermedia, pero no puede capturar. Puede inmovilizar piezas rivales adyacentes.'],
+        A:['Arquero','Solo se mueve hacia adelante o en diagonal hacia adelante, exactamente 2 o 4 casilleros. Puede saltar piezas intermedias.']
+      };
+      if(special[p.type]) return {name:special[p.type][0], desc:special[p.type][1]};
+    }
+    if(p.type==='I') return {name:'Príncipe', desc:'Pieza especial de Ajetrez. Mantiene su función dentro de las reglas de la versión correspondiente.'};
+    if(p.type==='S') return {name:'Guerrero', desc:'Pieza especial de Ajetrez. Su movimiento depende de la versión correspondiente.'};
+    return {name:standardDescriptions[p.type] ? ({P:'Peón',R:'Torre',N:'Caballo',B:'Alfil',Q:'Reina',K:'Rey'}[p.type]) : (window.piezaNombre ? window.piezaNombre(p.type) : 'Pieza'), desc:standardDescriptions[p.type] || 'Pieza especial de Ajetrez.'};
+  }
+
+  function readEnabled(){
+    try{
+      const v = localStorage.getItem(STORE_KEY);
+      enabled = v === null ? true : v !== 'false';
+    }catch(_){ enabled = true; }
+  }
+  function saveEnabled(v){
+    enabled = !!v;
+    try{ localStorage.setItem(STORE_KEY, enabled ? 'true' : 'false'); }catch(_){ }
+    if(!enabled) hide();
+  }
+
+  function ensureCard(){
+    let card = $('ajPieceCard');
+    if(card) return card;
+    card = document.createElement('div');
+    card.id = 'ajPieceCard';
+    card.setAttribute('aria-hidden','true');
+    card.innerHTML = '<div class="ajpc-name"></div><div class="ajpc-art"></div><div class="ajpc-line"></div><div class="ajpc-desc"></div><div class="ajpc-state"></div>';
+    document.body.appendChild(card);
+    return card;
+  }
+
+  function canShowFor(r,d){
+    if(!enabled || !window.GAME_STARTED || gameOver || pendingShift) return null;
+    try{ if(window.GAME_MODE==='bot-vs-bot') return null; }catch(_){ }
+    if(d<8 || d>=16) return null;
+    const c = d-8;
+    let vis;
+    try{ vis = (typeof buildVisible==='function') ? buildVisible(board, offsets) : null; }catch(_){ vis=null; }
+    if(!vis || !vis[r]) return null;
+    const p = vis[r][c];
+    if(!p || p.color !== turn) return null;
+    try{
+      if(typeof legalMovesFor==='function'){
+        const ms = legalMovesFor(vis, board, offsets, r, c, turn, epTarget);
+        if(!ms || !ms.length) return null;
+      }
+    }catch(_){ return null; }
+    return {p,r,c,d};
+  }
+
+  function setArt(card,p){
+    const art = card.querySelector('.ajpc-art');
+    art.innerHTML='';
+    let url=null;
+    try{ url = (typeof PIECE_SPRITES !== 'undefined' && PIECE_SPRITES[p.color]) ? PIECE_SPRITES[p.color][p.type] : null; }catch(_){ }
+    if(url){
+      const img=document.createElement('img');
+      img.src=url;
+      img.alt='';
+      art.appendChild(img);
+    }else{
+      const s=document.createElement('span');
+      s.className='ajpc-glyph';
+      s.textContent=(glyphs[p.type]&&glyphs[p.type][p.color]) || p.type || '?';
+      art.appendChild(s);
+    }
+  }
+
+  function position(card,sq){
+    if(!sq) return;
+    card.style.display='block';
+    card.classList.remove('aj-visible','aj-side-left','aj-side-right');
+
+    const board=document.getElementById('board');
+    const br=board ? board.getBoundingClientRect() : null;
+    if(!br) return;
+
+    const color=(active && active.pieceColor) ? active.pieceColor : 'w';
+    const cr=card.getBoundingClientRect();
+
+    // La ficha informativa NO depende de la casilla seleccionada.
+    // Cada color tiene una posición fija dentro de su espacio lateral
+    // vacío al comenzar la partida: negras a la izquierda y blancas a la derecha.
+    const squareW = br.width / 24;
+    const squareH = br.height / 8;
+    const lateralWidth = squareW * 8;
+
+    let left;
+    if(color==='b'){
+      // Centro del bloque lateral izquierdo (columnas 0 a 7).
+      left = br.left + (lateralWidth - cr.width) / 2;
+      card.classList.add('aj-side-left');
+    }else{
+      // Centro del bloque lateral derecho (columnas 16 a 23).
+      left = br.left + squareW * 16 + (lateralWidth - cr.width) / 2;
+      card.classList.add('aj-side-right');
+    }
+
+    // Posición vertical fija: blancas 2 casilleros hacia arriba
+    // y negras 2 casilleros hacia abajo desde el centro del tablero.
+    // La posición no depende de qué pieza haya tocado el usuario.
+    const verticalShift = squareH * 2 * (color==='b' ? 1 : -1);
+    let top = br.top + (squareH * 8 - cr.height) / 2 + verticalShift;
+
+    // Mantenerla dentro de la pantalla en resoluciones reducidas.
+    left = Math.max(8, Math.min(left, window.innerWidth - cr.width - 8));
+    top = Math.max(8, Math.min(top, window.innerHeight - cr.height - 8));
+
+    card.style.left=Math.round(left)+'px';
+    card.style.top=Math.round(top)+'px';
+    requestAnimationFrame(()=>card.classList.add('aj-visible'));
+  }
+  function show(r,d,sq){
+    if(!enabled) return;
+    const data=canShowFor(r,d);
+    if(!data) return;
+    clearTimeout(hideTimer);
+    hideTimer=null;
+    hide();
+    const card=ensureCard();
+    const info=infoFor(data.p);
+    card.querySelector('.ajpc-name').textContent=info.name;
+    card.querySelector('.ajpc-desc').textContent=info.desc;
+    card.querySelector('.ajpc-state').textContent=info.state||'';
+    setArt(card,data.p);
+    sq.classList.add('aj-piece-press-active');
+    const visual=sq.querySelector('.piece') || sq.querySelector('.aj-piece-wrap') || sq.firstElementChild;
+    if(visual) visual.classList.add('aj-piece-visual');
+    active={sq,visual,card,r,d,pieceColor:data.p.color};
+    position(card,sq);
+  }
+
+  function hide(){
+    clearTimeout(hideTimer);
+    hideTimer=null;
+    if(active){
+      try{ active.sq.classList.remove('aj-piece-press-active'); }catch(_){ }
+      try{ active.visual && active.visual.classList.remove('aj-piece-visual'); }catch(_){ }
+    }
+    const card=$('ajPieceCard');
+    if(card){ card.classList.remove('aj-visible'); card.style.display='none'; }
+    active=null;
+  }
+
+  function wireBoard(){
+    const board=document.getElementById('board');
+    if(!board || board.__ajPieceCardWired) return;
+    board.__ajPieceCardWired=true;
+    board.addEventListener('pointerdown',function(e){
+      if(e.pointerType==='mouse' && e.button!==0) return;
+      const sq=e.target.closest && e.target.closest('.sq');
+      if(!sq || !board.contains(sq)) return;
+      const r=parseInt(sq.style.gridRow,10)-1;
+      const d=parseInt(sq.style.gridColumn,10)-1;
+      if(!Number.isInteger(r)||!Number.isInteger(d)) return;
+      try{ sq.setPointerCapture && sq.setPointerCapture(e.pointerId); }catch(_){ }
+      show(r,d,sq);
+    },{passive:true});
+    const end=()=>hide();
+    document.addEventListener('pointerup',end,{passive:true});
+    document.addEventListener('pointercancel',end,{passive:true});
+    document.addEventListener('lostpointercapture',end,{passive:true});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden) hide();});
+    window.addEventListener('resize',()=>{ if(active) position(active.card,active.sq); });
+    window.addEventListener('scroll',()=>{ if(active) position(active.card,active.sq); },{passive:true});
+    board.addEventListener('contextmenu',function(e){ if(active) e.preventDefault(); });
+  }
+
+  function initSetting(){
+    readEnabled();
+    const cb=$('ajPieceCardEnabled');
+    if(cb){
+      cb.checked=enabled;
+      if(!cb.__ajWired){
+        cb.__ajWired=true;
+        cb.addEventListener('change',function(){
+          saveEnabled(cb.checked);
+          const toast=$('applyToast');
+          if(toast){ toast.textContent=cb.checked?'✔ Ficha de pieza activada':'✔ Ficha de pieza desactivada'; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),900); }
+        });
+      }
+    }
+    wireBoard();
+  }
+
+  // API pequeña por si otro módulo necesita consultar/cambiar la preferencia.
+  window.AJ_PIECE_CARD = {
+    isEnabled:()=>enabled,
+    setEnabled:(v)=>{ saveEnabled(v); const cb=$('ajPieceCardEnabled'); if(cb) cb.checked=enabled; },
+    hide:hide
+  };
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initSetting,{once:true});
+  else initSetting();
+})();
+</script>
 
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
