@@ -13464,6 +13464,166 @@ function showVeteranBanner(color){
   else initVersionScenarios();
 })();
 </script>
+
+<style id="aj-main-menu-redesign-2026-08-24">
+/* Menú principal: botones con el mismo lenguaje visual oscuro de Configurar partida. */
+#ajMainMenuView .aj-main-menu-subtitle{display:none !important;}
+#ajMainMenuView .aj-main-menu-option{
+  width:100% !important;
+  min-height:46px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  margin:0 0 10px !important;
+  padding:12px 18px !important;
+  border:1px solid #111 !important;
+  border-radius:8px !important;
+  background:#111 !important;
+  color:#fff !important;
+  box-shadow:0 2px 5px rgba(0,0,0,.22) !important;
+  font-weight:800 !important;
+  font-size:15px !important;
+  line-height:1.2 !important;
+  cursor:pointer !important;
+  transition:background-color .18s ease, border-color .18s ease, color .18s ease, transform .12s ease, box-shadow .18s ease !important;
+}
+#ajMainMenuView .aj-main-menu-option > span:first-child{
+  color:inherit !important;
+  font-weight:800 !important;
+}
+#ajMainMenuView .aj-main-menu-option .desc{display:none !important;}
+#ajMainMenuView .aj-main-menu-option:hover{
+  background:#c62828 !important;
+  border-color:#a51f1f !important;
+  color:#fff !important;
+  box-shadow:0 3px 9px rgba(0,0,0,.28) !important;
+  transform:translateY(-1px) !important;
+}
+#ajMainMenuView .aj-main-menu-option:active{
+  transform:translateY(0) !important;
+  box-shadow:0 1px 3px rgba(0,0,0,.2) !important;
+}
+/* El botón de colaboración mantiene un llamado de atención suave y continuo. */
+@keyframes ajCollabHeartbeat{
+  0%,100%{transform:scale(1); box-shadow:0 2px 5px rgba(0,0,0,.22);}
+  10%{transform:scale(1.018); box-shadow:0 4px 11px rgba(0,0,0,.30);}
+  20%{transform:scale(1); box-shadow:0 2px 5px rgba(0,0,0,.22);}
+  30%{transform:scale(1.012); box-shadow:0 3px 8px rgba(0,0,0,.27);}
+  40%{transform:scale(1); box-shadow:0 2px 5px rgba(0,0,0,.22);}
+}
+#ajMainMenuView #btnOpenColabora{
+  animation:ajCollabHeartbeat 2.6s ease-in-out infinite;
+  transform-origin:center center;
+}
+#ajMainMenuView #btnOpenColabora:hover{
+  animation:none;
+  transform:translateY(-1px) !important;
+}
+@media (prefers-reduced-motion:reduce){
+  #ajMainMenuView #btnOpenColabora{animation:none !important;}
+}
+</style>
+
+<style id="aj-main-menu-header-final-2026-08-25">
+/* Cabecera final del menú principal:
+   - elimina el título duplicado dentro del área de botones
+   - hace más visible el título de la cabecera negra
+   - usuario + cerrar sesión a la derecha, antes del botón Cerrar
+   - botón Cerrar permanece a la derecha */
+#megaPanel #ajMainMenuView > .aj-main-menu-inner > h2{
+  display:none !important;
+}
+
+#megaPanel .mp-header{
+  position:relative !important;
+  min-height:44px !important;
+  box-sizing:border-box !important;
+}
+
+#megaPanel .mp-header #mpTitle{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  transform:translate(-50%,-50%) !important;
+  width:max-content !important;
+  max-width:55% !important;
+  margin:0 !important;
+  text-align:center !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  font-size:18px !important;
+  font-weight:900 !important;
+  line-height:1.1 !important;
+  letter-spacing:.1px !important;
+  z-index:2 !important;
+}
+
+/* El bloque de usuario queda en la esquina derecha, antes del botón Cerrar. */
+#megaPanel .mp-header .right{
+  position:absolute !important;
+  left:auto !important;
+  right:82px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  margin:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:7px !important;
+  z-index:3 !important;
+}
+
+#megaPanel .mp-header #loggedUser{
+  white-space:nowrap !important;
+  margin:0 !important;
+  font-weight:800 !important;
+  font-size:13px !important;
+}
+
+#megaPanel .mp-header #btnLogout{
+  white-space:nowrap !important;
+  margin:0 !important;
+}
+
+/* Sacamos Cerrar del grupo izquierdo y lo llevamos a la derecha. */
+#megaPanel .mp-header #btnClosePanel{
+  position:absolute !important;
+  right:10px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  margin:0 !important;
+  z-index:4 !important;
+}
+
+@media (max-width:600px){
+  #megaPanel .mp-header{
+    min-height:40px !important;
+  }
+  #megaPanel .mp-header #mpTitle{
+    font-size:16px !important;
+    max-width:40% !important;
+  }
+  #megaPanel .mp-header .right{
+    left:auto !important;
+    right:64px !important;
+    gap:4px !important;
+  }
+  #megaPanel .mp-header #loggedUser{
+    font-size:11px !important;
+  }
+  #megaPanel .mp-header #btnLogout,
+  #megaPanel .mp-header #btnClosePanel{
+    padding:5px 8px !important;
+    font-size:11px !important;
+  }
+  #megaPanel .mp-header #btnClosePanel{
+    right:6px !important;
+  }
+}
+</style>
+
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
@@ -14956,8 +15116,7 @@ function showVeteranBanner(color){
     mainMenu.innerHTML = `
       <div class="aj-main-menu-inner">
         <h2>Menú principal</h2>
-        <p class="aj-main-menu-subtitle">Selecciona una sección.</p>
-        <button class="aj-main-menu-option" id="btnOpenConfigPartida" type="button">
+                <button class="aj-main-menu-option" id="btnOpenConfigPartida" type="button">
           <span>⚙ Configurar partida</span>
           <span class="desc">Versión, modo y duración de la partida</span>
         </button>
@@ -16162,3 +16321,32 @@ function showVeteranBanner(color){
 </style>
 <!-- /AJETREZ: POSICION FINAL DONACIONES BAJO LINEA ENTRECORTADA v2 -->
 
+
+<style id="aj-header-close-final-2026-08-25">
+/* Ajuste final de la cabecera del menú principal */
+/* Separa claramente Cerrar sesión de Cerrar y deja Cerrar pegado al borde derecho. */
+#megaPanel .mp-header .right{
+  right:125px !important;
+  gap:8px !important;
+}
+
+#megaPanel .mp-header #btnClosePanel{
+  right:0 !important;
+  background:#c8102e !important;
+  border:1px solid #c8102e !important;
+  color:#fff !important;
+  box-shadow:0 2px 8px rgba(200,16,46,.28) !important;
+}
+
+#megaPanel .mp-header #btnClosePanel:hover{
+  background:#a80d27 !important;
+  border-color:#a80d27 !important;
+  color:#fff !important;
+  transform:translateY(-50%) scale(1.03) !important;
+}
+
+@media (max-width:600px){
+  #megaPanel .mp-header .right{ right:82px !important; }
+  #megaPanel .mp-header #btnClosePanel{ right:0 !important; }
+}
+</style>
