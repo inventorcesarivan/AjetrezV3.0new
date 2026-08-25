@@ -14358,7 +14358,10 @@ function showVeteranBanner(color){
     card.id = 'ajPieceCard';
     card.setAttribute('aria-hidden','true');
     card.innerHTML = '<div class="ajpc-name"></div><div class="ajpc-art"></div><div class="ajpc-line"></div><div class="ajpc-desc"></div><div class="ajpc-state"></div>';
-    document.body.appendChild(card);
+    // La ficha debe formar parte del elemento que entra en fullscreen.
+    // Si se agrega directamente a <body>, queda fuera del documento fullscreen.
+    const fsRoot = document.getElementById('fsRoot');
+    (fsRoot || document.body).appendChild(card);
     return card;
   }
 
@@ -14554,6 +14557,81 @@ function showVeteranBanner(color){
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initSetting,{once:true});
   else initSetting();
+})();
+</script>
+
+
+<style id="aj-mobile-clock-width-final-20260825">
+/* En móvil: reducir ligeramente el ancho total de Reloj + Reiniciar + Pausa,
+   sin modificar su posición ni la versión de escritorio. */
+@media (max-width:900px), (pointer:coarse){
+  #topBar #timeIndicator{
+    gap:5px !important;
+    padding:4px 6px !important;
+    max-width:calc(100vw - 10px) !important;
+  }
+  #topBar #timeIndicator #timeTxt{
+    font-size:12px !important;
+  }
+  #topBar #timeIndicator #btnRestartBR,
+  #topBar #timeIndicator #pauseBtn{
+    padding:5px 8px !important;
+    font-size:12px !important;
+    min-width:0 !important;
+  }
+  #fsRoot:fullscreen #topBar #timeIndicator{
+    gap:5px !important;
+    padding:4px 6px !important;
+  }
+}
+</style>
+
+<!-- AJETREZ: PREAJUSTE VISUAL INICIAL — MADERA + CENTRO DESTACADO -->
+<script id="aj-default-visual-start">
+(function(){
+  // El juego siempre comienza con el estilo Madera.
+  var theme = 'madera';
+  try { localStorage.setItem('aj_theme', theme); } catch(_) {}
+  try { document.body.setAttribute('data-theme', theme); } catch(_) {}
+
+  // Apariencia inicial inspirada en la referencia: centro claro y laterales atenuados.
+  var appearance = {
+    centralOpacity: 1.0,
+    lateralOpacity: 0.55,
+    centralBrightness: 1.20,
+    lateralBrightness: 0.72
+  };
+  try {
+    localStorage.setItem('aj.zoneAppearance.v1', JSON.stringify(appearance));
+  } catch(_) {}
+
+  function apply(){
+    try {
+      var root = document.documentElement;
+      root.style.setProperty('--central-opacity', String(appearance.centralOpacity));
+      root.style.setProperty('--lateral-opacity', String(appearance.lateralOpacity));
+      root.style.setProperty('--central-brightness', String(appearance.centralBrightness));
+      root.style.setProperty('--lateral-brightness', String(appearance.lateralBrightness));
+      var ids = {
+        centralOpacity: appearance.centralOpacity,
+        lateralOpacity: appearance.lateralOpacity,
+        centralBrightness: appearance.centralBrightness,
+        lateralBrightness: appearance.lateralBrightness
+      };
+      Object.keys(ids).forEach(function(id){
+        var el = document.getElementById(id);
+        if(el) el.value = String(ids[id]);
+      });
+      var picker = document.getElementById('themePicker');
+      if(picker){
+        picker.querySelectorAll('.btn.theme').forEach(function(b){
+          b.classList.toggle('active', b.getAttribute('data-theme') === theme);
+        });
+      }
+    } catch(_) {}
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply, {once:true});
+  else apply();
 })();
 </script>
 
