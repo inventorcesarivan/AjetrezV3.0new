@@ -4302,8 +4302,8 @@ function playMove(from, to, special, capturesKing){
   }
 
   if(res.captured){
-    emitTurnBlock({row:r,by:turn});
     pendingShift = { row: r, who: turn };
+    emitTurnBlock({row:r,by:turn});
     applyShiftCtrlLockVisual();
     pendingChoice = null;
     showChoose(r);
@@ -4355,7 +4355,9 @@ function playMove(from, to, special, capturesKing){
 }
 
 function doShiftTo(row, target){
-  
+  // Un callback viejo del bot no puede reabrir ni bloquear una decisión ya resuelta.
+  if(!pendingShift || row!==pendingShift.row) return;
+
   // Verificar reglas antes de desplazar (refuerzo de seguridad)
   try{
     if(window.AJ_RULES && !window.AJ_RULES.legalShift(row, target, board, offsets)){
@@ -4860,16 +4862,94 @@ async function scheduleBotMove(){
 
   
 async function botDecideShift(row){
- if(!botEnabled||gameOver||window.__AJ_TIME_EXPIRED__||!window.GAME_STARTED||!pendingShift||turn!==botSide)return;const color=botSide,opp=color==='w'?'b':'w',base=deepCopyBoard(board),off=offsets.slice();
- const variant=(()=>{try{for(const row of base)for(const q of row||[])if(q&&['G','V','M','W','J','A'].includes(q.type))return'guerra';for(const row of base)for(const q of row||[])if(q&&q.type==='I')return'amenaza';}catch(_){ }return'simple';})();
- const PV2=variant==='guerra'?{P:100,N:280,B:300,R:480,Q:850,K:20000,G:650,V:900,M:430,W:430,J:280,A:470,S:130}:{P:100,N:320,B:330,R:500,Q:900,K:20000};
- function val(o){const v=buildVisible(base,o);let s=0,me=0,them=0;for(let r=0;r<8;r++)for(let c=0;c<8;c++){const q=v[r][c];if(!q)continue;const x=PV2[q.type]||80;if(q.color===color)me+=x;else them+=x;if(variant==='guerra'&&q.color===color&&['G','V','M','W','J','A','S'].includes(q.type))s+=190;if(variant==='guerra'&&q.color===opp&&['G','V','M','W','J','A','S'].includes(q.type))s-=150}
-  try{s+=(me-them)+(genMoves(base,o,color,epTarget).length-genMoves(base,o,opp,epTarget).length)*3}catch(_){s+=me-them}
-  if(variant==='amenaza')for(let r=0;r<8;r++)for(let c=0;c<8;c++){const q=v[r][c];if(q?.color===color&&(q.type==='I'||q.type==='S'))for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const x=v[r+dr]?.[c+dc];if(x?.color===color&&x.type!=='I'&&x.type!=='S')s+=18000}}
-  if(variant==='guerra')for(let r=0;r<8;r++)for(let c=0;c<8;c++){const q=v[r][c];if(q?.color===color&&q.type==='S'){const d=color==='w'?r:7-r;s+=q.veteran?3000:d<=1?1400:d<=2?500:0}}
-  return s}
- let opts=[{a:'keep',t:null,s:val(off)}];for(const t of [0,8])try{if(AJ_RULES?.legalShift(row,t,base,off)){const o=off.slice();o[row]=t;opts.push({a:'shift',t,s:val(o)+(variant==='guerra'?180:variant==='amenaza'?150:120)})}}catch(_){ }
- opts.sort((a,b)=>b.s-a.s);let pick=opts[0];const p=getParamsFor(color);if(opts[1]&&p.noise>.25&&Math.random()<.25)pick=opts[1];await BOT_UI.showFor('',BOT_TIMING.announceShift,()=>{try{pick.a==='shift'?doShiftTo(row,pick.t):keepRow()}catch(_){try{keepRow()}catch(__){}}},Math.max(120,Math.round(BOT_TIMING.announceShift*.1)));
+  // Decisión de desplazamiento robusta: la identidad del jugador que decide
+  // sale de pendingShift, no de un botSide que puede cambiar durante el ciclo.
+  if(!botEnabled || gameOver || window.__AJ_TIME_EXPIRED__ || !window.GAME_STARTED || !pendingShift) return;
+  if(pendingShift.row !== row) row = pendingShift.row;
+  const color = pendingShift.who;
+  if(!color || (window.GAME_MODE !== 'bot-vs-bot' && color !== botSide)) return;
+
+  const opp = color==='w' ? 'b' : 'w';
+  const base = deepCopyBoard(board);
+  const off = offsets.slice();
+  const shiftToken = `${(window.__AJ_GAME_SHIFT_TOKEN__||0)+1}:${row}:${color}`;
+  window.__AJ_GAME_SHIFT_TOKEN__ = Number(String(shiftToken).split(':')[0]) || ((window.__AJ_GAME_SHIFT_TOKEN__||0)+1);
+  const token = window.__AJ_GAME_SHIFT_TOKEN__;
+
+  const variant = (()=>{
+    try{
+      for(const rr of base) for(const q of rr||[]) if(q && ['G','V','M','W','J','A'].includes(q.type)) return 'guerra';
+      for(const rr of base) for(const q of rr||[]) if(q && q.type==='I') return 'amenaza';
+    }catch(_){ }
+    return 'simple';
+  })();
+  const PV2 = variant==='guerra'
+    ? {P:100,N:280,B:300,R:480,Q:850,K:20000,G:650,V:900,M:430,W:430,J:280,A:470,S:130}
+    : {P:100,N:320,B:330,R:500,Q:900,K:20000};
+
+  function val(o){
+    const v=buildVisible(base,o); let s=0,me=0,them=0;
+    for(let r=0;r<8;r++) for(let c=0;c<8;c++){
+      const q=v[r][c]; if(!q) continue;
+      const x=PV2[q.type]||80;
+      if(q.color===color) me+=x; else them+=x;
+      if(variant==='guerra'&&q.color===color&&['G','V','M','W','J','A','S'].includes(q.type)) s+=190;
+      if(variant==='guerra'&&q.color===opp&&['G','V','M','W','J','A','S'].includes(q.type)) s-=150;
+    }
+    try{ s+=(me-them)+(genMoves(base,o,color,epTarget).length-genMoves(base,o,opp,epTarget).length)*3; }
+    catch(_){ s+=me-them; }
+    if(variant==='amenaza') for(let r=0;r<8;r++) for(let c=0;c<8;c++){
+      const q=v[r][c];
+      if(q?.color===color&&(q.type==='I'||q.type==='S')) for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
+        const x=v[r+dr]?.[c+dc];
+        if(x?.color===color&&x.type!=='I'&&x.type!=='S') s+=18000;
+      }
+    }
+    if(variant==='guerra') for(let r=0;r<8;r++) for(let c=0;c<8;c++){
+      const q=v[r][c];
+      if(q?.color===color&&q.type==='S'){
+        const d=color==='w'?r:7-r;
+        s+=q.veteran?3000:d<=1?1400:d<=2?500:0;
+      }
+    }
+    return s;
+  }
+
+  const opts=[{a:'keep',t:null,s:val(off)}];
+  for(const t of [0,8]){
+    try{
+      const chk = AJ_RULES?.legalShiftWithReason
+        ? AJ_RULES.legalShiftWithReason(row,t,base,off)
+        : {ok:!!AJ_RULES?.legalShift(row,t,base,off)};
+      if(chk.ok){
+        const o=off.slice(); o[row]=t;
+        opts.push({a:'shift',t,s:val(o)+(variant==='guerra'?180:variant==='amenaza'?150:120)});
+      }
+    }catch(_){ }
+  }
+  opts.sort((a,b)=>b.s-a.s);
+  let pick=opts[0];
+  const p=getParamsFor(color);
+  if(opts[1]&&p.noise>.25&&Math.random()<.25) pick=opts[1];
+
+  const commit=()=>{
+    try{
+      if(token!==window.__AJ_GAME_SHIFT_TOKEN__) return;
+      if(!pendingShift || pendingShift.row!==row || pendingShift.who!==color) return;
+      if(pick.a==='shift') doShiftTo(row,pick.t); else keepRow();
+      // Si una validación externa rechazó el desplazamiento, nunca dejar el turno bloqueado.
+      if(pendingShift && pendingShift.row===row && pendingShift.who===color) keepRow();
+    }catch(_){
+      try{ if(pendingShift && pendingShift.row===row && pendingShift.who===color) keepRow(); }catch(__){}
+    }
+  };
+
+  // La decisión no depende de la cola visual del HUD para poder continuar la partida.
+  try{
+    await BOT_UI.showFor('🤖 El bot decide: '+(pick.a==='shift'?'desplazar sección':'mantener sección'), BOT_TIMING.announceShift, commit, Math.max(120,Math.round(BOT_TIMING.announceShift*.1)));
+  }catch(_){ setTimeout(commit, 50); }
+  // Failsafe: si la cola visual quedó bloqueada por otro mensaje, el turno igualmente continúa.
+  setTimeout(commit, BOT_TIMING.announceShift + 350);
 }
 
   window.addEventListener('aj:turn:change', (e)=>{
@@ -4881,11 +4961,21 @@ async function botDecideShift(row){
   });
   window.addEventListener('aj:turn:block', (e)=>{
     const info = (e && e.detail) || {};
-    if(!window.__AJ_TIME_EXPIRED__ && botEnabled && (window.GAME_MODE==='bot-vs-bot' ? (botSide = turn, window.botSide = botSide, true) : turn === botSide)){
-      BOT_UI.showFor('🤖 El bot está decidiendo si mantener o desplazar la sección…', BOT_TIMING.thinkingShift, ()=>{
-        botDecideShift(info.row);
-      }, Math.min(300, BOT_TIMING.thinkingShift-120));
-    }
+    if(window.__AJ_TIME_EXPIRED__ || !botEnabled || !pendingShift) return;
+    const decidingSide = pendingShift.who;
+    if(window.GAME_MODE==='bot-vs-bot'){ botSide = decidingSide; window.botSide = botSide; }
+    if(decidingSide !== botSide) return;
+
+    // El HUD es sólo visual. La ejecución real se programa fuera de la cola
+    // para que un mensaje/sonido anterior nunca pueda dejar el turno bloqueado.
+    try{
+      BOT_UI.showFor('🤖 El bot está decidiendo si mantener o desplazar la sección…', BOT_TIMING.thinkingShift, null, 0);
+    }catch(_){ }
+    const wait = Math.max(250, (BOT_TIMING.thinkingShift||4000) - 150);
+    const row = pendingShift.row;
+    setTimeout(()=>{
+      try{ if(pendingShift && pendingShift.row===row && pendingShift.who===decidingSide) botDecideShift(row); }catch(_){ }
+    }, wait);
   });
 
   if(botEnabled && window.GAME_STARTED){ if(window.GAME_MODE==='bot-vs-bot'){ botSide = turn; window.botSide = botSide; scheduleBotMove(); } else if(turn === botSide) scheduleBotMove(); }
@@ -4913,6 +5003,12 @@ window.AJ_RULES = window.AJ_RULES || {};
 window.AJ_RULES.legalShiftWithReason = function(row, target, boardRef, offsRef){
   let ok = true; let reason = '';
   try{
+    if(!Number.isInteger(row) || row<0 || row>=8 || !Array.isArray(offsRef) || (target!==0 && target!==8)){
+      return { ok:false, reason:'Desplazamiento inválido.' };
+    }
+    if(offsRef[row]===target){
+      return { ok:false, reason:'La sección ya está en esa posición.' };
+    }
     // 0) Fin de partida
     if(typeof gameOver!=='undefined' && gameOver){
       return { ok:false, reason:'La partida ya terminó.' };
@@ -4950,7 +5046,7 @@ window.AJ_RULES.legalShiftWithReason = function(row, target, boardRef, offsRef){
       return { ok:false, reason:'Prohibido: No se puede desplazar una sección, cuando eso implica, dejar sin rey en el área jugable a cualquiera de los jugadores' };
     }
 
-  }catch(_){ ok = true; reason = ''; }
+  }catch(_){ ok = false; reason = 'No se pudo validar el desplazamiento.'; }
   return { ok, reason };
 };
 
