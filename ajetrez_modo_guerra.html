@@ -17539,3 +17539,111 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
   #megaPanel .mp-header #btnClosePanel{ right:0 !important; }
 }
 </style>
+
+<!-- AJETREZ: ajuste final solicitado — menú móvil más compacto + fullscreen más abajo -->
+<style id="aj-menu-mobile-height-and-fullscreen-button-final-20260825">
+/* En teléfonos: reducir aprox. un casillero la altura del panel principal.
+   El contenido sigue teniendo scroll interno, por lo que no se pierde información. */
+@media (max-width:900px), (pointer:coarse){
+  #megaPanel{
+    height:min(calc(88vh - var(--square, 0px)), 720px) !important;
+    max-height:calc(88vh - var(--square, 0px)) !important;
+    min-height:300px !important;
+  }
+}
+
+/* En pantalla completa: bajar SOLO el botón de Pantalla completa.
+   El resto de controles conserva su posición actual. */
+#fsRoot:fullscreen #topBar #rightControls #btnFSBR,
+#fsRoot:-webkit-full-screen #topBar #rightControls #btnFSBR{
+  transform:translateY(calc(var(--square, 0px) * .28)) !important;
+}
+
+@media (max-width:900px), (pointer:coarse){
+  #fsRoot:fullscreen #topBar #rightControls #btnFSBR,
+  #fsRoot:-webkit-full-screen #topBar #rightControls #btnFSBR{
+    transform:translateY(calc(var(--square, 0px) * .28)) !important;
+  }
+}
+</style>
+<!-- /AJETREZ: ajuste final solicitado -->
+
+<!-- AJETREZ: CORRECCIÓN DEFINITIVA — alineación única de controles superiores -->
+<style id="aj-top-controls-alignment-absolute-final">
+  /*
+     Regla única de alineación: todos los controles de la barra superior
+     se centran verticalmente dentro de #topBar en web, móvil y fullscreen.
+     No se aplican desplazamientos verticales individuales al botón FS.
+  */
+  #topBar #rightControls{
+    position:absolute !important;
+    left:0 !important;
+    right:auto !important;
+    top:50% !important;
+    bottom:auto !important;
+    transform:translateY(-50%) !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    flex-direction:row !important;
+    margin:0 !important;
+    padding:0 !important;
+    box-sizing:border-box !important;
+  }
+
+  #topBar #rightControls > .btn,
+  #topBar #rightControls > button{
+    position:static !important;
+    top:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    left:auto !important;
+    transform:none !important;
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+    align-self:center !important;
+    float:none !important;
+  }
+
+  /* Pantalla completa: exactamente la misma línea central que los demás. */
+  #topBar #rightControls #btnFSBR,
+  #fsRoot:fullscreen #topBar #rightControls #btnFSBR,
+  #fsRoot:-webkit-full-screen #topBar #rightControls #btnFSBR{
+    position:static !important;
+    top:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    left:auto !important;
+    transform:none !important;
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+    align-self:center !important;
+  }
+
+  /* El cambio de texto a "salir" no debe cambiar la alineación vertical. */
+  #topBar #rightControls #btnFSBR{
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    box-sizing:border-box !important;
+  }
+
+  @media (max-width:900px), (pointer:coarse){
+    #topBar #rightControls{
+      left:5px !important;
+      right:auto !important;
+      top:50% !important;
+      transform:translateY(-50%) !important;
+      align-items:center !important;
+    }
+  }
+
+  #fsRoot:fullscreen #topBar #rightControls,
+  #fsRoot:-webkit-full-screen #topBar #rightControls{
+    top:50% !important;
+    transform:translateY(-50%) !important;
+    align-items:center !important;
+  }
+</style>
+<!-- /AJETREZ: CORRECCIÓN DEFINITIVA — alineación única de controles superiores -->
+
