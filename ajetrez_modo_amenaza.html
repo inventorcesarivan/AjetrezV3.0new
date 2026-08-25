@@ -3586,7 +3586,7 @@ body[data-theme="noche"] .regv2-btn{
 
 
 
-<button aria-controls="megaPanel" aria-expanded="false" class="btn" id="btnMegaMenu" type="button">Menú</button><div class="right-ctrls" id="rightControls"><button class="btn small" id="btnRestartBR" type="button">Reiniciar</button><button class="btn small" id="btnFSBR" type="button">Pantalla completa</button></div></div></div><script>
+<button aria-controls="megaPanel" aria-expanded="false" class="btn" id="btnMegaMenu" type="button">Menú</button><div class="right-ctrls" id="rightControls"><button class="btn small" id="btnRestartBR" type="button">Reiniciar</button><button class="btn small" id="btnFSBR" type="button">Pantalla completa</button><button aria-pressed="true" class="btn small aj-guide-toggle on" id="btnGuiaPractica" type="button">Guía práctica: ON</button></div></div></div><script>
 // --- Audio FX setup ---
 (function(){
   function make(src){ try{ const a = new Audio(src); a.preload='auto'; a.volume = 0.85; return a; }catch(_){ return null; } }
@@ -14152,6 +14152,21 @@ function showVeteranBanner(color){
 </style>
 
 
+<style id="aj-guide-toggle-css">
+  /* Botón Guía práctica: controla las fichas informativas de las piezas. */
+  #btnGuiaPractica{
+    margin-left:8px;
+    min-width:0; width:auto; white-space:nowrap;
+    transition:background-color .12s ease, color .12s ease, transform .06s ease;
+  }
+  #btnGuiaPractica.on{ background:#b91c1c !important; color:#fff !important; }
+  #btnGuiaPractica.off{ background:#111 !important; color:#fff !important; }
+  #btnGuiaPractica:active{ transform:translateY(1px) scale(.99); }
+  @media (max-width:900px){
+    #btnGuiaPractica{ min-width:0; width:auto; font-size:12px; padding:6px 9px; }
+  }
+</style>
+
 <script id="aj-piece-card-js">
 (function(){
   'use strict';
@@ -14374,8 +14389,30 @@ function showVeteranBanner(color){
     board.addEventListener('contextmenu',function(e){ if(active) e.preventDefault(); });
   }
 
+  function initGuideButton(){
+    const btn=$('btnGuiaPractica');
+    if(!btn || btn.__ajGuideWired) return;
+    btn.__ajGuideWired=true;
+    const sync=()=>{
+      const on=enabled;
+      btn.textContent=on ? 'Guía práctica: ON' : 'Guía práctica: OFF';
+      btn.classList.toggle('on',on);
+      btn.classList.toggle('off',!on);
+      btn.setAttribute('aria-pressed',on ? 'true' : 'false');
+      btn.title=on ? 'Desactivar carteles informativos de las piezas' : 'Activar carteles informativos de las piezas';
+    };
+    btn.addEventListener('click',()=>{
+      saveEnabled(!enabled);
+      const cb=$('ajPieceCardEnabled');
+      if(cb) cb.checked=enabled;
+      sync();
+    });
+    sync();
+  }
+
   function initSetting(){
     readEnabled();
+    initGuideButton();
     const cb=$('ajPieceCardEnabled');
     if(cb){
       cb.checked=enabled;
@@ -14383,6 +14420,13 @@ function showVeteranBanner(color){
         cb.__ajWired=true;
         cb.addEventListener('change',function(){
           saveEnabled(cb.checked);
+          const guideBtn=$('btnGuiaPractica');
+          if(guideBtn){
+            guideBtn.textContent=enabled ? 'Guía práctica: ON' : 'Guía práctica: OFF';
+            guideBtn.classList.toggle('on',enabled);
+            guideBtn.classList.toggle('off',!enabled);
+            guideBtn.setAttribute('aria-pressed',enabled ? 'true' : 'false');
+          }
           const toast=$('applyToast');
           if(toast){ toast.textContent=cb.checked?'✔ Ficha de pieza activada':'✔ Ficha de pieza desactivada'; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),900); }
         });
