@@ -17733,3 +17733,53 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
 </style>
 <!-- /AJETREZ: CORRECCIÓN DEFINITIVA — alineación única de controles superiores -->
 
+
+
+<!-- AJETREZ: ajuste final — Pantalla completa + Guía práctica alineadas con Reloj/Pausa/Reiniciar -->
+<style id="aj-final-upper-buttons-down-align-20260826">
+  /* Bajar el grupo hasta la misma referencia vertical del reloj y pausa. */
+  #topBar #rightControls{
+    position:absolute !important;
+    top:auto !important;
+    bottom:6px !important;
+    transform:none !important;
+    align-items:center !important;
+  }
+
+  #topBar #rightControls #btnFSBR,
+  #topBar #rightControls #btnGuiaPractica,
+  #topBar #rightControls #btnRestartBR{
+    position:static !important;
+    top:auto !important;
+    bottom:auto !important;
+    transform:none !important;
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+    align-self:center !important;
+  }
+
+  /* Mantener exactamente la misma altura al entrar/salir de pantalla completa. */
+  #fsRoot:fullscreen #topBar #rightControls,
+  #fsRoot:-webkit-full-screen #topBar #rightControls{
+    top:auto !important;
+    bottom:6px !important;
+    transform:none !important;
+    align-items:center !important;
+  }
+
+  @media (max-width:900px), (pointer:coarse){
+    #topBar #rightControls{
+      top:auto !important;
+      bottom:6px !important;
+      transform:none !important;
+      align-items:center !important;
+    }
+    #fsRoot:fullscreen #topBar #rightControls,
+    #fsRoot:-webkit-full-screen #topBar #rightControls{
+      top:auto !important;
+      bottom:6px !important;
+      transform:none !important;
+    }
+  }
+</style>
+<!-- /AJETREZ: ajuste final — Pantalla completa + Guía práctica alineadas con Reloj/Pausa/Reiniciar -->
