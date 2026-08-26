@@ -18280,3 +18280,42 @@ console.log('[AJ] IA especial Modo Guerra activa: G/V/M/W/J/A/S + veteranos + de
   }
 }
 </style>
+
+
+<!-- AJETREZ: MENU MOVIL — +1/2 CASILLERO HACIA ARRIBA + CONTENIDO COMPACTO 2026-08-26 -->
+<style id="aj-menu-mobile-height-up-compact-final-20260826">
+@media (max-width:900px), (pointer:coarse){
+  /* Aumentar 1/2 casillero conservando exactamente el borde inferior.
+     El centro se desplaza 1/4 de casillero hacia arriba para que abajo no cambie. */
+  #megaPanel{
+    height:calc(var(--square,56px) * 8.5) !important;
+    max-height:calc(var(--square,56px) * 8.5) !important;
+    top:calc(50% - (var(--square,56px) * .25)) !important;
+    transform:translate(-50%,-50%) !important;
+  }
+
+  /* Contenido un poco más compacto, sin modificar el tamaño del panel. */
+  #megaPanel .mp-content{
+    font-size:.92em !important;
+  }
+  #megaPanel .mp-content .btn,
+  #megaPanel .mp-content button{
+    font-size:.92em !important;
+    padding:6px 9px !important;
+  }
+  #megaPanel .mp-content .tab-btn{
+    font-size:.88em !important;
+    padding:6px 8px !important;
+  }
+  #megaPanel .mp-content h2{font-size:1.15em !important;}
+  #megaPanel .mp-content h3{font-size:1.05em !important;}
+  #megaPanel .mp-content h4{font-size:1em !important;}
+  #megaPanel .mp-content p,
+  #megaPanel .mp-content label,
+  #megaPanel .mp-content .hint,
+  #megaPanel .mp-content .hint-sm{
+    font-size:.92em !important;
+  }
+}
+</style>
+<!-- /AJETREZ: MENU MOVIL — +1/2 CASILLERO HACIA ARRIBA + CONTENIDO COMPACTO -->
