@@ -3289,6 +3289,96 @@ body[data-theme="noche"] .regv2-btn{
   }
 </style>
 
+<style id="aj-config-save-top-final">
+/* AJETREZ: Guardar selección en la fila superior de Configurar partida */
+#ajConfigView .mp-tabs{
+  display:flex !important;
+  align-items:center !important;
+  flex-wrap:nowrap !important;
+}
+#ajConfigView #ajConfigSave{
+  flex:0 0 auto !important;
+  min-width:170px !important;
+  margin-left:28px !important;
+  background:#C8102E !important;
+  background-image:none !important;
+  border-color:#C8102E !important;
+  color:#fff !important;
+  font-weight:900 !important;
+  box-shadow:0 3px 10px rgba(200,16,46,.28) !important;
+  animation:aj-config-save-heartbeat 1.35s ease-in-out infinite !important;
+  transform-origin:center !important;
+}
+#ajConfigView #ajConfigSave:hover{
+  background:#A90D26 !important;
+  border-color:#A90D26 !important;
+}
+@keyframes aj-config-save-heartbeat{
+  0%,100%{ transform:scale(1); box-shadow:0 3px 10px rgba(200,16,46,.28); }
+  18%{ transform:scale(1.055); box-shadow:0 5px 18px rgba(200,16,46,.42); }
+  34%{ transform:scale(1); box-shadow:0 3px 10px rgba(200,16,46,.28); }
+  52%{ transform:scale(1.035); box-shadow:0 4px 15px rgba(200,16,46,.36); }
+  68%,100%{ transform:scale(1); }
+}
+#ajConfigSaveBar{
+  position:absolute !important;
+  width:1px !important; height:1px !important;
+  overflow:hidden !important; opacity:0 !important;
+  pointer-events:none !important;
+  padding:0 !important; border:0 !important;
+}
+@media (prefers-reduced-motion:reduce){
+  #ajConfigView #ajConfigSave{ animation:none !important; }
+}
+@media (max-width:900px){
+  #ajConfigView .mp-tabs{ overflow-x:auto !important; overflow-y:hidden !important; padding-right:8px !important; }
+  #ajConfigView #ajConfigSave{ min-width:145px !important; font-size:12px !important; margin-left:24px !important; }
+}
+</style>
+
+<style id="aj-save-selection-final-align-20260826">
+/* Alineación final de Guardar selección */
+#megaPanel #btnSaveSelection{
+  position: relative !important;
+  top: 3px !important;
+  margin-left: auto !important;
+  margin-right: 10px !important;
+  align-self: center !important;
+  transform-origin: center center !important;
+  background: #C8102E !important;
+  border-color: #C8102E !important;
+  color: #fff !important;
+  animation: aj-save-heartbeat-final 1.35s ease-in-out infinite !important;
+}
+@keyframes aj-save-heartbeat-final{
+  0%,100%{ transform: scale(1); box-shadow: 0 2px 8px rgba(200,16,46,.22); }
+  18%{ transform: scale(1.055); box-shadow: 0 0 0 7px rgba(200,16,46,0); }
+  35%{ transform: scale(1); box-shadow: 0 2px 8px rgba(200,16,46,.22); }
+}
+@media (prefers-reduced-motion: reduce){
+  #megaPanel #btnSaveSelection{ animation: none !important; }
+}
+</style>
+
+<style id="aj-version-rules-black-heartbeat-final">
+#btnVersionRules{
+ background:#000 !important;
+ background-image:none !important;
+ color:#fff !important;
+ border-color:#111 !important;
+ box-shadow:0 0 0 0 rgba(0,0,0,.28) !important;
+ animation:ajVersionRulesBlackHeartbeat 1.5s ease-in-out infinite !important;
+}
+#btnVersionRules:hover{background:#111 !important;color:#fff !important;filter:brightness(1.12);}
+@keyframes ajVersionRulesBlackHeartbeat{
+ 0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(0,0,0,.30)}
+ 12%{transform:scale(1.075);box-shadow:0 0 0 6px rgba(0,0,0,.18)}
+ 24%{transform:scale(1);box-shadow:0 0 0 0 rgba(0,0,0,0)}
+ 38%{transform:scale(1.055);box-shadow:0 0 0 5px rgba(0,0,0,.14)}
+ 52%{transform:scale(1);box-shadow:0 0 0 0 rgba(0,0,0,0)}
+}
+@media (prefers-reduced-motion:reduce){#btnVersionRules{animation:none !important}}
+</style>
 </head><body><div class="frame" data-fullscreen-root="" id="fsRoot"><div class="shell"><div aria-label="Barra superior" class="bar" id="topBar"><div aria-live="polite" class="bot-hud" id="botHUD" role="status"><div class="bot-hud-inner"><span id="botHUDText"></span></div></div></div><div style="height:var(--toolbar-gap)"></div><div class="board-wrap" id="boardWrap">
 <!-- Floating Replay FAB (centered over board) -->
 <div aria-label="Reproducir partida" id="rpFab" role="region" style="display:none">
@@ -14550,6 +14640,87 @@ function showVeteranBanner(color){
 })();
 </script>
 <!-- /AJETREZ: ajuste final -->
+
+<style id="aj-global-config-save-footer-final-20260826">
+/* Guardar selección: botón global en la barra inferior del panel. */
+#megaPanel .aj-menu-userbar{
+  position:relative !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-height:52px !important;
+  box-sizing:border-box !important;
+  padding:7px 12px !important;
+}
+#megaPanel .aj-menu-userbar > .right{
+  position:absolute !important;
+  right:12px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+#megaPanel .aj-menu-userbar #ajHeaderBackBtn{
+  position:absolute !important;
+  left:12px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  margin:0 !important;
+  z-index:2 !important;
+}
+#megaPanel .aj-menu-userbar #ajConfigSave{
+  position:relative !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-width:170px !important;
+  margin:0 !important;
+  top:0 !important;
+  background:#C8102E !important;
+  background-image:none !important;
+  border-color:#C8102E !important;
+  color:#fff !important;
+  font-weight:900 !important;
+  animation:aj-save-heartbeat-global 1.35s ease-in-out infinite !important;
+}
+@keyframes aj-save-heartbeat-global{
+  0%,100%{transform:scale(1);box-shadow:0 2px 8px rgba(200,16,46,.24)}
+  18%{transform:scale(1.045);box-shadow:0 4px 15px rgba(200,16,46,.38)}
+  35%{transform:scale(1);box-shadow:0 2px 8px rgba(200,16,46,.24)}
+}
+#megaPanel #ajConfigSaveBar{
+  position:absolute !important; width:1px !important; height:1px !important;
+  overflow:hidden !important; opacity:0 !important; pointer-events:none !important;
+}
+@media (max-width:600px){
+  #megaPanel .aj-menu-userbar{min-height:46px !important;padding:5px 8px !important;}
+  #megaPanel .aj-menu-userbar > .right{right:8px !important;gap:5px !important;}
+  #megaPanel .aj-menu-userbar #ajHeaderBackBtn{left:8px !important;}
+  #megaPanel .aj-menu-userbar #ajConfigSave{min-width:145px !important;font-size:12px !important;}
+}
+@media (prefers-reduced-motion:reduce){#megaPanel .aj-menu-userbar #ajConfigSave{animation:none !important;}}
+</style>
+<script id="aj-global-config-save-footer-js-20260826">
+(function(){
+  if(window.__AJ_GLOBAL_SAVE_FOOTER__) return; window.__AJ_GLOBAL_SAVE_FOOTER__=true;
+  function move(){
+    try{
+      var panel=document.getElementById('megaPanel'); if(!panel) return;
+      var bar=panel.querySelector('.aj-menu-userbar'); if(!bar) return;
+      var save=document.getElementById('ajConfigSave');
+      var back=document.getElementById('ajHeaderBackBtn');
+      if(save && save.parentElement!==bar) bar.insertBefore(save,bar.firstChild);
+      if(back && back.parentElement!==bar) bar.insertBefore(back,bar.firstChild);
+    }catch(_){}
+  }
+  function init(){move(); setTimeout(move,0); setTimeout(move,100); setTimeout(move,300);}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
+  var obs=new MutationObserver(function(){move();});
+  function watch(){var p=document.getElementById('megaPanel');if(p) obs.observe(p,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class']});else setTimeout(watch,250);}
+  watch();
+})();
+</script>
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
@@ -16143,6 +16314,19 @@ function showVeteranBanner(color){
       <span id="ajConfigSaveStatus">Los cambios quedan aplicados al guardar.</span>
       <button class="btn" id="ajConfigSave" type="button">Guardar selección</button>`;
     config.appendChild(saveBar);
+
+    // El botón Guardar selección se muestra en la misma fila superior de las
+    // pestañas de configuración, a la derecha de Duración de la partida.
+    setTimeout(function(){
+      try{
+        const tabs = config.querySelector('.mp-tabs');
+        const durationTab = tabs && tabs.querySelector('[data-tab="tab-tiempo-partida"]');
+        const saveBtn = document.getElementById('ajConfigSave');
+        if(tabs && durationTab && saveBtn && saveBtn.parentElement !== tabs){
+          tabs.appendChild(saveBtn);
+        }
+      }catch(_){}
+    },0);
 
     /* Sacar Personalización de Configurar partida y convertirla en sección principal. */
     const personalTab = qs('#tab-personalizacion', panel);
