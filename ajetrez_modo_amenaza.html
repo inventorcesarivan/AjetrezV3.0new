@@ -14607,6 +14607,83 @@ function showVeteranBanner(color){
 </script>
 
 <!-- AJETREZ AI v2: búsqueda mejorada, tabla de transposición, iterative deepening y desplazamientos estratégicos -->
+
+<!-- AJETREZ: ajuste final menú móvil + barra fija de usuario -->
+<style id="aj-menu-mobile-userbar-final-20260826">
+/* En móvil: subir el panel aproximadamente medio casillero. */
+@media (max-width:900px), (pointer:coarse){
+  #megaPanel{
+    top:calc(2vh - (var(--square,56px) * .5)) !important;
+  }
+}
+@media (max-width:480px){
+  #megaPanel{
+    top:calc(1vh - (var(--square,46px) * .5)) !important;
+  }
+}
+
+/* Barra fija inferior del menú: usuario + cerrar sesión. */
+#megaPanel .aj-menu-userbar{
+  flex:0 0 auto !important;
+  width:100% !important;
+  min-height:46px !important;
+  padding:7px 12px !important;
+  background:#fff !important;
+  border-top:1px solid #ddd !important;
+  box-shadow:0 -3px 10px rgba(0,0,0,.08) !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:8px !important;
+  z-index:50 !important;
+}
+#megaPanel .aj-menu-userbar #loggedUser{
+  position:static !important;
+  white-space:nowrap !important;
+  margin:0 !important;
+  font-weight:800 !important;
+  font-size:13px !important;
+}
+#megaPanel .aj-menu-userbar #btnLogout{
+  position:static !important;
+  margin:0 !important;
+  white-space:nowrap !important;
+}
+@media (max-width:600px){
+  #megaPanel .aj-menu-userbar{
+    min-height:40px !important;
+    padding:5px 8px !important;
+    gap:5px !important;
+  }
+  #megaPanel .aj-menu-userbar #loggedUser{ font-size:11px !important; }
+  #megaPanel .aj-menu-userbar #btnLogout{ padding:5px 8px !important; font-size:11px !important; }
+}
+</style>
+<script id="aj-menu-userbar-final-20260826">
+(function(){
+  function moveUserBar(){
+    try{
+      var panel=document.getElementById('megaPanel');
+      if(!panel || panel.__ajUserBarMoved) return;
+      var header=panel.querySelector('.mp-header');
+      var right=header && header.querySelector('.right');
+      if(!right) return;
+      var bar=document.createElement('div');
+      bar.className='aj-menu-userbar';
+      bar.setAttribute('aria-label','Usuario y sesión');
+      bar.appendChild(right);
+      panel.appendChild(bar);
+      panel.__ajUserBarMoved=true;
+    }catch(_){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',moveUserBar,{once:true});
+  else moveUserBar();
+  setTimeout(moveUserBar,100);
+  setTimeout(moveUserBar,500);
+})();
+</script>
+<!-- /AJETREZ: ajuste final menú móvil + barra fija de usuario -->
+
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
