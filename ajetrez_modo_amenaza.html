@@ -17645,7 +17645,7 @@ console.log('[AJ] IA especial Modo Amenaza activa: prioridad a Liberación + des
 
 
 
-\n<script id="aj-default-start-settings-20260826">\n(function(){\n  'use strict';\n  // Configuración inicial solicitada: Player vs Bot + dificultad Normal.\n  // Se aplica al cargar el juego y evita que una configuración antigua del navegador\n  // cambie el arranque por defecto.\n  function applyDefaults(){\n    try{ localStorage.setItem('ajetrez.bot.difficulty','normal'); }catch(_){}\n    try{\n      var sel=document.getElementById('botChooserSelect');\n      if(sel) sel.value='normal';\n      var sw=document.getElementById('botChooserSelectW');\n      var sb=document.getElementById('botChooserSelectB');\n      if(sw) sw.value='normal';\n      if(sb) sb.value='normal';\n    }catch(_){}\n    try{\n      if(typeof window.setGameMode==='function' && window.GAME_MODE!=='bot'){\n        window.setGameMode('bot','Player Vs Bot');\n      }\n    }catch(_){}\n    try{\n      if(typeof window.applyBotLabelToPill==='function') window.applyBotLabelToPill();\n    }catch(_){}\n  }\n\n  // En móvil, el toque de "Comenzar partida" es un gesto válido para Fullscreen.\n  // Se ejecuta sólo en móvil/táctil y antes de cualquier otra acción asíncrona.\n  function isMobile(){\n    return (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||\n           /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);\n  }\n  async function enterMobileFullscreen(){\n    if(!isMobile() || document.fullscreenElement) return;\n    var root=document.getElementById('fsRoot') || document.documentElement;\n    try{\n      if(root && root.requestFullscreen){\n        await root.requestFullscreen({navigationUI:'hide'}).catch(async function(){\n          await root.requestFullscreen();\n        });\n      }\n      try{\n        if(screen.orientation && screen.orientation.lock){\n          await screen.orientation.lock('landscape');\n        }\n      }catch(_){}\n      var b=document.getElementById('btnFSBR');\n      if(b) b.textContent='salir';\n    }catch(_){}\n  }\n\n  document.addEventListener('click',function(e){\n    if(e && e.target && e.target.id==='btnStartGame'){\n      // Importante: llamada directamente desde el gesto del usuario.\n      enterMobileFullscreen();\n    }\n  },true);\n\n  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',applyDefaults,{once:true});\n  else applyDefaults();\n})();\n</script>\n<!-- AJETREZ: ajuste final — Pantalla completa + Guía práctica alineadas con Reloj/Pausa/Reiniciar -->
+\n<!-- AJETREZ: ajuste final — Pantalla completa + Guía práctica alineadas con Reloj/Pausa/Reiniciar -->
 <style id="aj-final-upper-buttons-down-align-20260826">
   /* Bajar el grupo hasta la misma referencia vertical del reloj y pausa. */
   #topBar #rightControls{
@@ -17693,3 +17693,136 @@ console.log('[AJ] IA especial Modo Amenaza activa: prioridad a Liberación + des
   }
 </style>
 <!-- /AJETREZ: ajuste final — Pantalla completa + Guía práctica alineadas con Reloj/Pausa/Reiniciar -->
+
+<!-- AJETREZ: INICIO POR DEFECTO + FULLSCREEN MOVIL + MENU MOVIL FINAL 2026-08-26 -->
+<style id="aj-start-mobile-final-20260826">
+/* El panel móvil queda aprox. medio casillero más bajo en altura que el ajuste anterior,
+   manteniendo el contenido interno con scroll. */
+@media (max-width:900px), (pointer:coarse){
+  #megaPanel{
+    height:min(calc(88vh - (var(--square,56px) * 1.5)), 720px) !important;
+    max-height:calc(88vh - (var(--square,56px) * 1.5)) !important;
+    min-height:300px !important;
+  }
+}
+</style>
+<script id="aj-start-mobile-final-20260826">
+(function(){
+  'use strict';
+
+  function isMobile(){
+    try{
+      return !!((window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+        /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent));
+    }catch(_){ return false; }
+  }
+
+  /* Siempre arrancar con la configuración pedida: Player Vs Bot + Normal. */
+  function forceInitialGameSettings(){
+    try{ localStorage.setItem('ajetrez.bot.difficulty','normal'); }catch(_){ }
+    try{ localStorage.setItem('ajetrez.bot.difficulty.white','normal'); }catch(_){ }
+    try{ localStorage.setItem('ajetrez.bot.difficulty.black','normal'); }catch(_){ }
+
+    try{
+      var sel=document.getElementById('botChooserSelect');
+      if(sel) sel.value='normal';
+      var sw=document.getElementById('botChooserSelectW');
+      var sb=document.getElementById('botChooserSelectB');
+      if(sw) sw.value='normal';
+      if(sb) sb.value='normal';
+    }catch(_){ }
+
+    try{
+      if(typeof window.setGameMode==='function'){
+        if(window.GAME_MODE!=='bot') window.setGameMode('bot','Player Vs Bot');
+      }else{
+        window.GAME_MODE='bot';
+      }
+    }catch(_){
+      try{ window.GAME_MODE='bot'; }catch(__){ }
+    }
+
+    /* Guía práctica siempre disponible y activada al iniciar. */
+    try{ localStorage.setItem('aj.pieceCard.enabled.v1','true'); }catch(_){ }
+    try{
+      if(window.AJ_PIECE_CARD && typeof window.AJ_PIECE_CARD.setEnabled==='function') window.AJ_PIECE_CARD.setEnabled(true);
+    }catch(_){ }
+    try{
+      var guide=document.getElementById('btnGuiaPractica');
+      if(guide){
+        guide.disabled=false;
+        guide.removeAttribute('disabled');
+        guide.textContent='Guía práctica: ON';
+        guide.classList.add('on');
+        guide.classList.remove('off');
+        guide.setAttribute('aria-pressed','true');
+      }
+      var cb=document.getElementById('ajPieceCardEnabled');
+      if(cb) cb.checked=true;
+    }catch(_){ }
+
+    /* El selector de versión debe mostrar siempre Modo Clásico al abrir el menú. */
+    try{
+      var ver=document.getElementById('selVersion');
+      if(ver && ver.value!=='3_0_simple'){
+        ver.value='3_0_simple';
+        try{ if(typeof window.ajSyncVersionLabel==='function') window.ajSyncVersionLabel(); }catch(_){ }
+      }
+    }catch(_){ }
+  }
+
+  /* Solicitud de fullscreen hecha durante pointerdown: sigue siendo un gesto directo
+     del usuario y ocurre antes de que otros handlers de click puedan consumirlo. */
+  var fsRequested=false;
+  function enterFullscreenFromGesture(){
+    if(!isMobile() || document.fullscreenElement || fsRequested) return;
+    var root=document.getElementById('fsRoot') || document.documentElement;
+    if(!root) return;
+    var fn=root.requestFullscreen || root.webkitRequestFullscreen;
+    if(typeof fn!=='function') return;
+    fsRequested=true;
+    try{
+      var result=fn.call(root);
+      if(result && typeof result.then==='function'){
+        result.then(function(){
+          try{
+            if(screen.orientation && screen.orientation.lock){
+              return screen.orientation.lock('landscape').catch(function(){});
+            }
+          }catch(_){ }
+        }).catch(function(){ fsRequested=false; });
+      }else{
+        try{ if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(function(){}); }catch(_){ }
+      }
+    }catch(_){ fsRequested=false; }
+  }
+
+  function bindStartFullscreen(){
+    var btn=document.getElementById('btnStartGame');
+    if(!btn || btn.__ajMobileFSFinal) return;
+    btn.__ajMobileFSFinal=true;
+    btn.addEventListener('pointerdown',function(){ enterFullscreenFromGesture(); },{capture:true,passive:true});
+    btn.addEventListener('touchstart',function(){ enterFullscreenFromGesture(); },{capture:true,passive:true});
+    btn.addEventListener('click',function(){
+      /* Fallback para navegadores que no exponen pointer events de la misma manera. */
+      if(!document.fullscreenElement) enterFullscreenFromGesture();
+    },{capture:true,passive:true});
+  }
+
+  function init(){
+    forceInitialGameSettings();
+    bindStartFullscreen();
+    /* Algunos elementos se crean/re-renderizan después del DOMContentLoaded. */
+    setTimeout(bindStartFullscreen,50);
+    setTimeout(bindStartFullscreen,250);
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
+  document.addEventListener('aj:mode:change',function(){
+    /* No cambiar la selección del usuario durante la partida; sólo aseguramos el arranque. */
+  });
+})();
+</script>
+<!-- /AJETREZ: INICIO POR DEFECTO + FULLSCREEN MOVIL + MENU MOVIL FINAL -->
+
