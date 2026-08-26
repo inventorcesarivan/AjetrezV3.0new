@@ -17625,3 +17625,37 @@ function showVeteranBanner(color){
 </script>
 <!-- /AJETREZ: INICIO POR DEFECTO + FULLSCREEN MOVIL + MENU MOVIL FINAL -->
 
+
+<!-- AJETREZ: PANEL MENU MOVIL CENTRADO CON LAS SECCIONES DEL TABLERO — 2026-08-26 -->
+<style id="aj-menu-mobile-centered-board-final-20260826">
+@media (max-width:900px), (pointer:coarse){
+  /* #megaPanel está dentro del área del tablero (#boardWrap).
+     Lo centramos exactamente dentro de las 8 filas para que quede:
+     - debajo de los controles superiores,
+     - encima de la barra inferior,
+     - sin pisar ninguna de las dos barras,
+     - con la misma altura vertical que las secciones desplazables. */
+  #megaPanel{
+    top:50% !important;
+    left:50% !important;
+    height:calc(var(--square,56px) * 8) !important;
+    max-height:calc(var(--square,56px) * 8) !important;
+    min-height:0 !important;
+    transform:translate(-50%,-50%) !important;
+    transform-origin:center center !important;
+    box-sizing:border-box !important;
+  }
+
+  #megaPanel .mp-content{
+    min-height:0 !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  #megaPanel .mp-header,
+  #megaPanel .mp-footer{
+    flex-shrink:0 !important;
+  }
+}
+</style>
