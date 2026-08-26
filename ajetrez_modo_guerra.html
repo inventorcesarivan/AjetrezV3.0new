@@ -4458,7 +4458,14 @@ function playMove(from, to, special, capturesKing){
   }
 
   board = newBoard;
-  try{ if(res && res.movedPiece && res.movedPiece.type==='S' && res.movedPiece.__justVeteran){ showVeteranBanner(res.movedPiece.color); } }catch(_){}
+  try{
+    if(res && res.movedPiece && res.movedPiece.type==='S' && res.movedPiece.__justVeteran){
+      const veteranColor = res.movedPiece.color;
+      // La marca es transitoria: el aviso solo corresponde al momento de la promoción.
+      res.movedPiece.__justVeteran = false;
+      if(typeof showVeteranBanner==='function') showVeteranBanner(veteranColor);
+    }
+  }catch(_){}
   sel = null; moves = [];
   try{ if(res && res.captured){ window.__SND__ && __SND__.play('capture'); } else { window.__SND__ && __SND__.play('move'); } }catch(_){}
 
@@ -4655,12 +4662,12 @@ window.addEventListener('aj:mode:change', (e)=>{
 
 // Parámetros por dificultad
 const BOT_PARAMS = {
-  'muy-facil': { depth: 0, noise: 0.60, blunder: 0.40, timeMs: 30,  beam: 6 },
-  'easy'     : { depth: 1, noise: 0.35, blunder: 0.20, timeMs: 60,  beam: 8 },
-  'normal'   : { depth: 1, noise: 0.15, blunder: 0.05, timeMs: 120, beam: 10 },
-  'hard'     : { depth: 2, noise: 0.05, blunder: 0.00, timeMs: 180, beam: 12 },
-  'expert'   : { depth: 2, noise: 0.00, blunder: 0.00, timeMs: 250, beam: 14 },
-  'master'   : { depth: 3, noise: 0.00, blunder: 0.00, timeMs: 350, beam: 16 },
+  'muy-facil': { depth: 0, noise: 0.60, blunder: 0.40, timeMs: 35,  beam: 6 },
+  'easy'     : { depth: 1, noise: 0.35, blunder: 0.20, timeMs: 80,  beam: 9 },
+  'normal'   : { depth: 2, noise: 0.12, blunder: 0.04, timeMs: 180, beam: 12 },
+  'hard'     : { depth: 3, noise: 0.04, blunder: 0.00, timeMs: 300, beam: 14 },
+  'expert'   : { depth: 3, noise: 0.00, blunder: 0.00, timeMs: 450, beam: 16 },
+  'master'   : { depth: 4, noise: 0.00, blunder: 0.00, timeMs: 650, beam: 20 },
 };
 
 function getStoredDiffFor(color){
@@ -4843,26 +4850,61 @@ function qsearch(boardState, offsState, side, alpha, beta, deadline){
 }
 
 // Minimax con poda alfa-beta + quiescence en hoja
+// === AJETREZ AI v2: búsqueda con tabla de transposición + quiescence ===
+const AJ_TT = new Map();
+const AJ_TT_MAX = 50000;
+function ajStateKey(boardState, offsState, side){
+  try{
+    if(typeof positionKey==='function') return positionKey(boardState, offsState, side);
+  }catch(_){}
+  let k=String(side)+'|'+(offsState||[]).join(',')+'|';
+  for(let r=0;r<boardState.length;r++){
+    const row=boardState[r]||[];
+    for(let c=0;c<row.length;c++){ const p=row[c]; k+=p?(p.color+p.type+(p.hasMoved?'m':'')+(p.veteran?'v':'')+(p.freeze?'f'+JSON.stringify(p.freeze):'')):'_'; }
+    k+='/';
+  }
+  return k;
+}
 function search(boardState, offsState, side, depth, alpha, beta, deadline){
-  if(performance && performance.now && performance.now()>deadline){
-    return evaluate(boardState, offsState, side);
+  const originalAlpha=alpha, originalBeta=beta;
+  if(performance && performance.now && performance.now()>deadline) return evaluate(boardState, offsState, side);
+  const key=ajStateKey(boardState,offsState,side)+'|d'+depth;
+  const cached=AJ_TT.get(key);
+  if(cached && cached.depth>=depth){
+    if(cached.flag==='EXACT') return cached.value;
+    if(cached.flag==='LOWER') alpha=Math.max(alpha,cached.value);
+    else if(cached.flag==='UPPER') beta=Math.min(beta,cached.value);
+    if(alpha>=beta) return cached.value;
   }
-  if(depth <= 0){
-    return qsearch(boardState, offsState, side, alpha, beta, deadline);
+  if(depth<=0){
+    const v=qsearch(boardState,offsState,side,alpha,beta,deadline);
+    if(AJ_TT.size<AJ_TT_MAX) AJ_TT.set(key,{depth,value:v,flag:'EXACT'});
+    return v;
   }
-  const moves = orderMoves(genMoves(boardState, offsState, side, epTarget));
-  if(moves.length===0){
-    // Sin jugadas: posición "muerta" para el que mueve
-    return evaluate(boardState, offsState, side);
+  const moves=orderMoves(genMoves(boardState,offsState,side,epTarget));
+  if(!moves.length){
+    let v=evaluate(boardState,offsState,side);
+    try{ if(inCheck(buildVisible(boardState,offsState),side)) v=-200000+depth*1000; }catch(_){}
+    if(AJ_TT.size<AJ_TT_MAX) AJ_TT.set(key,{depth,value:v,flag:'EXACT'});
+    return v;
   }
+  let best= -1e18, completed=true;
   for(const m of moves){
-    const nxt = applyMove(boardState, offsState, m.from, m.to, m.special);
-    const score = -search(nxt.board, offsState, (side==='w'?'b':'w'), depth-1, -beta, -alpha, deadline);
-    if(score >= beta) return beta;
-    if(score > alpha) alpha = score;
-    if(performance && performance.now && performance.now()>deadline) break;
+    if(performance && performance.now && performance.now()>deadline){ completed=false; break; }
+    const nxt=applyMove(boardState,offsState,m.from,m.to,m.special);
+    const nextOff=nxt.offsets||offsState;
+    const score=-search(nxt.board,nextOff,(side==='w'?'b':'w'),depth-1,-beta,-alpha,deadline);
+    if(score>best) best=score;
+    if(score>alpha) alpha=score;
+    if(alpha>=beta){ completed=false; break; }
   }
-  return alpha;
+  if(completed){
+    let flag='EXACT';
+    if(best<=originalAlpha) flag='UPPER'; else if(best>=originalBeta) flag='LOWER';
+    if(AJ_TT.size>=AJ_TT_MAX){ const first=AJ_TT.keys().next().value; if(first!==undefined) AJ_TT.delete(first); }
+    AJ_TT.set(key,{depth,value:best,flag});
+  }
+  return best;
 }
 
 // scoreMove heredado (ya no usado para elegir mejor jugada, pero se deja por compatibilidad si algún otro módulo lo usa)
@@ -4894,7 +4936,28 @@ function pickMove(color){
   try{s+=.30*(evaluate(b2,o2,color)||0)}catch(_){ } return s;
  }
  let arr=moves.slice().sort((a,b)=>score(b)-score(a));const beam=Math.max(8,Math.min(20,params.beam||12));if(arr.length>beam)arr=arr.slice(0,beam);const deadline=performance?.now?performance.now()+(params.timeMs||120):Infinity;let best=arr[0],bs=-1e12;
- for(const m of arr){if(performance?.now&&performance.now()>deadline)break;let s=score(m);if((params.depth||0)>0)try{const n=applyMove(board,offsets,m.from,m.to,m.special);s+=.55*search(n.board,offsets,opp,params.depth-1,-1e9,1e9,deadline)}catch(_){ }s+=(params.noise||0)*60*(Math.random()-.5);if(s>bs){bs=s;best=m}}
+ // Iterative deepening: cada nivel reutiliza la tabla de transposición y sólo
+ // se conserva la mejor respuesta encontrada antes del límite de tiempo.
+ try{ AJ_TT.clear(); }catch(_){}
+ const maxDepth=Math.max(0,Math.min(4,Number(params.depth)||0));
+ if(maxDepth===0){
+   for(const m of arr){ const s=score(m)+(params.noise||0)*60*(Math.random()-.5); if(s>bs){bs=s;best=m;} }
+ }else{
+   for(let d=1;d<=maxDepth && (!performance?.now||performance.now()<deadline);d++){
+     let roundBest=best,roundScore=-1e12;
+     for(const m of arr){
+       if(performance?.now&&performance.now()>deadline)break;
+       let s=score(m);
+       try{
+         const n=applyMove(board,offsets,m.from,m.to,m.special);
+         s += .62*search(n.board,n.offsets||offsets,opp,d-1,-1e9,1e9,deadline);
+       }catch(_){}
+       if(d===1 && params.noise) s+=(params.noise)*60*(Math.random()-.5);
+       if(s>roundScore){roundScore=s;roundBest=m;}
+     }
+     if(roundBest){ best=roundBest; bs=roundScore; }
+   }
+ }
  if(params.blunder&&Math.random()<params.blunder&&arr.length>1)best=arr[1+Math.floor(Math.random()*Math.min(3,arr.length-1))];return best;
 }
 
@@ -4990,7 +5053,24 @@ async function botDecideShift(row){
     return s;
   }
 
-  const opts=[{a:'keep',t:null,s:val(off)}];
+  function strategicShiftScore(o){
+    let s=val(o);
+    // El desplazamiento no es un simple bonus material: el rival mueve después.
+    // En dificultades altas miramos su mejor respuesta antes de decidir.
+    try{
+      const p=getParamsFor(color);
+      const sd=Math.max(0,Math.min(2,(Number(p.depth)||0)-1));
+      if(sd>0 && typeof search==='function'){
+        const dl=now()+Math.min(180,Math.max(35,(p.timeMs||120)*0.32));
+        const reply=search(base,o,opp,sd,-1e9,1e9,dl);
+        s -= 0.62*reply;
+      }
+      const my=genMoves(base,o,color,epTarget).length, enemy=genMoves(base,o,opp,epTarget).length;
+      s += Math.max(-30,Math.min(30,my-enemy))*2.5;
+    }catch(_){}
+    return s;
+  }
+  const opts=[{a:'keep',t:null,s:strategicShiftScore(off)}];
   for(const t of [0,8]){
     try{
       const chk = AJ_RULES?.legalShiftWithReason
@@ -4998,7 +5078,7 @@ async function botDecideShift(row){
         : {ok:!!AJ_RULES?.legalShift(row,t,base,off)};
       if(chk.ok){
         const o=off.slice(); o[row]=t;
-        opts.push({a:'shift',t,s:val(o)+(variant==='guerra'?180:variant==='amenaza'?150:120)});
+        opts.push({a:'shift',t,s:strategicShiftScore(o)+(variant==='guerra'?180:variant==='amenaza'?150:120)});
       }
     }catch(_){ }
   }
@@ -12638,6 +12718,8 @@ function showPromotionDialog(color, onChoose){
 
 function showVeteranBanner(color){
   try{
+    // Este aviso forma parte de la Guía práctica. Si está desactivada, no se muestra.
+    if(window.AJ_PIECE_CARD && typeof window.AJ_PIECE_CARD.isEnabled==='function' && !window.AJ_PIECE_CARD.isEnabled()) return;
     const overlay = document.getElementById('promoOverlay');
     const cont = document.getElementById('promoChoices');
     const holder = document.getElementById('promoHolder') || cont.parentElement;
@@ -12657,10 +12739,11 @@ function showVeteranBanner(color){
     ok.textContent = 'Entendido';
     ok.style.padding='8px 16px';
     ok.style.fontWeight='700';
-    ok.onclick = function(){ overlay.style.display='none'; };
+    ok.onclick = function(){ overlay.style.display='none'; window.__AJ_VETERAN_BANNER_ACTIVE__=false; };
     card.appendChild(msg);
     card.appendChild(ok);
     cont.appendChild(card);
+    window.__AJ_VETERAN_BANNER_ACTIVE__ = true;
     overlay.style.display='flex';
     try{ if(window.__AJ_BOT_AUTO_DISMISS__) window.__AJ_BOT_AUTO_DISMISS__(color); }catch(_){}
   }catch(_){ /* ignore */ }
@@ -14516,6 +14599,7 @@ function showVeteranBanner(color){
     };
     btn.addEventListener('click',()=>{
       saveEnabled(!enabled);
+      if(!enabled && window.__AJ_VETERAN_BANNER_ACTIVE__){ const ov=$('promoOverlay'); if(ov) ov.style.display='none'; window.__AJ_VETERAN_BANNER_ACTIVE__=false; }
       const cb=$('ajPieceCardEnabled');
       if(cb) cb.checked=enabled;
       sync();
@@ -14533,6 +14617,7 @@ function showVeteranBanner(color){
         cb.__ajWired=true;
         cb.addEventListener('change',function(){
           saveEnabled(cb.checked);
+          if(!enabled && window.__AJ_VETERAN_BANNER_ACTIVE__){ const ov=$('promoOverlay'); if(ov) ov.style.display='none'; window.__AJ_VETERAN_BANNER_ACTIVE__=false; }
           const guideBtn=$('btnGuiaPractica');
           if(guideBtn){
             guideBtn.textContent=enabled ? 'Guía práctica: ON' : 'Guía práctica: OFF';
@@ -14635,6 +14720,7 @@ function showVeteranBanner(color){
 })();
 </script>
 
+<!-- AJETREZ AI v2: búsqueda mejorada, tabla de transposición, iterative deepening y desplazamientos estratégicos -->
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
