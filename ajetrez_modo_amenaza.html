@@ -3835,7 +3835,7 @@ function applyMove(board, offs, from, to, special){
   copy[to.r][toBC] = moved ? {...moved, hasMoved:true} : moved;
   if(moved && moved.type==='T'){
     const endRow = moved.color==='w' ? 0 : 7;
-    if(to.r===endRow){
+    if(to.r===endRow && !(moved && moved.veteran)){
       const gx=copy[to.r][toBC];
       if(gx){ gx.veteran=true; gx.hasMoved=true; gx.__justVeteran=true; }
     }

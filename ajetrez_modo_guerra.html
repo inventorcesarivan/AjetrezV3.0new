@@ -3965,9 +3965,9 @@ function applyMove(board, offs, from, to, special){
   // Guerrero 'S': al llegar a la última fila rival, gana 'veteran'
   if(moved && moved.type==='S'){
     const endRow = (moved.color==='w') ? 0 : (copy.length-1);
-    if(to.r === endRow){
+    if(to.r === endRow && !(moved && moved.veteran)){
       const gx = copy[to.r][toBC];
-      if(gx){ gx.veteran = true; gx.hasMoved = true; } gx.__justVeteran = true;
+      if(gx){ gx.veteran = true; gx.hasMoved = true; gx.__justVeteran = true; }
     }
   }
 
