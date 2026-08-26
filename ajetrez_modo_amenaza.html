@@ -14684,6 +14684,75 @@ function showVeteranBanner(color){
 </script>
 <!-- /AJETREZ: ajuste final menú móvil + barra fija de usuario -->
 
+\n<!-- AJETREZ: ajuste final — panel móvil + volver al inicio abajo centrado — 2026-08-26 -->
+<style id="aj-panel-height-and-back-bottom-final-20260826">
+/* Móvil: aumentar medio casillero la altura del panel y conservar el centrado exacto. */
+@media (max-width:900px), (pointer:coarse){
+  #megaPanel{
+    height:calc(var(--square,56px) * 8.5) !important;
+    max-height:calc(var(--square,56px) * 8.5) !important;
+    top:50% !important;
+    left:50% !important;
+    transform:translate(-50%,-50%) !important;
+    transform-origin:center center !important;
+  }
+}
+
+/* El botón Volver al inicio ya no ocupa espacio en la cabecera:
+   queda centrado en la barra inferior del panel. */
+#megaPanel .aj-menu-userbar{
+  position:relative !important;
+  justify-content:flex-end !important;
+}
+#megaPanel .aj-menu-userbar #ajHeaderBackBtn{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  transform:translate(-50%,-50%) !important;
+  display:none;
+  margin:0 !important;
+  z-index:4 !important;
+  white-space:nowrap !important;
+  background:#b91c1c !important;
+  color:#fff !important;
+  border:1.5px solid rgba(255,255,255,.75) !important;
+  box-shadow:0 2px 8px rgba(0,0,0,.18) !important;
+}
+#megaPanel .mp-header #ajHeaderBackBtn{
+  display:none !important;
+}
+@media (max-width:600px){
+  #megaPanel .aj-menu-userbar #ajHeaderBackBtn{
+    padding:5px 9px !important;
+    font-size:11px !important;
+  }
+}
+</style>
+<script id="aj-header-back-to-bottom-bar-final-20260826">
+(function(){
+  if(window.__AJ_HEADER_BACK_BOTTOM_FINAL__) return;
+  window.__AJ_HEADER_BACK_BOTTOM_FINAL__=true;
+  function moveBack(){
+    try{
+      var panel=document.getElementById('megaPanel');
+      if(!panel) return;
+      var btn=document.getElementById('ajHeaderBackBtn');
+      if(!btn) return;
+      var bar=panel.querySelector('.aj-menu-userbar');
+      if(!bar) return;
+      if(btn.parentElement!==bar){
+        bar.insertBefore(btn, bar.firstChild);
+      }
+    }catch(_){ }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',moveBack,{once:true});
+  else moveBack();
+  setTimeout(moveBack,100);
+  setTimeout(moveBack,500);
+  setTimeout(moveBack,1000);
+})();
+</script>
+<!-- /AJETREZ: ajuste final -->
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
