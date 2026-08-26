@@ -14721,6 +14721,39 @@ function showVeteranBanner(color){
   watch();
 })();
 </script>
+
+<style id="aj-mobile-menu-final-size-position-20260826">
+/* Ajuste fino móvil: contenido un poco más compacto y panel 2.5mm más abajo. */
+@media (max-width:900px), (pointer:coarse){
+  #megaPanel{
+    transform: translateY(calc(var(--square) * 1 + 2.5mm)) scale(1) !important;
+    transform-origin: top center !important;
+  }
+  #megaPanel .mp-content{
+    font-size: 0.94em !important;
+  }
+  #megaPanel .mp-content .btn,
+  #megaPanel .mp-content button,
+  #megaPanel .mp-content .tab-btn,
+  #megaPanel .mp-content select,
+  #megaPanel .mp-content input,
+  #megaPanel .mp-content textarea{
+    font-size: 0.94em !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
+  #megaPanel .mp-content h2{font-size:1.08em !important;}
+  #megaPanel .mp-content h3{font-size:1.02em !important;}
+  #megaPanel .mp-content h4{font-size:0.98em !important;}
+  #megaPanel .mp-content p,
+  #megaPanel .mp-content label,
+  #megaPanel .mp-content .hint,
+  #megaPanel .mp-content .hint-sm{
+    font-size:0.94em !important;
+  }
+}
+</style>
+
 </body>
 <!-- AJETREZ: Overlay de reproducción (bloqueo del tablero) v2 -->
 <style id="aj-replay-glass-css">
